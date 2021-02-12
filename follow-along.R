@@ -25,11 +25,24 @@
   filter(tbl, ORISPL_CODE == "6288")
   dt[ORISPL_CODE == "6288"]
   
+# rename columns ------
+  
+  tbl <- rename(tbl, gload_mw = "GLOAD (MW)")
+  setnames(dt, "GLOAD (MW)", "gload_mw")
+  
+# summarise: total load for each generator (ORISPL_CODE + UNITID combo) ------
+  
+  tbl %>%
+    group_by(ORISPL_CODE, UNITID) %>%
+    summarise(total_gload = sum(gload_mw, na.rm = T))
+  
+  dt[, .(total_gload = sum(gload_mw, na.rm = T)), by = .(ORISPL_CODE, UNITID)]
+  
 # setkey ------
   
   setkey(dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
   
-# filter again -----
+# summarize again -----
   
-  dt[ORISPL_CODE == "6288"]
+  dt[, .(total_gload = sum(gload_mw, na.rm = T)), by = .(ORISPL_CODE, UNITID)]
   
