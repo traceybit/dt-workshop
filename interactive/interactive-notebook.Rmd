@@ -44,12 +44,20 @@ dt = fread(file.path(data_path, hourly_data))
 
 # operations
 
-## setkey?
 ```{r}
-setkey(dt, "ORISPL_CODE")
+setkey(dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
 ```
 
 ## filter rows
+
+### select rows for generators in California (CA)
+```{r}
+head(dt[STATE=="CA"])
+```
+### select rows that occurred after july 1, 2019
+```{r}
+head(dt[OP_DATE > "07-01-2019"])
+```
 
 ## select columns
 
@@ -64,6 +72,8 @@ setkey(dt, "ORISPL_CODE")
 ### summarize several columns by group(s)
 
 ### summarize multiple functions on several columns by group(s)
+
+## setkey?
 
 # modify data table
 
