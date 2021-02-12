@@ -33,30 +33,30 @@ library(data.table)
 ## file locations
 
 ```r
-data_path   = '/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data'
-data_file   = 'epa_ampd_hourly_2019_selected.csv'
+data_path       = '/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data'
+hourly_data     = 'epa_ampd_hourly_2019_selected.csv'
+facility_data   = 'facility_01-27-2021_224024745.csv'
 ```
 
 ## read in csv file
 
+read in hourly data:
 
 ```r
-dt = fread(file.path(data_path, data_file))
+dt = fread(file.path(data_path, hourly_data))
 ```
 
 # operations
 
 ## setkey?
 
-## filter row
+```r
+setkey(dt, "ORISPL_CODE")
+```
+
+## filter rows
 
 ## select columns
-
-## add columns
-
-### add columns by groups
-
-## replace values
 
 ## reshape between long and wide forms
 
@@ -69,6 +69,18 @@ dt = fread(file.path(data_path, data_file))
 ### summarize several columns by group(s)
 
 ### summarize multiple functions on several columns by group(s)
+
+# modify data table
+
+## rename columns
+
+## reorder rows
+
+## add columns
+
+### add columns by groups
+
+## replace values
 
 # joining data
 

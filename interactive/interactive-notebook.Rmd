@@ -32,7 +32,7 @@ library(data.table)
 ```{r}
 data_path       = '/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data'
 hourly_data     = 'epa_ampd_hourly_2019_selected.csv'
-facility_data   = 'facility_01-27-2021_224024745.csv
+facility_data   = 'facility_01-27-2021_224024745.csv'
 ```
 
 ## read in csv file

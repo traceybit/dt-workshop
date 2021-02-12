@@ -371,33 +371,27 @@ summary {
 <h1>read in data</h1>
 <div id="file-locations" class="section level2">
 <h2>file locations</h2>
-<pre class="r"><code>data_path   = &#39;/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data&#39;
-data_file   = &#39;epa_ampd_hourly_2019_selected.csv&#39;</code></pre>
+<pre class="r"><code>data_path       = &#39;/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data&#39;
+hourly_data     = &#39;epa_ampd_hourly_2019_selected.csv&#39;
+facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 </div>
 <div id="read-in-csv-file" class="section level2">
 <h2>read in csv file</h2>
-<pre class="r"><code>dt = fread(file.path(data_path, data_file))</code></pre>
+<p>read in hourly data:</p>
+<pre class="r"><code>dt = fread(file.path(data_path, hourly_data))</code></pre>
 </div>
 </div>
 <div id="operations" class="section level1">
 <h1>operations</h1>
 <div id="setkey" class="section level2">
 <h2>setkey?</h2>
+<pre class="r"><code>setkey(dt, &quot;ORISPL_CODE&quot;)</code></pre>
 </div>
-<div id="filter-row" class="section level2">
-<h2>filter row</h2>
+<div id="filter-rows" class="section level2">
+<h2>filter rows</h2>
 </div>
 <div id="select-columns" class="section level2">
 <h2>select columns</h2>
-</div>
-<div id="add-columns" class="section level2">
-<h2>add columns</h2>
-<div id="add-columns-by-groups" class="section level3">
-<h3>add columns by groups</h3>
-</div>
-</div>
-<div id="replace-values" class="section level2">
-<h2>replace values</h2>
 </div>
 <div id="reshape-between-long-and-wide-forms" class="section level2">
 <h2>reshape between long and wide forms</h2>
@@ -416,6 +410,24 @@ data_file   = &#39;epa_ampd_hourly_2019_selected.csv&#39;</code></pre>
 <div id="summarize-multiple-functions-on-several-columns-by-groups" class="section level3">
 <h3>summarize multiple functions on several columns by group(s)</h3>
 </div>
+</div>
+</div>
+<div id="modify-data-table" class="section level1">
+<h1>modify data table</h1>
+<div id="rename-columns" class="section level2">
+<h2>rename columns</h2>
+</div>
+<div id="reorder-rows" class="section level2">
+<h2>reorder rows</h2>
+</div>
+<div id="add-columns" class="section level2">
+<h2>add columns</h2>
+<div id="add-columns-by-groups" class="section level3">
+<h3>add columns by groups</h3>
+</div>
+</div>
+<div id="replace-values" class="section level2">
+<h2>replace values</h2>
 </div>
 </div>
 <div id="joining-data" class="section level1">
