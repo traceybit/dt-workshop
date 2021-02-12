@@ -1,0 +1,35 @@
+# follow along script during presentation?
+
+# load packages -------
+
+  library(tidyverse)
+  library(data.table)
+
+# data inputs ------
+
+  data_path   = '/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data'
+  data_file   = 'epa_ampd_hourly_2019_selected.csv'
+
+# read in data using tidyverse -------
+  
+  tbl = read_csv(file.path(data_path, data_file))
+  head(tbl)
+  
+# read in data using data.table -------
+  
+  dt = fread(file.path(data_path, data_file))
+  head(dt)
+  
+# filter rows --------
+  
+  filter(tbl, ORISPL_CODE == "6288")
+  dt[ORISPL_CODE == "6288"]
+  
+# setkey ------
+  
+  setkey(dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
+  
+# filter again -----
+  
+  dt[ORISPL_CODE == "6288"]
+  
