@@ -36,13 +36,13 @@ name: background
 
 ---
 
-# Why data.table?
+# What is data.table?
 
 data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
 
 --
 
-Some pros of data.table:
+## Why use data.table?
 --
 
 * concise and consistent syntax: fast to type, fast to read
@@ -55,6 +55,18 @@ Some pros of data.table:
 
 ---
 
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+## Why use data.table?
+
+* **concise and consistent syntax: fast to type, fast to read**
+* fast speed
+* memory efficient
+
+---
+
 # Syntax intro
 
 Go over DT[i, j, by]
@@ -62,6 +74,52 @@ Go over DT[i, j, by]
 Go over the walrus :=
 
 list() vs .()
+
+---
+
+# Special symbols
+
+.SD: **S**ubset of **D**ata
+
+.N: number of observations
+
+---
+
+# Chaining operations
+
+Comparions of tidyverse vs data.table syntax
+
+---
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+## Why use data.table?
+
+* concise and consistent syntax: fast to type, fast to read
+* fast speed
+* memory efficient
+
+---
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+## Why use data.table?
+
+* concise and consistent syntax: fast to type, fast to read
+* **fast speed**
+* memory efficient
+
+---
+
+# Reading in files
+
+fread vs read_csv
+
+compare speed of chained operations
 
 ---
 
