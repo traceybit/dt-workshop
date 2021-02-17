@@ -2,7 +2,16 @@
 title: "Introduction to data.table"
 author: "Meas Meng and Tracey Mangin"
 date: "1/28/2021"
-output: slidy_presentation
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: false
+      countIncrementalSlides: false
+      ratio: "16:9"
 ---
 
 ```{r setup, include=FALSE}
