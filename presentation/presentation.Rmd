@@ -27,6 +27,24 @@ name: background
 
 ---
 
+# Motivation
+
+--
+
+MEAS: WHY IS THIS NOT WORKING
+
+--
+
+Tracy Manging: mind blown after running Meas's code
+
+---
+
+# useful resources
+
+We used the following resources to build this preso:
+
+---
+
 class: inverse, center, middle
 name: background
 
@@ -69,25 +87,43 @@ data.table provides an enhanced, high-performance version of base R’s data.fra
 
 # Syntax intro
 
+Add details and examples for:
+
 Go over DT[i, j, by]
+(version of grant's slide 14 with tidyverse function equivalents)
+(add slides on examples)
+
+i details: filtering
+helpers (%like%, %between%, %chin%)
+
+j details: selecting
+list() vs .()
+
+by details: grouping
 
 Go over the walrus :=
+(LHS:RHS vs functional form)
+(:= NULL (remove column)
 
-list() vs .()
+modifying in place
+add examples of when to expect that something is modified in place 
 
 ---
 
 # Special symbols
 
 .SD: **S**ubset of **D**ata
+include example using less efficient version and .SD version
+include tidyverse example https://atrebas.github.io/post/2019-03-03-datatable-dplyr/#summarise-data
 
 .N: number of observations
+(tidyverse equivalent n())
 
 ---
 
 # Chaining operations
 
-Comparions of tidyverse vs data.table syntax
+Comparisons of tidyverse vs data.table syntax
 
 ---
 
@@ -115,11 +151,31 @@ data.table provides an enhanced, high-performance version of base R’s data.fra
 
 ---
 
-# Reading in files
+# fast speed stuff
 
 fread vs read_csv
 
 compare speed of chained operations
+
+keys
+
+benchmark again (dplyr vs dt vs dt with keys)
+
+merge
+
+write.csv vs fwrite
+
+---
+
+# random cool things
+
+---
+
+# random not so cool things
+
+---
+
+# final thoughts
 
 ---
 
