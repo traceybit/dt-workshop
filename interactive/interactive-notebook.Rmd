@@ -1,8 +1,7 @@
 ---
 title: "Eco-data-science data.table workshop"
-output: 
-  html_document:
-    keep_md: true
+output: html_notebook
+
 ---
 
 ### shortcuts
