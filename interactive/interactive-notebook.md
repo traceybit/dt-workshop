@@ -30,10 +30,9 @@ library(data.table)
 
 # read in data
 
-## file locations
+## file names
 
 ```r
-data_path       = '/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data'
 hourly_data     = 'epa_ampd_hourly_2019_selected.csv'
 facility_data   = 'facility_01-27-2021_224024745.csv'
 ```
@@ -43,7 +42,7 @@ facility_data   = 'facility_01-27-2021_224024745.csv'
 read in hourly data:
 
 ```r
-dt = fread(file.path(data_path, hourly_data))
+dt = fread(here::here("data", hourly_data))
 ```
 
 # operations
@@ -150,6 +149,51 @@ head(dt[OP_DATE > "07-01-2019"])
 ```
 
 ## select columns
+
+### select columns by name:
+
+```r
+head(dt[, .(ORISPL_CODE, UNITID, OP_DATE, OP_HOUR, OP_TIME, `GLOAD (MW)`, `SLOAD (1000lb/hr)`, `SO2_MASS (lbs)`)])
+```
+
+```
+##    ORISPL_CODE UNITID    OP_DATE OP_HOUR OP_TIME GLOAD (MW) SLOAD (1000lb/hr)
+## 1:           9  CTG-1 01-01-2019       0       0         NA                NA
+## 2:           9  CTG-1 01-01-2019       1       0         NA                NA
+## 3:           9  CTG-1 01-01-2019       2       0         NA                NA
+## 4:           9  CTG-1 01-01-2019       3       0         NA                NA
+## 5:           9  CTG-1 01-01-2019       4       0         NA                NA
+## 6:           9  CTG-1 01-01-2019       5       0         NA                NA
+##    SO2_MASS (lbs)
+## 1:             NA
+## 2:             NA
+## 3:             NA
+## 4:             NA
+## 5:             NA
+## 6:             NA
+```
+### select columns by column number/index
+
+```r
+head(dt[, c(3:10)])
+```
+
+```
+##    ORISPL_CODE UNITID    OP_DATE OP_HOUR OP_TIME GLOAD (MW) SLOAD (1000lb/hr)
+## 1:           9  CTG-1 01-01-2019       0       0         NA                NA
+## 2:           9  CTG-1 01-01-2019       1       0         NA                NA
+## 3:           9  CTG-1 01-01-2019       2       0         NA                NA
+## 4:           9  CTG-1 01-01-2019       3       0         NA                NA
+## 5:           9  CTG-1 01-01-2019       4       0         NA                NA
+## 6:           9  CTG-1 01-01-2019       5       0         NA                NA
+##    SO2_MASS (lbs)
+## 1:             NA
+## 2:             NA
+## 3:             NA
+## 4:             NA
+## 5:             NA
+## 6:             NA
+```
 
 ## reshape between long and wide forms
 

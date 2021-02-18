@@ -60,6 +60,15 @@ head(dt[OP_DATE > "07-01-2019"])
 
 ## select columns
 
+### select columns by name:
+```{r}
+head(dt[, .(ORISPL_CODE, UNITID, OP_DATE, OP_HOUR, OP_TIME, `GLOAD (MW)`, `SLOAD (1000lb/hr)`, `SO2_MASS (lbs)`)])
+```
+### select columns by column number/index
+```{r}
+head(dt[, c(3:10)])
+```
+
 ## reshape between long and wide forms
 
 ## summarize/aggregate

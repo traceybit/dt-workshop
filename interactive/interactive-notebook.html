@@ -369,16 +369,15 @@ summary {
 </div>
 <div id="read-in-data" class="section level1">
 <h1>read in data</h1>
-<div id="file-locations" class="section level2">
-<h2>file locations</h2>
-<pre class="r"><code>data_path       = &#39;/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data&#39;
-hourly_data     = &#39;epa_ampd_hourly_2019_selected.csv&#39;
+<div id="file-names" class="section level2">
+<h2>file names</h2>
+<pre class="r"><code>hourly_data     = &#39;epa_ampd_hourly_2019_selected.csv&#39;
 facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 </div>
 <div id="read-in-csv-file" class="section level2">
 <h2>read in csv file</h2>
 <p>read in hourly data:</p>
-<pre class="r"><code>dt = fread(file.path(data_path, hourly_data))</code></pre>
+<pre class="r"><code>dt = fread(here::here(&quot;data&quot;, hourly_data))</code></pre>
 </div>
 </div>
 <div id="operations" class="section level1">
@@ -474,6 +473,42 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 </div>
 <div id="select-columns" class="section level2">
 <h2>select columns</h2>
+<div id="select-columns-by-name" class="section level3">
+<h3>select columns by name:</h3>
+<pre class="r"><code>head(dt[, .(ORISPL_CODE, UNITID, OP_DATE, OP_HOUR, OP_TIME, `GLOAD (MW)`, `SLOAD (1000lb/hr)`, `SO2_MASS (lbs)`)])</code></pre>
+<pre><code>##    ORISPL_CODE UNITID    OP_DATE OP_HOUR OP_TIME GLOAD (MW) SLOAD (1000lb/hr)
+## 1:           9  CTG-1 01-01-2019       0       0         NA                NA
+## 2:           9  CTG-1 01-01-2019       1       0         NA                NA
+## 3:           9  CTG-1 01-01-2019       2       0         NA                NA
+## 4:           9  CTG-1 01-01-2019       3       0         NA                NA
+## 5:           9  CTG-1 01-01-2019       4       0         NA                NA
+## 6:           9  CTG-1 01-01-2019       5       0         NA                NA
+##    SO2_MASS (lbs)
+## 1:             NA
+## 2:             NA
+## 3:             NA
+## 4:             NA
+## 5:             NA
+## 6:             NA</code></pre>
+</div>
+<div id="select-columns-by-column-numberindex" class="section level3">
+<h3>select columns by column number/index</h3>
+<pre class="r"><code>head(dt[, c(3:10)])</code></pre>
+<pre><code>##    ORISPL_CODE UNITID    OP_DATE OP_HOUR OP_TIME GLOAD (MW) SLOAD (1000lb/hr)
+## 1:           9  CTG-1 01-01-2019       0       0         NA                NA
+## 2:           9  CTG-1 01-01-2019       1       0         NA                NA
+## 3:           9  CTG-1 01-01-2019       2       0         NA                NA
+## 4:           9  CTG-1 01-01-2019       3       0         NA                NA
+## 5:           9  CTG-1 01-01-2019       4       0         NA                NA
+## 6:           9  CTG-1 01-01-2019       5       0         NA                NA
+##    SO2_MASS (lbs)
+## 1:             NA
+## 2:             NA
+## 3:             NA
+## 4:             NA
+## 5:             NA
+## 6:             NA</code></pre>
+</div>
 </div>
 <div id="reshape-between-long-and-wide-forms" class="section level2">
 <h2>reshape between long and wide forms</h2>
