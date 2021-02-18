@@ -1801,8 +1801,8 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <!-- rnb-text-begin -->
 </div>
 </div>
-<div id="operations" class="section level1">
-<h1>operations</h1>
+<div id="basics" class="section level1">
+<h1>basics</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0a2V5KGR0LCBPUklTUExfQ09ERSwgVU5JVElELCBPUF9EQVRFLCBPUF9IT1VSKVxuYGBgIn0= -->
@@ -1884,6 +1884,68 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <!-- rnb-text-begin -->
 </div>
 </div>
+</div>
+<div id="modify-data-table" class="section level1">
+<h1>modify data table</h1>
+<div id="rename-columns" class="section level2">
+<h2>rename columns</h2>
+<div id="renaming-single-columns" class="section level3">
+<h3>renaming single columns</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0bmFtZXMoZHQsIFwiU0xPQUQgKDEwMDBsYi9ocilcIiwgXCJzbG9hZF8xMDAwbGJfaHJcIilcbmBgYCJ9 -->
+<pre class="r"><code>setnames(dt, &quot;SLOAD (1000lb/hr)&quot;, &quot;sload_1000lb_hr&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="renaming-multiple-or-multiple-columns" class="section level3">
+<h3>renaming multiple or multiple columns</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoZHQpXG5gYGAifQ== -->
+<pre class="r"><code>colnames(dt)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIlNUQVRFXCIgICAgICAgICAgICAgICAgIFwiRkFDSUxJVFlfTkFNRVwiICAgICAgICAgXCJPUklTUExfQ09ERVwiICAgICAgICAgICBcIlVOSVRJRFwiICAgICAgICAgICAgICAgIFwiT1BfREFURVwiICAgICAgICAgICAgICAgXCJPUF9IT1VSXCIgICAgICAgICAgICAgIFxuIFs3XSBcIk9QX1RJTUVcIiAgICAgICAgICAgICAgIFwiR0xPQUQgKE1XKVwiICAgICAgICAgICAgXCJzbG9hZF8xMDAwbGJfaHJcIiAgICAgICBcIlNPMl9NQVNTIChsYnMpXCIgICAgICAgIFwiU08yX01BU1NfTUVBU1VSRV9GTEdcIiAgXCJTTzJfUkFURSAobGJzL21tQnR1KVwiIFxuWzEzXSBcIlNPMl9SQVRFX01FQVNVUkVfRkxHXCIgIFwiTk9YX1JBVEUgKGxicy9tbUJ0dSlcIiAgXCJOT1hfUkFURV9NRUFTVVJFX0ZMR1wiICBcIk5PWF9NQVNTIChsYnMpXCIgICAgICAgIFwiTk9YX01BU1NfTUVBU1VSRV9GTEdcIiAgXCJDTzJfTUFTUyAodG9ucylcIiAgICAgIFxuWzE5XSBcIkNPMl9NQVNTX01FQVNVUkVfRkxHXCIgIFwiQ08yX1JBVEUgKHRvbnMvbW1CdHUpXCIgXCJDTzJfUkFURV9NRUFTVVJFX0ZMR1wiICBcIkhFQVRfSU5QVVQgKG1tQnR1KVwiICAgIFwiRkFDX0lEXCIgICAgICAgICAgICAgICAgXCJVTklUX0lEXCIgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code> [1] &quot;STATE&quot;                 &quot;FACILITY_NAME&quot;         &quot;ORISPL_CODE&quot;           &quot;UNITID&quot;                &quot;OP_DATE&quot;               &quot;OP_HOUR&quot;              
+ [7] &quot;OP_TIME&quot;               &quot;GLOAD (MW)&quot;            &quot;sload_1000lb_hr&quot;       &quot;SO2_MASS (lbs)&quot;        &quot;SO2_MASS_MEASURE_FLG&quot;  &quot;SO2_RATE (lbs/mmBtu)&quot; 
+[13] &quot;SO2_RATE_MEASURE_FLG&quot;  &quot;NOX_RATE (lbs/mmBtu)&quot;  &quot;NOX_RATE_MEASURE_FLG&quot;  &quot;NOX_MASS (lbs)&quot;        &quot;NOX_MASS_MEASURE_FLG&quot;  &quot;CO2_MASS (tons)&quot;      
+[19] &quot;CO2_MASS_MEASURE_FLG&quot;  &quot;CO2_RATE (tons/mmBtu)&quot; &quot;CO2_RATE_MEASURE_FLG&quot;  &quot;HEAT_INPUT (mmBtu)&quot;    &quot;FAC_ID&quot;                &quot;UNIT_ID&quot;              </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoZHQpID0gYyhcInN0YXRlXCIsIFwiZmFjaWxpdHlfbmFtZVwiLCBcIm9yaXNwbF9jb2RlXCIsIFwidW5pdGlkXCIsIFwib3BfZGF0ZVwiLCBcIm9wX2hvdXJcIiwgXCJvcF90aW1lXCIsIFwiZ2xvYWRfbXdcIiwgXCJzbG9hZF8xMDAwbGJfaHJcIiwgXCJzbzJfbWFzc19sYlwiLFxuICAgICAgICAgICAgICAgICBcInNvMl9tYXNzX21lYXN1cmVfZmxnXCIsIFwic28yX3JhdGVfbGJfbW1idHVcIiwgXCJzbzJfcmF0ZV9tZWFzdXJlX2ZsZ1wiLCBcIm5veF9yYXRlX2xiX21tYnR1XCIsIFwibm94X3JhdGVfbWVhc3VyZV9mbGdcIiwgXG4gICAgICAgICAgICAgICAgIFwibm94X21hc3NfbGJcIiwgXCJub3hfbWFzc19tZWFzdXJlX2ZsZ1wiLCBcImNvMl9tYXNzX3RvblwiLCBcImNvMl9tYXNzX21lYXN1cmVfZmxnXCIsXG4gICAgICAgICAgICAgICAgIFwiY28yX3JhdGVfdG9uX21tYnR1XCIsIFwiY28yX3JhdGVfbWVhc3VyZV9mbGdcIiwgXCJoZWF0X2lucHV0X21tYnR1XCIsIFwiZmFjX2lkXCIsIFwidW5pdF9pZFwiKVxuaGVhZChkdClcbmBgYCJ9 -->
+<pre class="r"><code>colnames(dt) = c(&quot;state&quot;, &quot;facility_name&quot;, &quot;orispl_code&quot;, &quot;unitid&quot;, &quot;op_date&quot;, &quot;op_hour&quot;, &quot;op_time&quot;, &quot;gload_mw&quot;, &quot;sload_1000lb_hr&quot;, &quot;so2_mass_lb&quot;,
+                 &quot;so2_mass_measure_flg&quot;, &quot;so2_rate_lb_mmbtu&quot;, &quot;so2_rate_measure_flg&quot;, &quot;nox_rate_lb_mmbtu&quot;, &quot;nox_rate_measure_flg&quot;, 
+                 &quot;nox_mass_lb&quot;, &quot;nox_mass_measure_flg&quot;, &quot;co2_mass_ton&quot;, &quot;co2_mass_measure_flg&quot;,
+                 &quot;co2_rate_ton_mmbtu&quot;, &quot;co2_rate_measure_flg&quot;, &quot;heat_input_mmbtu&quot;, &quot;fac_id&quot;, &quot;unit_id&quot;)
+head(dt)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjI0fSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxVnpYTGFNQkJlRENhTmFabzB6WUZqWGdBR3VQV2N6dlRlNXNCTkViSUJUV1hKWTh1VDlOUThTNTh3NXg1Q1YwSXkySEZtYUR2TktRd3JhNy85MGE1MzVmM3lhVDZMNWhFQUJOQU5Bd2k2dU8wRnVIU2dCOGZtZVFmUS9ZQ2JJZElaVXQ4Smd1djVYK3pxUHQ1ZHFTeEw4c3V2bW1xdTVBdWpBQ2MyRnJEU050cVBOYnk2L2p5YS9qdFQ5eHBOcGlQOHp5YlRqLzhSMldVS3RyU20zRmhXVTJzVG1IazNlL0kvK1ZtLzk3aTAwUUZ5ZSs2UEI3TTkrbm5vcy9FTzRlRG42M212NTczTWVlNitYWTdheWNrN042eVY2cC9nNDF6ZGppVk5rOElaQnZlNGJEYWJYdzNGa0FsYUZDNWJEMFl4MVhTOHpORytxZTU5R3ZXaEJ3djhPaWFPT1ZsU3hnWFgzNGxSZGVCQTVieklCR0VxOWxDL2xGenoySEZIS2lQeHpvbGgxNnJNOTFqTksyOXZWa0xSbUtTM2pqOHRMRCtkVENaaVFkYmVhbENvR1VreE95SVdEcnFvb0RTaFJaa25aQ2xXVHZiZXlIS01BZFZKbWk1MHVXOWtCUzFHVXQyMUcxV0NwMFlESTJzRVZrRlAxZDh5SDdTdTV0SUZlejZSYytialJmMTZVT3o1VE03V0NkV0V5NnpVTlpzKzFwUHM2bVNxWmxpQXgwWnJZSkhNaU1UbUNNenNEeHM5MWNrYndHa3BUWWZFSTdZdTVUYzc1U0xZVGhwd1Rkdlozb2hxUDl3ZTJkczRWNkdQTVpFckxuMTdoSUl1RXVFSE9GNEUyN1BqTE9kUyt3Wkh0QmhycGFuWGk1Z1NIckc1d2VOdkgxeDZIZWtJQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["facility_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["orispl_code"],"name":[3],"type":["int"],"align":["right"]},{"label":["unitid"],"name":[4],"type":["chr"],"align":["left"]},{"label":["op_date"],"name":[5],"type":["chr"],"align":["left"]},{"label":["op_hour"],"name":[6],"type":["int"],"align":["right"]},{"label":["op_time"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["gload_mw"],"name":[8],"type":["int"],"align":["right"]},{"label":["sload_1000lb_hr"],"name":[9],"type":["int"],"align":["right"]},{"label":["so2_mass_lb"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["so2_mass_measure_flg"],"name":[11],"type":["chr"],"align":["left"]},{"label":["so2_rate_lb_mmbtu"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["so2_rate_measure_flg"],"name":[13],"type":["chr"],"align":["left"]},{"label":["nox_rate_lb_mmbtu"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["nox_rate_measure_flg"],"name":[15],"type":["chr"],"align":["left"]},{"label":["nox_mass_lb"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["nox_mass_measure_flg"],"name":[17],"type":["chr"],"align":["left"]},{"label":["co2_mass_ton"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["co2_mass_measure_flg"],"name":[19],"type":["chr"],"align":["left"]},{"label":["co2_rate_ton_mmbtu"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["co2_rate_measure_flg"],"name":[21],"type":["chr"],"align":["left"]},{"label":["heat_input_mmbtu"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["fac_id"],"name":[23],"type":["int"],"align":["right"]},{"label":["unit_id"],"name":[24],"type":["int"],"align":["right"]}],"data":[{"1":"TX","2":"Copper Station","3":"9","4":"CTG-1","5":"01-01-2019","6":"0","7":"0","8":"NA","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8237","24":"90211"},{"1":"TX","2":"Copper Station","3":"9","4":"CTG-1","5":"01-01-2019","6":"1","7":"0","8":"NA","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8237","24":"90211"},{"1":"TX","2":"Copper Station","3":"9","4":"CTG-1","5":"01-01-2019","6":"2","7":"0","8":"NA","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8237","24":"90211"},{"1":"TX","2":"Copper Station","3":"9","4":"CTG-1","5":"01-01-2019","6":"3","7":"0","8":"NA","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8237","24":"90211"},{"1":"TX","2":"Copper Station","3":"9","4":"CTG-1","5":"01-01-2019","6":"4","7":"0","8":"NA","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8237","24":"90211"},{"1":"TX","2":"Copper Station","3":"9","4":"CTG-1","5":"01-01-2019","6":"5","7":"0","8":"NA","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8237","24":"90211"}],"options":{"columns":{"min":{},"max":[10],"total":[24]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="reorder-rows" class="section level2">
+<h2>reorder rows</h2>
+</div>
+<div id="add-columns" class="section level2">
+<h2>add columns</h2>
+<div id="add-columns-by-groups" class="section level3">
+<h3>add columns by groups</h3>
+</div>
+</div>
+<div id="replace-values" class="section level2">
+<h2>replace values</h2>
+</div>
 <div id="reshape-between-long-and-wide-forms" class="section level2">
 <h2>reshape between long and wide forms</h2>
 </div>
@@ -1906,24 +1968,6 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <h2>setkey?</h2>
 </div>
 </div>
-<div id="modify-data-table" class="section level1">
-<h1>modify data table</h1>
-<div id="rename-columns" class="section level2">
-<h2>rename columns</h2>
-</div>
-<div id="reorder-rows" class="section level2">
-<h2>reorder rows</h2>
-</div>
-<div id="add-columns" class="section level2">
-<h2>add columns</h2>
-<div id="add-columns-by-groups" class="section level3">
-<h3>add columns by groups</h3>
-</div>
-</div>
-<div id="replace-values" class="section level2">
-<h2>replace values</h2>
-</div>
-</div>
 <div id="joining-data" class="section level1">
 <h1>joining data</h1>
 <div id="merge" class="section level2">
@@ -1935,7 +1979,7 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvLWRhdGEtc2NpZW5jZSBkYXRhLnRhYmxlIHdvcmtzaG9wIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKCi0tLQoKIyMjIHNob3J0Y3V0cwoKUnVuIENodW5rIDogKkNtZCtTaGlmdCtFbnRlcioKCkluc2VydCBDaHVuayA6ICpDbWQrT3B0aW9uK0kqCgpQcmV2aWV3IEhUTUwgOiAqQ21kK1NoaWZ0K0sqCgojIHBhY2thZ2VzCgojIyBpbnN0YWxsIHBhY2thZ2VzCmBgYHtyfQojIGluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiZGF0YS50YWJsZSIpCmBgYAoKIyMgbG9hZCBwYWNrYWdlKHMpCmBgYHtyfQpsaWJyYXJ5KGRhdGEudGFibGUpCmBgYAoKIyByZWFkIGluIGRhdGEKCiMjIGZpbGUgbmFtZXMKYGBge3J9CmhvdXJseV9kYXRhICAgICA9ICdlcGFfYW1wZF9ob3VybHlfMjAxOV9zZWxlY3RlZC5jc3YnCmZhY2lsaXR5X2RhdGEgICA9ICdmYWNpbGl0eV8wMS0yNy0yMDIxXzIyNDAyNDc0NS5jc3YnCmBgYAoKIyMgcmVhZCBpbiBjc3YgZmlsZQoKcmVhZCBpbiBob3VybHkgZGF0YToKYGBge3J9CmR0ID0gZnJlYWQoaGVyZTo6aGVyZSgiZGF0YSIsIGhvdXJseV9kYXRhKSkKYGBgCgojIG9wZXJhdGlvbnMKCmBgYHtyfQpzZXRrZXkoZHQsIE9SSVNQTF9DT0RFLCBVTklUSUQsIE9QX0RBVEUsIE9QX0hPVVIpCmBgYAoKIyMgZmlsdGVyIHJvd3MKCiMjIyBzZWxlY3Qgcm93cyBmb3IgZ2VuZXJhdG9ycyBpbiBDYWxpZm9ybmlhIChDQSkKYGBge3J9CmhlYWQoZHRbU1RBVEU9PSJDQSJdKQpgYGAKIyMjIHNlbGVjdCByb3dzIHRoYXQgb2NjdXJyZWQgYWZ0ZXIganVseSAxLCAyMDE5CmBgYHtyfQpoZWFkKGR0W09QX0RBVEUgPiAiMDctMDEtMjAxOSJdKQpgYGAKCiMjIHNlbGVjdCBjb2x1bW5zCgojIyMgc2VsZWN0IGNvbHVtbnMgYnkgbmFtZToKYGBge3J9CmhlYWQoZHRbLCAuKE9SSVNQTF9DT0RFLCBVTklUSUQsIE9QX0RBVEUsIE9QX0hPVVIsIE9QX1RJTUUsIGBHTE9BRCAoTVcpYCwgYFNMT0FEICgxMDAwbGIvaHIpYCwgYFNPMl9NQVNTIChsYnMpYCldKQpgYGAKIyMjIHNlbGVjdCBjb2x1bW5zIGJ5IGNvbHVtbiBudW1iZXIvaW5kZXgKYGBge3J9CmhlYWQoZHRbLCBjKDM6MTApXSkKYGBgCgojIyByZXNoYXBlIGJldHdlZW4gbG9uZyBhbmQgd2lkZSBmb3JtcwoKIyMgc3VtbWFyaXplL2FnZ3JlZ2F0ZQoKIyMjIHN1bW1hcml6ZSBieSBncm91cChzKQoKIyMjIHN1bW1hcml6ZSBzZXZlcmFsIGNvbHVtbnMKCiMjIyBzdW1tYXJpemUgc2V2ZXJhbCBjb2x1bW5zIGJ5IGdyb3VwKHMpCgojIyMgc3VtbWFyaXplIG11bHRpcGxlIGZ1bmN0aW9ucyBvbiBzZXZlcmFsIGNvbHVtbnMgYnkgZ3JvdXAocykKCiMjIHNldGtleT8KCiMgbW9kaWZ5IGRhdGEgdGFibGUKCiMjIHJlbmFtZSBjb2x1bW5zCgojIyByZW9yZGVyIHJvd3MKCiMjIGFkZCBjb2x1bW5zCgojIyMgYWRkIGNvbHVtbnMgYnkgZ3JvdXBzCgojIyByZXBsYWNlIHZhbHVlcwoKIyBqb2luaW5nIGRhdGEKCiMjIG1lcmdlCgojIyBiaW5k</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvLWRhdGEtc2NpZW5jZSBkYXRhLnRhYmxlIHdvcmtzaG9wIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKCi0tLQoKIyMjIHNob3J0Y3V0cwoKUnVuIENodW5rIDogKkNtZCtTaGlmdCtFbnRlcioKCkluc2VydCBDaHVuayA6ICpDbWQrT3B0aW9uK0kqCgpQcmV2aWV3IEhUTUwgOiAqQ21kK1NoaWZ0K0sqCgojIHBhY2thZ2VzCgojIyBpbnN0YWxsIHBhY2thZ2VzCmBgYHtyfQojIGluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiZGF0YS50YWJsZSIpCmBgYAoKIyMgbG9hZCBwYWNrYWdlKHMpCmBgYHtyfQpsaWJyYXJ5KGRhdGEudGFibGUpCmBgYAoKIyByZWFkIGluIGRhdGEKCiMjIGZpbGUgbmFtZXMKYGBge3J9CmhvdXJseV9kYXRhICAgICA9ICdlcGFfYW1wZF9ob3VybHlfMjAxOV9zZWxlY3RlZC5jc3YnCmZhY2lsaXR5X2RhdGEgICA9ICdmYWNpbGl0eV8wMS0yNy0yMDIxXzIyNDAyNDc0NS5jc3YnCmBgYAoKIyMgcmVhZCBpbiBjc3YgZmlsZQoKcmVhZCBpbiBob3VybHkgZGF0YToKYGBge3J9CmR0ID0gZnJlYWQoaGVyZTo6aGVyZSgiZGF0YSIsIGhvdXJseV9kYXRhKSkKYGBgCgojIGJhc2ljcwoKYGBge3J9CnNldGtleShkdCwgT1JJU1BMX0NPREUsIFVOSVRJRCwgT1BfREFURSwgT1BfSE9VUikKYGBgCgojIyBmaWx0ZXIgcm93cwoKIyMjIHNlbGVjdCByb3dzIGZvciBnZW5lcmF0b3JzIGluIENhbGlmb3JuaWEgKENBKQpgYGB7cn0KaGVhZChkdFtTVEFURT09IkNBIl0pCmBgYAojIyMgc2VsZWN0IHJvd3MgdGhhdCBvY2N1cnJlZCBhZnRlciBqdWx5IDEsIDIwMTkKYGBge3J9CmhlYWQoZHRbT1BfREFURSA+ICIwNy0wMS0yMDE5Il0pCmBgYAoKIyMgc2VsZWN0IGNvbHVtbnMKCiMjIyBzZWxlY3QgY29sdW1ucyBieSBuYW1lOgpgYGB7cn0KaGVhZChkdFssIC4oT1JJU1BMX0NPREUsIFVOSVRJRCwgT1BfREFURSwgT1BfSE9VUiwgT1BfVElNRSwgYEdMT0FEIChNVylgLCBgU0xPQUQgKDEwMDBsYi9ocilgLCBgU08yX01BU1MgKGxicylgKV0pCmBgYAojIyMgc2VsZWN0IGNvbHVtbnMgYnkgY29sdW1uIG51bWJlci9pbmRleApgYGB7cn0KaGVhZChkdFssIGMoMzoxMCldKQpgYGAKIyBtb2RpZnkgZGF0YSB0YWJsZQoKIyMgcmVuYW1lIGNvbHVtbnMKCiMjIyByZW5hbWluZyBzaW5nbGUgY29sdW1ucwpgYGB7cn0Kc2V0bmFtZXMoZHQsICJTTE9BRCAoMTAwMGxiL2hyKSIsICJzbG9hZF8xMDAwbGJfaHIiKQpgYGAKCiMjIyByZW5hbWluZyBtdWx0aXBsZSBvciBtdWx0aXBsZSBjb2x1bW5zCmBgYHtyfQpjb2xuYW1lcyhkdCkKYGBgCgpgYGB7cn0KY29sbmFtZXMoZHQpID0gYygic3RhdGUiLCAiZmFjaWxpdHlfbmFtZSIsICJvcmlzcGxfY29kZSIsICJ1bml0aWQiLCAib3BfZGF0ZSIsICJvcF9ob3VyIiwgIm9wX3RpbWUiLCAiZ2xvYWRfbXciLCAic2xvYWRfMTAwMGxiX2hyIiwgInNvMl9tYXNzX2xiIiwKICAgICAgICAgICAgICAgICAic28yX21hc3NfbWVhc3VyZV9mbGciLCAic28yX3JhdGVfbGJfbW1idHUiLCAic28yX3JhdGVfbWVhc3VyZV9mbGciLCAibm94X3JhdGVfbGJfbW1idHUiLCAibm94X3JhdGVfbWVhc3VyZV9mbGciLCAKICAgICAgICAgICAgICAgICAibm94X21hc3NfbGIiLCAibm94X21hc3NfbWVhc3VyZV9mbGciLCAiY28yX21hc3NfdG9uIiwgImNvMl9tYXNzX21lYXN1cmVfZmxnIiwKICAgICAgICAgICAgICAgICAiY28yX3JhdGVfdG9uX21tYnR1IiwgImNvMl9yYXRlX21lYXN1cmVfZmxnIiwgImhlYXRfaW5wdXRfbW1idHUiLCAiZmFjX2lkIiwgInVuaXRfaWQiKQpoZWFkKGR0KQpgYGAKCiMjIHJlb3JkZXIgcm93cwoKIyMgYWRkIGNvbHVtbnMKCiMjIyBhZGQgY29sdW1ucyBieSBncm91cHMKCiMjIHJlcGxhY2UgdmFsdWVzCgojIyByZXNoYXBlIGJldHdlZW4gbG9uZyBhbmQgd2lkZSBmb3JtcwoKIyMgc3VtbWFyaXplL2FnZ3JlZ2F0ZQoKIyMjIHN1bW1hcml6ZSBieSBncm91cChzKQoKIyMjIHN1bW1hcml6ZSBzZXZlcmFsIGNvbHVtbnMKCiMjIyBzdW1tYXJpemUgc2V2ZXJhbCBjb2x1bW5zIGJ5IGdyb3VwKHMpCgojIyMgc3VtbWFyaXplIG11bHRpcGxlIGZ1bmN0aW9ucyBvbiBzZXZlcmFsIGNvbHVtbnMgYnkgZ3JvdXAocykKCiMjIHNldGtleT8KCiMgam9pbmluZyBkYXRhCgojIyBtZXJnZQoKIyMgYmluZA==</div>
 
 
 

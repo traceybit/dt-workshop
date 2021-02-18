@@ -40,7 +40,7 @@ read in hourly data:
 dt = fread(here::here("data", hourly_data))
 ```
 
-# operations
+# basics
 
 ```{r}
 setkey(dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
@@ -67,6 +67,35 @@ head(dt[, .(ORISPL_CODE, UNITID, OP_DATE, OP_HOUR, OP_TIME, `GLOAD (MW)`, `SLOAD
 ```{r}
 head(dt[, c(3:10)])
 ```
+# modify data table
+
+## rename columns
+
+### renaming single columns
+```{r}
+setnames(dt, "SLOAD (1000lb/hr)", "sload_1000lb_hr")
+```
+
+### renaming multiple or multiple columns
+```{r}
+colnames(dt)
+```
+
+```{r}
+colnames(dt) = c("state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time", "gload_mw", "sload_1000lb_hr", "so2_mass_lb",
+                 "so2_mass_measure_flg", "so2_rate_lb_mmbtu", "so2_rate_measure_flg", "nox_rate_lb_mmbtu", "nox_rate_measure_flg", 
+                 "nox_mass_lb", "nox_mass_measure_flg", "co2_mass_ton", "co2_mass_measure_flg",
+                 "co2_rate_ton_mmbtu", "co2_rate_measure_flg", "heat_input_mmbtu", "fac_id", "unit_id")
+head(dt)
+```
+
+## reorder rows
+
+## add columns
+
+### add columns by groups
+
+## replace values
 
 ## reshape between long and wide forms
 
@@ -81,18 +110,6 @@ head(dt[, c(3:10)])
 ### summarize multiple functions on several columns by group(s)
 
 ## setkey?
-
-# modify data table
-
-## rename columns
-
-## reorder rows
-
-## add columns
-
-### add columns by groups
-
-## replace values
 
 # joining data
 
