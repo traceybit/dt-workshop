@@ -18,6 +18,7 @@ Preview HTML : *Cmd+Shift+K*
 ```{r}
 # install.packages("tidyverse")
 # install.packages("data.table")
+# install.packages("here)
 ```
 
 ## load package(s)
@@ -90,6 +91,23 @@ head(dt)
 ```
 
 ## reorder rows
+
+### temporarily sorting
+```{r}
+head(dt[order(-gload_mw)])
+```
+
+### setting the dt to an order
+```{r}
+setorder(dt, orispl_code, na.last = TRUE)
+head(dt)
+```
+
+for multiple columns:
+```{r}
+# setorderv(dt, )
+```
+
 
 ## add columns
 
