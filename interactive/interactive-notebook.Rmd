@@ -12,6 +12,10 @@ Insert Chunk : *Cmd+Option+I*
 
 Preview HTML : *Cmd+Shift+K*
 
+# Introduction
+
+## The dataset
+
 # packages
 
 ## install packages
@@ -24,6 +28,7 @@ Preview HTML : *Cmd+Shift+K*
 ## load package(s)
 ```{r}
 library(data.table)
+library(janitor)
 ```
 
 # read in data
@@ -39,6 +44,11 @@ facility_data   = 'facility_01-27-2021_224024745.csv'
 read in hourly data:
 ```{r}
 dt = fread(here::here("data", hourly_data))
+```
+
+
+```{r}
+dt = clean_names(dt)
 ```
 
 # basics
@@ -57,6 +67,8 @@ head(dt[STATE=="CA"])
 ```{r}
 head(dt[OP_DATE > "07-01-2019"])
 ```
+((add examples of like, chin, etc))
+
 
 ## select columns
 
@@ -108,24 +120,39 @@ for multiple columns:
 # setorderv(dt, )
 ```
 
-
-## add columns
-
-### add columns by groups
-
-## replace values
-
-## reshape between long and wide forms
-
 ## summarize/aggregate
 
 ### summarize by group(s)
+
+.N
 
 ### summarize several columns
 
 ### summarize several columns by group(s)
 
 ### summarize multiple functions on several columns by group(s)
+
+.SD/.SDcols
+
+## add columns
+
+### add columns by groups
+
+### adding multiple columns
+functional form vs the other form (LHS:=RHS)
+
+## replace values
+
+replace NAs
+```{r}
+dt[is.na(column), column := 'something else']
+```
+
+## reshape between long and wide forms
+
+### melt (wide to long)
+
+### dcast (long to wide)
 
 ## setkey?
 
@@ -134,3 +161,7 @@ for multiple columns:
 ## merge
 
 ## bind
+
+# Beyond...
+
+How much electricity generation, NOx emissions, SO2 emissions, etc are coming from coal vs natural gas plants?

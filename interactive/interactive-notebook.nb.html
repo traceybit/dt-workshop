@@ -1740,6 +1740,12 @@ summary {
 <p>Insert Chunk : <em>Cmd+Option+I</em></p>
 <p>Preview HTML : <em>Cmd+Shift+K</em></p>
 </div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="the-dataset" class="section level2">
+<h2>The dataset</h2>
+</div>
+</div>
 <div id="packages" class="section level1">
 <h1>packages</h1>
 <div id="install-packages" class="section level2">
@@ -1758,8 +1764,9 @@ summary {
 <h2>load package(s)</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkYXRhLnRhYmxlKVxuYGBgIn0= -->
-<pre class="r"><code>library(data.table)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkYXRhLnRhYmxlKVxubGlicmFyeShqYW5pdG9yKVxuYGBgIn0= -->
+<pre class="r"><code>library(data.table)
+library(janitor)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1790,6 +1797,20 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <pre><code>|--------------------------------------------------|
 |==================================================|</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xlYW5fbmFtZXMoaGVhZChkdCkpXG5gYGAifQ== -->
+<pre class="r"><code>clean_names(head(dt))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjI0fSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxVlQyL1RNQlIvU1p1T2hYVmpHb2NlSzNHQVM2dTBFZ2RPQ0lrREVwZUowMjZXbTZTdGhXTlhzYU51Si9ZUitBeDhENzRUWnc0cnRtdG5qWmRLQlFtNHJPcXovZjc4M3ArKzUvclQrNnRwZkJVRFFBaWRLSVN3bzQ3ZFVDMEJkT0ZZNzljQW5RdDFHQ2g2cHFobkZlRzdqMzl3YXZvNC81Qmplak84NU91OEhGNVN6T1QvVlFEMFRYWXcrTnBPamV5RDZlOGRtdWc0bVl6VWQ1cE0zdnhGU1YyUitRU20wYXFodXN1S0lrV25Xdi8yeDliZzBIM0g3eXVQWGlwNjRmUzNhbWtqRi9lTDhYZjA3ZERkK3czaDRQMHgzbU84ZnhQUDNvdmg5M2F5K2lDbHJkVDg4ejB1K1hyTWNKRUxDd3h2MWJMWmJINTZobEZLc1JDMldpZU1NeXp4ZUY0cXZHL3VmR3J6Z1JNS2lXVnVtZjRjcDRRU2VZTzBxUlUrNVNVUks0cFNuamxScjJKRWtzeHlSM3lGc25zbm1sM3lxdHhoSmFtOVBWbFFqak5VckMxL0pndy9TWktFenREU29VNEVuNkpDVllmb1RGalo4MXBXNUZoVVpZN21kR0YxRjFwWHFpUzBQU29LTkpQVkxzeW9XbUNNWCsrRDFhcUhzQk90ODdPclpRL3QrNm5MWEhKV0E5TDk1UmlkQ2E0QlhtTHAvbnJPbHptV2lMQlZKWnVnbnVvc3V1K1k3cDltQWU2OElWSHRra1FuQ2FGKy95TnZ1b0xTRTV4VlRNOUtOa3FYRmZzOGVxMG5FTFp2RHRqeERiWjNvejRQdGlHN0crc3Fjam5tYkVHWUc1U0k0bGxPTFhPcXJvU1ozdkdxSlBWYkhpdXBHRXN1c2JPTFUwNmR4TlFHZDc4QUIzWnc0TzBJQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["facility_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["orispl_code"],"name":[3],"type":["int"],"align":["right"]},{"label":["unitid"],"name":[4],"type":["chr"],"align":["left"]},{"label":["op_date"],"name":[5],"type":["chr"],"align":["left"]},{"label":["op_hour"],"name":[6],"type":["int"],"align":["right"]},{"label":["op_time"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["gload_mw"],"name":[8],"type":["int"],"align":["right"]},{"label":["sload_1000lb_hr"],"name":[9],"type":["int"],"align":["right"]},{"label":["so2_mass_lbs"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["so2_mass_measure_flg"],"name":[11],"type":["chr"],"align":["left"]},{"label":["so2_rate_lbs_mm_btu"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["so2_rate_measure_flg"],"name":[13],"type":["chr"],"align":["left"]},{"label":["nox_rate_lbs_mm_btu"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["nox_rate_measure_flg"],"name":[15],"type":["chr"],"align":["left"]},{"label":["nox_mass_lbs"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["nox_mass_measure_flg"],"name":[17],"type":["chr"],"align":["left"]},{"label":["co2_mass_tons"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["co2_mass_measure_flg"],"name":[19],"type":["chr"],"align":["left"]},{"label":["co2_rate_tons_mm_btu"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["co2_rate_measure_flg"],"name":[21],"type":["chr"],"align":["left"]},{"label":["heat_input_mm_btu"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["fac_id"],"name":[23],"type":["int"],"align":["right"]},{"label":["unit_id"],"name":[24],"type":["int"],"align":["right"]}],"data":[{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"0","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"1","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"2","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"3","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"4","7":"1","8":"39","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"5","7":"1","8":"35","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"}],"options":{"columns":{"min":{},"max":[10],"total":[24]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1838,6 +1859,7 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>((add examples of like, chin, etc))</p>
 </div>
 </div>
 <div id="select-columns" class="section level2">
@@ -1973,22 +1995,11 @@ head(dt)</code></pre>
 <!-- rnb-text-begin -->
 </div>
 </div>
-<div id="add-columns" class="section level2">
-<h2>add columns</h2>
-<div id="add-columns-by-groups" class="section level3">
-<h3>add columns by groups</h3>
-</div>
-</div>
-<div id="replace-values" class="section level2">
-<h2>replace values</h2>
-</div>
-<div id="reshape-between-long-and-wide-forms" class="section level2">
-<h2>reshape between long and wide forms</h2>
-</div>
 <div id="summarizeaggregate" class="section level2">
 <h2>summarize/aggregate</h2>
 <div id="summarize-by-groups" class="section level3">
 <h3>summarize by group(s)</h3>
+<p>.N</p>
 </div>
 <div id="summarize-several-columns" class="section level3">
 <h3>summarize several columns</h3>
@@ -1998,6 +2009,37 @@ head(dt)</code></pre>
 </div>
 <div id="summarize-multiple-functions-on-several-columns-by-groups" class="section level3">
 <h3>summarize multiple functions on several columns by group(s)</h3>
+<p>.SD/.SDcols</p>
+</div>
+</div>
+<div id="add-columns" class="section level2">
+<h2>add columns</h2>
+<div id="add-columns-by-groups" class="section level3">
+<h3>add columns by groups</h3>
+</div>
+<div id="adding-multiple-columns" class="section level3">
+<h3>adding multiple columns</h3>
+<p>functional form vs the other form (LHS:=RHS)</p>
+</div>
+</div>
+<div id="replace-values" class="section level2">
+<h2>replace values</h2>
+<p>replace NAs</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbaXMubmEoY29sdW1uKSwgY29sdW1uIDo9ICdzb21ldGhpbmcgZWxzZSddXG5gYGAifQ== -->
+<pre class="r"><code>dt[is.na(column), column := &#39;something else&#39;]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="reshape-between-long-and-wide-forms" class="section level2">
+<h2>reshape between long and wide forms</h2>
+<div id="melt-wide-to-long" class="section level3">
+<h3>melt (wide to long)</h3>
+</div>
+<div id="dcast-long-to-wide" class="section level3">
+<h3>dcast (long to wide)</h3>
 </div>
 </div>
 <div id="setkey" class="section level2">
@@ -2011,11 +2053,15 @@ head(dt)</code></pre>
 </div>
 <div id="bind" class="section level2">
 <h2>bind</h2>
+</div>
+</div>
+<div id="beyond" class="section level1">
+<h1>Beyond…</h1>
+<p>How much electricity generation, NOx emissions, SO2 emissions, etc are coming from coal vs natural gas plants?</p>
 <!-- rnb-text-end -->
 </div>
-</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvLWRhdGEtc2NpZW5jZSBkYXRhLnRhYmxlIHdvcmtzaG9wIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKCi0tLQoKIyMjIHNob3J0Y3V0cwoKUnVuIENodW5rIDogKkNtZCtTaGlmdCtFbnRlcioKCkluc2VydCBDaHVuayA6ICpDbWQrT3B0aW9uK0kqCgpQcmV2aWV3IEhUTUwgOiAqQ21kK1NoaWZ0K0sqCgojIHBhY2thZ2VzCgojIyBpbnN0YWxsIHBhY2thZ2VzCmBgYHtyfQojIGluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiZGF0YS50YWJsZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiaGVyZSkKYGBgCgojIyBsb2FkIHBhY2thZ2UocykKYGBge3J9CmxpYnJhcnkoZGF0YS50YWJsZSkKYGBgCgojIHJlYWQgaW4gZGF0YQoKIyMgZmlsZSBuYW1lcwpgYGB7cn0KaG91cmx5X2RhdGEgICAgID0gJ2VwYV9hbXBkX2hvdXJseV8yMDE5X3NlbGVjdGVkLmNzdicKZmFjaWxpdHlfZGF0YSAgID0gJ2ZhY2lsaXR5XzAxLTI3LTIwMjFfMjI0MDI0NzQ1LmNzdicKYGBgCgojIyByZWFkIGluIGNzdiBmaWxlCgpyZWFkIGluIGhvdXJseSBkYXRhOgpgYGB7cn0KZHQgPSBmcmVhZChoZXJlOjpoZXJlKCJkYXRhIiwgaG91cmx5X2RhdGEpKQpgYGAKCiMgYmFzaWNzCgpgYGB7cn0Kc2V0a2V5KGR0LCBPUklTUExfQ09ERSwgVU5JVElELCBPUF9EQVRFLCBPUF9IT1VSKQpgYGAKCiMjIGZpbHRlciByb3dzCgojIyMgc2VsZWN0IHJvd3MgZm9yIGdlbmVyYXRvcnMgaW4gQ2FsaWZvcm5pYSAoQ0EpCmBgYHtyfQpoZWFkKGR0W1NUQVRFPT0iQ0EiXSkKYGBgCiMjIyBzZWxlY3Qgcm93cyB0aGF0IG9jY3VycmVkIGFmdGVyIGp1bHkgMSwgMjAxOQpgYGB7cn0KaGVhZChkdFtPUF9EQVRFID4gIjA3LTAxLTIwMTkiXSkKYGBgCgojIyBzZWxlY3QgY29sdW1ucwoKIyMjIHNlbGVjdCBjb2x1bW5zIGJ5IG5hbWU6CmBgYHtyfQpoZWFkKGR0WywgLihPUklTUExfQ09ERSwgVU5JVElELCBPUF9EQVRFLCBPUF9IT1VSLCBPUF9USU1FLCBgR0xPQUQgKE1XKWAsIGBTTE9BRCAoMTAwMGxiL2hyKWAsIGBTTzJfTUFTUyAobGJzKWApXSkKYGBgCiMjIyBzZWxlY3QgY29sdW1ucyBieSBjb2x1bW4gbnVtYmVyL2luZGV4CmBgYHtyfQpoZWFkKGR0WywgYygzOjEwKV0pCmBgYAojIG1vZGlmeSBkYXRhIHRhYmxlCgojIyByZW5hbWUgY29sdW1ucwoKIyMjIHJlbmFtaW5nIHNpbmdsZSBjb2x1bW5zCmBgYHtyfQpzZXRuYW1lcyhkdCwgIlNMT0FEICgxMDAwbGIvaHIpIiwgInNsb2FkXzEwMDBsYl9ociIpCmBgYAoKIyMjIHJlbmFtaW5nIG11bHRpcGxlIG9yIG11bHRpcGxlIGNvbHVtbnMKYGBge3J9CmNvbG5hbWVzKGR0KQpgYGAKCmBgYHtyfQpjb2xuYW1lcyhkdCkgPSBjKCJzdGF0ZSIsICJmYWNpbGl0eV9uYW1lIiwgIm9yaXNwbF9jb2RlIiwgInVuaXRpZCIsICJvcF9kYXRlIiwgIm9wX2hvdXIiLCAib3BfdGltZSIsICJnbG9hZF9tdyIsICJzbG9hZF8xMDAwbGJfaHIiLCAic28yX21hc3NfbGIiLAogICAgICAgICAgICAgICAgICJzbzJfbWFzc19tZWFzdXJlX2ZsZyIsICJzbzJfcmF0ZV9sYl9tbWJ0dSIsICJzbzJfcmF0ZV9tZWFzdXJlX2ZsZyIsICJub3hfcmF0ZV9sYl9tbWJ0dSIsICJub3hfcmF0ZV9tZWFzdXJlX2ZsZyIsIAogICAgICAgICAgICAgICAgICJub3hfbWFzc19sYiIsICJub3hfbWFzc19tZWFzdXJlX2ZsZyIsICJjbzJfbWFzc190b24iLCAiY28yX21hc3NfbWVhc3VyZV9mbGciLAogICAgICAgICAgICAgICAgICJjbzJfcmF0ZV90b25fbW1idHUiLCAiY28yX3JhdGVfbWVhc3VyZV9mbGciLCAiaGVhdF9pbnB1dF9tbWJ0dSIsICJmYWNfaWQiLCAidW5pdF9pZCIpCmhlYWQoZHQpCmBgYAoKIyMgcmVvcmRlciByb3dzCgojIyMgdGVtcG9yYXJpbHkgc29ydGluZwpgYGB7cn0KaGVhZChkdFtvcmRlcigtZ2xvYWRfbXcpXSkKYGBgCgojIyMgc2V0dGluZyB0aGUgZHQgdG8gYW4gb3JkZXIKYGBge3J9CnNldG9yZGVyKGR0LCBvcmlzcGxfY29kZSwgbmEubGFzdCA9IFRSVUUpCmhlYWQoZHQpCmBgYAoKZm9yIG11bHRpcGxlIGNvbHVtbnM6CmBgYHtyfQojIHNldG9yZGVydihkdCwgKQpgYGAKCgojIyBhZGQgY29sdW1ucwoKIyMjIGFkZCBjb2x1bW5zIGJ5IGdyb3VwcwoKIyMgcmVwbGFjZSB2YWx1ZXMKCiMjIHJlc2hhcGUgYmV0d2VlbiBsb25nIGFuZCB3aWRlIGZvcm1zCgojIyBzdW1tYXJpemUvYWdncmVnYXRlCgojIyMgc3VtbWFyaXplIGJ5IGdyb3VwKHMpCgojIyMgc3VtbWFyaXplIHNldmVyYWwgY29sdW1ucwoKIyMjIHN1bW1hcml6ZSBzZXZlcmFsIGNvbHVtbnMgYnkgZ3JvdXAocykKCiMjIyBzdW1tYXJpemUgbXVsdGlwbGUgZnVuY3Rpb25zIG9uIHNldmVyYWwgY29sdW1ucyBieSBncm91cChzKQoKIyMgc2V0a2V5PwoKIyBqb2luaW5nIGRhdGEKCiMjIG1lcmdlCgojIyBiaW5k</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvLWRhdGEtc2NpZW5jZSBkYXRhLnRhYmxlIHdvcmtzaG9wIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKCi0tLQoKIyMjIHNob3J0Y3V0cwoKUnVuIENodW5rIDogKkNtZCtTaGlmdCtFbnRlcioKCkluc2VydCBDaHVuayA6ICpDbWQrT3B0aW9uK0kqCgpQcmV2aWV3IEhUTUwgOiAqQ21kK1NoaWZ0K0sqCgojIEludHJvZHVjdGlvbgoKIyMgVGhlIGRhdGFzZXQKCiMgcGFja2FnZXMKCiMjIGluc3RhbGwgcGFja2FnZXMKYGBge3J9CiMgaW5zdGFsbC5wYWNrYWdlcygidGlkeXZlcnNlIikKIyBpbnN0YWxsLnBhY2thZ2VzKCJkYXRhLnRhYmxlIikKIyBpbnN0YWxsLnBhY2thZ2VzKCJoZXJlKQpgYGAKCiMjIGxvYWQgcGFja2FnZShzKQpgYGB7cn0KbGlicmFyeShkYXRhLnRhYmxlKQpsaWJyYXJ5KGphbml0b3IpCmBgYAoKIyByZWFkIGluIGRhdGEKCiMjIGZpbGUgbmFtZXMKYGBge3J9CmhvdXJseV9kYXRhICAgICA9ICdlcGFfYW1wZF9ob3VybHlfMjAxOV9zZWxlY3RlZC5jc3YnCmZhY2lsaXR5X2RhdGEgICA9ICdmYWNpbGl0eV8wMS0yNy0yMDIxXzIyNDAyNDc0NS5jc3YnCmBgYAoKIyMgcmVhZCBpbiBjc3YgZmlsZQoKcmVhZCBpbiBob3VybHkgZGF0YToKYGBge3J9CmR0ID0gZnJlYWQoaGVyZTo6aGVyZSgiZGF0YSIsIGhvdXJseV9kYXRhKSkKYGBgCgoKYGBge3J9CmR0ID0gY2xlYW5fbmFtZXMoZHQpCmBgYAoKIyBiYXNpY3MKCmBgYHtyfQpzZXRrZXkoZHQsIE9SSVNQTF9DT0RFLCBVTklUSUQsIE9QX0RBVEUsIE9QX0hPVVIpCmBgYAoKIyMgZmlsdGVyIHJvd3MKCiMjIyBzZWxlY3Qgcm93cyBmb3IgZ2VuZXJhdG9ycyBpbiBDYWxpZm9ybmlhIChDQSkKYGBge3J9CmhlYWQoZHRbU1RBVEU9PSJDQSJdKQpgYGAKIyMjIHNlbGVjdCByb3dzIHRoYXQgb2NjdXJyZWQgYWZ0ZXIganVseSAxLCAyMDE5CmBgYHtyfQpoZWFkKGR0W09QX0RBVEUgPiAiMDctMDEtMjAxOSJdKQpgYGAKKChhZGQgZXhhbXBsZXMgb2YgbGlrZSwgY2hpbiwgZXRjKSkKCgojIyBzZWxlY3QgY29sdW1ucwoKIyMjIHNlbGVjdCBjb2x1bW5zIGJ5IG5hbWU6CmBgYHtyfQpoZWFkKGR0WywgLihPUklTUExfQ09ERSwgVU5JVElELCBPUF9EQVRFLCBPUF9IT1VSLCBPUF9USU1FLCBgR0xPQUQgKE1XKWAsIGBTTE9BRCAoMTAwMGxiL2hyKWAsIGBTTzJfTUFTUyAobGJzKWApXSkKYGBgCiMjIyBzZWxlY3QgY29sdW1ucyBieSBjb2x1bW4gbnVtYmVyL2luZGV4CmBgYHtyfQpoZWFkKGR0WywgYygzOjEwKV0pCmBgYAojIG1vZGlmeSBkYXRhIHRhYmxlCgojIyByZW5hbWUgY29sdW1ucwoKIyMjIHJlbmFtaW5nIHNpbmdsZSBjb2x1bW5zCmBgYHtyfQpzZXRuYW1lcyhkdCwgIlNMT0FEICgxMDAwbGIvaHIpIiwgInNsb2FkXzEwMDBsYl9ociIpCmBgYAoKIyMjIHJlbmFtaW5nIG11bHRpcGxlIG9yIG11bHRpcGxlIGNvbHVtbnMKYGBge3J9CmNvbG5hbWVzKGR0KQpgYGAKCmBgYHtyfQpjb2xuYW1lcyhkdCkgPSBjKCJzdGF0ZSIsICJmYWNpbGl0eV9uYW1lIiwgIm9yaXNwbF9jb2RlIiwgInVuaXRpZCIsICJvcF9kYXRlIiwgIm9wX2hvdXIiLCAib3BfdGltZSIsICJnbG9hZF9tdyIsICJzbG9hZF8xMDAwbGJfaHIiLCAic28yX21hc3NfbGIiLAogICAgICAgICAgICAgICAgICJzbzJfbWFzc19tZWFzdXJlX2ZsZyIsICJzbzJfcmF0ZV9sYl9tbWJ0dSIsICJzbzJfcmF0ZV9tZWFzdXJlX2ZsZyIsICJub3hfcmF0ZV9sYl9tbWJ0dSIsICJub3hfcmF0ZV9tZWFzdXJlX2ZsZyIsIAogICAgICAgICAgICAgICAgICJub3hfbWFzc19sYiIsICJub3hfbWFzc19tZWFzdXJlX2ZsZyIsICJjbzJfbWFzc190b24iLCAiY28yX21hc3NfbWVhc3VyZV9mbGciLAogICAgICAgICAgICAgICAgICJjbzJfcmF0ZV90b25fbW1idHUiLCAiY28yX3JhdGVfbWVhc3VyZV9mbGciLCAiaGVhdF9pbnB1dF9tbWJ0dSIsICJmYWNfaWQiLCAidW5pdF9pZCIpCmhlYWQoZHQpCmBgYAoKIyMgcmVvcmRlciByb3dzCgojIyMgdGVtcG9yYXJpbHkgc29ydGluZwpgYGB7cn0KaGVhZChkdFtvcmRlcigtZ2xvYWRfbXcpXSkKYGBgCgojIyMgc2V0dGluZyB0aGUgZHQgdG8gYW4gb3JkZXIKYGBge3J9CnNldG9yZGVyKGR0LCBvcmlzcGxfY29kZSwgbmEubGFzdCA9IFRSVUUpCmhlYWQoZHQpCmBgYAoKZm9yIG11bHRpcGxlIGNvbHVtbnM6CmBgYHtyfQojIHNldG9yZGVydihkdCwgKQpgYGAKCiMjIHN1bW1hcml6ZS9hZ2dyZWdhdGUKCiMjIyBzdW1tYXJpemUgYnkgZ3JvdXAocykKCi5OCgojIyMgc3VtbWFyaXplIHNldmVyYWwgY29sdW1ucwoKIyMjIHN1bW1hcml6ZSBzZXZlcmFsIGNvbHVtbnMgYnkgZ3JvdXAocykKCiMjIyBzdW1tYXJpemUgbXVsdGlwbGUgZnVuY3Rpb25zIG9uIHNldmVyYWwgY29sdW1ucyBieSBncm91cChzKQoKLlNELy5TRGNvbHMKCiMjIGFkZCBjb2x1bW5zCgojIyMgYWRkIGNvbHVtbnMgYnkgZ3JvdXBzCgojIyMgYWRkaW5nIG11bHRpcGxlIGNvbHVtbnMKZnVuY3Rpb25hbCBmb3JtIHZzIHRoZSBvdGhlciBmb3JtIChMSFM6PVJIUykKCiMjIHJlcGxhY2UgdmFsdWVzCgpyZXBsYWNlIE5BcwpgYGB7cn0KZHRbaXMubmEoY29sdW1uKSwgY29sdW1uIDo9ICdzb21ldGhpbmcgZWxzZSddCmBgYAoKIyMgcmVzaGFwZSBiZXR3ZWVuIGxvbmcgYW5kIHdpZGUgZm9ybXMKCiMjIyBtZWx0ICh3aWRlIHRvIGxvbmcpCgojIyMgZGNhc3QgKGxvbmcgdG8gd2lkZSkKCiMjIHNldGtleT8KCiMgam9pbmluZyBkYXRhCgojIyBtZXJnZQoKIyMgYmluZAoKIyBCZXlvbmQuLi4KCkhvdyBtdWNoIGVsZWN0cmljaXR5IGdlbmVyYXRpb24sIE5PeCBlbWlzc2lvbnMsIFNPMiBlbWlzc2lvbnMsIGV0YyBhcmUgY29taW5nIGZyb20gY29hbCB2cyBuYXR1cmFsIGdhcyBwbGFudHM/</div>
 
 
 
