@@ -4,21 +4,24 @@
 
   library(tidyverse)
   library(data.table)
+  library(here)
 
 # data inputs ------
 
-  data_path   = '/Volumes/GoogleDrive/.shortcut-targets-by-id/1PUbZLiJ00nRGtnKGqYulNtUT25f_O2cv/alaska-data'
-  data_file   = 'epa_ampd_hourly_2019_selected.csv'
+  hourly_data = 'epa_ampd_hourly_2019_selected.csv'
+  flight_data = 'flights14.csv'
 
-# read in data using tidyverse -------
+# read in flight data using tidyverse -------
   
-  tbl = read_csv(file.path(data_path, data_file))
-  head(tbl)
+  flight_tbl = read_csv(here::here("data", flight_data))
+  head(flight_tbl)
+  str(flight_tbl)
   
-# read in data using data.table -------
+# read in flight data using data.table -------
   
-  dt = fread(file.path(data_path, data_file))
-  head(dt)
+  flight_dt = fread(here::here("data", flight_data))
+  head(flight_dt)
+  str(flight_dt)
   
 # filter rows --------
   

@@ -14,9 +14,12 @@ class: center, middle, inverse, title-slide
 
 # Introduction to data.table
 ### Meas Meng and Tracey Mangin
-### 1/28/2021
+### Last compiled on 19 February, 2021
 
 ---
+
+
+
 
 
 class: inverse, center, middle
@@ -28,25 +31,113 @@ name: background
 
 ---
 
-# maybe we can introduce ourselves here?
+# Hello!
+
+.pull-left[
+.center[
+&lt;img src="img/measrainsey.png" width="60%" /&gt;
+]
+
+.center[**Meas Meng**]
+* Tell us about yourself!
+* Blah blah
+
+]
+
+
+.pull-right[
+.center[
+&lt;img src="img/traceybit.jpeg" width="60%" /&gt;
+]
+
+.center[**Tracey Mangin**]
+* Researcher at emLab (UCSB)
+* Use data science to investigate questions related to environmental challenges
+
+]
+
 
 ---
 
 # Motivation
 
---
-
-MEAS: WHY IS THIS NOT WORKING
-
---
-
-Tracy Manging: mind blown after running Meas's code
+.pull-left[
+.center[**What I was expecting**]
+]
 
 ---
 
-# useful resources
+# Motivation
+
+.pull-left[
+.center[**What I was expecting**]
+
+.center[
+&lt;img src="img/stop.png" width="60%" /&gt;
+]
+
+.center[~7 minutes to check email]
+]
+
+
+---
+
+# Motivation
+
+.pull-left[
+.center[**What I was expecting**]
+
+.center[
+&lt;img src="img/stop.png" width="60%" /&gt;
+]
+
+.center[~7 minutes to check email]
+]
+
+.pull-right[
+.center[**What happened...**]
+]
+
+---
+
+# Motivation
+
+.pull-left[
+.center[**What I was expecting**]
+
+.center[
+&lt;img src="img/stop.png" width="60%" /&gt;
+]
+
+.center[~7 minutes to check email]
+]
+
+.pull-right[
+.center[**What happened...**]
+
+
+.center[
+&lt;img src="img/mindblown.png" width="60%" /&gt;
+]
+
+.center[the data... immediately!]
+
+]
+
+---
+
+# Resources
 
 We used the following resources to build this preso:
+
+- [Data cleaning &amp; wrangling: (2) data.table, Grant McDermott](http://rmarkdown.rstudio.com&gt;)
+  -Detailed information and examples
+
+- [Introduction to data.table](https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html#what-is-datatable-1a)
+  -A great introduction
+
+- [A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/#summarise-data)
+  -A resource for examining data.table and dplyr "equivalents"
 
 ---
 
@@ -68,13 +159,139 @@ data.table provides an enhanced, high-performance version of base R’s data.fra
 ## Why use data.table?
 --
 
+* memory efficient
+
+
+---
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+
+## Why use data.table?
+
+* memory efficient
+
+    * Trust Grant!
+
+---
+
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+
+## Why use data.table?
+
+* memory efficient
+
+* fast speed
+
+--
+    * If you're used to using dplyr or base r while working with large datasets in R, data.table will feel *fast*.
+
+---
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+
+## Why use data.table?
+
+* memory efficient
+
+* fast speed
+
+Notes to Meas: I'm having a hard time creating something that show dt being much faster
+
+
+```r
+state_dplyr &lt;- function() {
+  hourly_tbl %&gt;%
+    group_by(STATE, FACILITY_NAME) %&gt;%
+    summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+              mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %&gt;%
+    ungroup()
+}
+
+state_dt &lt;- function() {
+  hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+                mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
+            by = .(STATE, FACILITY_NAME)]
+}
+
+microbenchmark::microbenchmark(state_dplyr(), state_dt(), times = 1)
+```
+
+```
+## `summarise()` has grouped output by 'STATE'. You can override using the `.groups` argument.
+```
+
+```
+## Unit: milliseconds
+##           expr      min       lq     mean   median       uq      max neval
+##  state_dplyr() 537.3702 537.3702 537.3702 537.3702 537.3702 537.3702     1
+##     state_dt() 407.2912 407.2912 407.2912 407.2912 407.2912 407.2912     1
+```
+
+---
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+
+## Why use data.table?
+
+* memory efficient
+
+
+* fast speed
+
+--
 * concise and consistent syntax: fast to type, fast to read
+
+
+---
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+--
+
+## Why use data.table?
+--
+* memory efficient
 
 --
 * fast speed
 
 --
+* concise and consistent syntax: fast to type, fast to read
+
+
+---
+
+
+# What is data.table?
+
+data.table provides an enhanced, high-performance version of base R’s data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+--
+
+## Why use data.table?
+--
 * memory efficient
+
+--
+* fast speed
+
+--
+* concise and consistent syntax: fast to type, fast to read
 
 ---
 
@@ -183,59 +400,6 @@ write.csv vs fwrite
 # final thoughts
 
 ---
-
-class: inverse, center, middle
-name: background
-
-# EXTRA SLIDES FROM DEFAULT SHINY PRESO
-
-&lt;hr/&gt;
-
----
-
-# R Markdown
-
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;http://rmarkdown.rstudio.com&gt;.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
-
----
-
-# Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
----
-
-# Slide with R Output
-
-
-```r
-summary(cars)
-```
-
-```
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-```
-
----
-
-# Slide with Plot
-
-
-```r
-plot(pressure)
-```
-
-![](presentation_files/figure-html/pressure-1.png)&lt;!-- --&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
