@@ -127,19 +127,38 @@ setorder(dt, state, orispl_code, unitid, op_date, op_hour)
 head(dt)
 ```
 
-## summarize/aggregate
+## Summarize/aggregate
 
-### summarize by group(s)
+### Summarize by group(s)
 
-.N
+Let's find the total amount of CO2 emitted by state and by date:
+```{r}
+dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(op_date)]
+```
 
 ### summarize several columns
 
+``.SD`` can be used to summarize multiple columns
+```{r}
+dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs")]
+```
+
 ### summarize several columns by group(s)
+
+We can also use ``.SD`` by group:
+```{r}
+dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"), by = .(state)]
+```
 
 ### summarize multiple functions on several columns by group(s)
 
-.SD/.SDcols
+The ``.N`` special character can be used to count the number of observations. Not to be confused with the ``uniqueN`` function, which counts the number of *unique* observations. Let's find the number of observations, the number of power plants, and the total generation by state:
+```{r}
+dt[, .(number_of_observations = .N,
+       number_of_plants = uniqueN(orispl_code),
+       total_generation = sum(gload_mw, na.rm = T)), by = .(state)]
+```
+
 
 ## add columns
 
