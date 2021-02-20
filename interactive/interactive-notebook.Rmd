@@ -20,9 +20,9 @@ Preview HTML : *Cmd+Shift+K*
 
 ## install packages
 ```{r}
-# install.packages("tidyverse")
 # install.packages("data.table")
-# install.packages("here)
+# install.packages("here")
+# install.packages("janitor")
 ```
 
 ## load package(s)
@@ -31,7 +31,7 @@ library(data.table)
 library(janitor)
 ```
 
-# read in data
+# Read in data
 
 ## file names
 ```{r}
@@ -41,44 +41,55 @@ facility_data   = 'facility_01-27-2021_224024745.csv'
 
 ## read in csv file
 
-read in hourly data:
+Read in hourly data:
 ```{r}
 dt = fread(here::here("data", hourly_data))
 ```
 
-
+View first few rows:
+```{r}
+head(dt)
+```
+Use the ``janitor`` package to clean up the column names:
 ```{r}
 dt = clean_names(dt)
+head(dt)
 ```
 
-# basics
+# Basics
 
 ```{r}
-setkey(dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
+setkey(dt, orispl_code, unitid, op_date, op_hour)
 ```
 
 ## filter rows
 
 ### select rows for generators in California (CA)
 ```{r}
-head(dt[STATE=="CA"])
+dt[state=="CA"]
 ```
 ### select rows that occurred after july 1, 2019
 ```{r}
-head(dt[OP_DATE > "07-01-2019"])
+dt[op_date > "07-01-2019"]
 ```
-((add examples of like, chin, etc))
-
+### Select rows for facilities with the word "Energy" in its name
+```{r}
+dt[facility_name %like% "Energy"]
+```
+### Select rows that are within California and New Jersey
+```{r}
+dt[state %chin% c("CA", "NJ")]
+```
 
 ## select columns
 
 ### select columns by name:
 ```{r}
-head(dt[, .(ORISPL_CODE, UNITID, OP_DATE, OP_HOUR, OP_TIME, `GLOAD (MW)`, `SLOAD (1000lb/hr)`, `SO2_MASS (lbs)`)])
+head(dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)])
 ```
 ### select columns by column number/index
 ```{r}
-head(dt[, c(3:10)])
+dt[, c(3:8)]
 ```
 # modify data table
 
@@ -86,7 +97,10 @@ head(dt[, c(3:10)])
 
 ### renaming single columns
 ```{r}
-setnames(dt, "SLOAD (1000lb/hr)", "sload_1000lb_hr")
+setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
+setnames(dt, "so2_rate_lbs_mm_btu", "so2_rate_lbs_mmbtu")
+setnames(dt, "nox_rate_lbs_mm_btu", "nox_rate_lbs_mmbtu")
+setnames(dt, "co2_rate_tons_mm_btu", "co2_rate_tons_mmbtu")
 ```
 
 ### renaming multiple or multiple columns
@@ -94,19 +108,11 @@ setnames(dt, "SLOAD (1000lb/hr)", "sload_1000lb_hr")
 colnames(dt)
 ```
 
-```{r}
-colnames(dt) = c("state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time", "gload_mw", "sload_1000lb_hr", "so2_mass_lb",
-                 "so2_mass_measure_flg", "so2_rate_lb_mmbtu", "so2_rate_measure_flg", "nox_rate_lb_mmbtu", "nox_rate_measure_flg", 
-                 "nox_mass_lb", "nox_mass_measure_flg", "co2_mass_ton", "co2_mass_measure_flg",
-                 "co2_rate_ton_mmbtu", "co2_rate_measure_flg", "heat_input_mmbtu", "fac_id", "unit_id")
-head(dt)
-```
-
 ## reorder rows
 
 ### temporarily sorting
 ```{r}
-head(dt[order(-gload_mw)])
+dt[order(-gload_mw)]
 ```
 
 ### setting the dt to an order
@@ -117,7 +123,8 @@ head(dt)
 
 for multiple columns:
 ```{r}
-# setorderv(dt, )
+setorder(dt, state, orispl_code, unitid, op_date, op_hour)
+head(dt)
 ```
 
 ## summarize/aggregate
