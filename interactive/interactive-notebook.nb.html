@@ -1747,9 +1747,10 @@ summary {
 </div>
 </div>
 <div id="packages" class="section level1">
-<h1>packages</h1>
+<h1>Packages</h1>
 <div id="install-packages" class="section level2">
-<h2>install packages</h2>
+<h2>Install packages</h2>
+<p>Along with the <code>data.table</code> package, we will also be using the <code>here</code> package for this notebook. The <code>here</code> package basically helps us [write something here]. We also briefly use the <code>janitor</code> package to clean up column names.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBpbnN0YWxsLnBhY2thZ2VzKFwiZGF0YS50YWJsZVwiKVxuIyBpbnN0YWxsLnBhY2thZ2VzKFwiaGVyZVwiKVxuIyBpbnN0YWxsLnBhY2thZ2VzKFwiamFuaXRvclwiKVxuYGBgIn0= -->
@@ -1761,7 +1762,8 @@ summary {
 <!-- rnb-text-begin -->
 </div>
 <div id="load-packages" class="section level2">
-<h2>load package(s)</h2>
+<h2>Load packages</h2>
+<p>Load the <code>data.table</code> and <code>janitor</code> packages. We don’t need to load the <code>here</code> package because we can explicitly call on the package when using the here function (<code>here::here()</code>).</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkYXRhLnRhYmxlKVxuYGBgIn0= -->
@@ -1792,7 +1794,8 @@ The following objects are masked from ‘package:stats’:
 <div id="read-in-data" class="section level1">
 <h1>Read in data</h1>
 <div id="file-names" class="section level2">
-<h2>file names</h2>
+<h2>File names</h2>
+<p>Here, we are just explicitly setting objects/variables for the data files, so we can easily use them later.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaG91cmx5X2RhdGEgICAgID0gJ2VwYV9hbXBkX2hvdXJseV8yMDE5X3NlbGVjdGVkLmNzdidcbmZhY2lsaXR5X2RhdGEgICA9ICdmYWNpbGl0eV8wMS0yNy0yMDIxXzIyNDAyNDc0NS5jc3YnXG5gYGAifQ== -->
@@ -1802,17 +1805,21 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="read-in-csv-file" class="section level2">
-<h2>read in csv file</h2>
-<p>Read in hourly data:</p>
+<div id="read-in-csv-files" class="section level2">
+<h2>Read in CSV files</h2>
+<p>Use the <code>fread</code> function to read in the hourly data.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHQgPSBmcmVhZChoZXJlOjpoZXJlKFwiZGF0YVwiLCBob3VybHlfZGF0YSkpXG5gYGAifQ== -->
 <pre class="r"><code>dt = fread(here::here(&quot;data&quot;, hourly_data))</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoifC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tfFxufD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09fFxuIn0= -->
+<pre><code>|--------------------------------------------------|
+|==================================================|</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>View first few rows:</p>
+<p>View first few rows of the hourly data:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkdClcbmBgYCJ9 -->
@@ -1827,26 +1834,25 @@ facility_data   = &#39;facility_01-27-2021_224024745.csv&#39;</code></pre>
 <!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Use the <code>janitor</code> package to clean up the column names:</p>
+<p>We can see that the column names are not ideal (spaces and parantheses are not easy to work with). Thus, let’s use the <code>janitor</code> package to clean up the column names:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHQgPSBjbGVhbl9uYW1lcyhkdClcbmhlYWQoZHQpXG5gYGAifQ== -->
-<pre class="r"><code>dt = clean_names(dt)
-head(dt)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHQgPSBjbGVhbl9uYW1lcyhkdClcbmBgYCJ9 -->
+<pre class="r"><code>dt = clean_names(dt)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjI0fSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxVnZXN2JNQkEreVpiVHFISFNJQjA4R3VqUUxqWmtiNTJLQWgwS2RBazZaU05vU2JhSlVxUkJVbkF5TlkrUVoraDc5SjA2ZDRoTDBxUmlLVExnRm1pN3hQQ1J2Si92Zm54SDgvT0hxMmw4RlFOQUNKMG9oTENqajkxUUx3RjA0ZGpzMXdDZEMzMFlhSHFocWVjVTRmdFBmM0NxK3pqL21HTjZNN3prNjF3TUx5bG02djhxQVBvMk94amN0Vk10KzJENmU0YzZPazRtSS8yZEpwTzNmMUZTVldRL2dXMjBicWpwc3FaSTA2blJ2L3V4TlRoMDMvSDdwa0d2TmIzeStsdTl0SkdQKzlYNk8vcDI2Tjc0RGVIZy9TbmVVN3gvRTgvZGkrSDNkbkw2SUtXdFZQL3pQUlo4UFdhNHlLVURocmQ2Mld3MlB4dUdVVXF4bEs1YUw0d3pyUEI0TGpTK2FlNTlHdk9CRjBxRlZlNlkvaHluaEJKMWc0eXBFejduZ3NnVlJTblB2S2hYTXFKSTVyZ2p2a0xaZ3hQRExua3BkbGhGS20vUEZwVGpEQlZyeDU5SnkwK1NKS0V6dFBTb0U4bW5xTkRWSVRxVFR2YXlraFU1bHFYSTBad3VuTzdDNklST3d0aWpva0F6VmU3Q3JLb0Z4dmoxUGxpbGVndzdNYnBtZHBYc3NYMC85WmtyemlwQXVyOGNxN1BCRGFDUldMcS9udk5samhVaWJGV3FPcWluTzRzZU9tYjZaMWlBKzhhUTZIWXBZcEtFMEx6L1VXTzZBdEVRbkpYTXpFbzJTcGNsK3pLYW1BbUU3WnNEYm55RDdkMm96b050eU83R3VZcDhqamxiRU9ZSEphSjRsbFBIbk9vcllhZDN2QktrZXN0akxaVmp4UlgyZG5IS3FaZlkydUQrRjg3NGViYnRDQUFBIn0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["facility_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["orispl_code"],"name":[3],"type":["int"],"align":["right"]},{"label":["unitid"],"name":[4],"type":["chr"],"align":["left"]},{"label":["op_date"],"name":[5],"type":["chr"],"align":["left"]},{"label":["op_hour"],"name":[6],"type":["int"],"align":["right"]},{"label":["op_time"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["gload_mw"],"name":[8],"type":["int"],"align":["right"]},{"label":["sload_1000lb_hr"],"name":[9],"type":["int"],"align":["right"]},{"label":["so2_mass_lbs"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["so2_mass_measure_flg"],"name":[11],"type":["chr"],"align":["left"]},{"label":["so2_rate_lbs_mm_btu"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["so2_rate_measure_flg"],"name":[13],"type":["chr"],"align":["left"]},{"label":["nox_rate_lbs_mm_btu"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["nox_rate_measure_flg"],"name":[15],"type":["chr"],"align":["left"]},{"label":["nox_mass_lbs"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["nox_mass_measure_flg"],"name":[17],"type":["chr"],"align":["left"]},{"label":["co2_mass_tons"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["co2_mass_measure_flg"],"name":[19],"type":["chr"],"align":["left"]},{"label":["co2_rate_tons_mm_btu"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["co2_rate_measure_flg"],"name":[21],"type":["chr"],"align":["left"]},{"label":["heat_input_mm_btu"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["fac_id"],"name":[23],"type":["int"],"align":["right"]},{"label":["unit_id"],"name":[24],"type":["int"],"align":["right"]}],"data":[{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"0","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"1","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"2","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"3","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"4","7":"1","8":"39","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"5","7":"1","8":"35","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988"}],"options":{"columns":{"min":{},"max":[10],"total":[24]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY2xlYW5fbmFtZXMoZHQpIDogY291bGQgbm90IGZpbmQgZnVuY3Rpb24gXCJjbGVhbl9uYW1lc1wiXG4ifQ== -->
+<pre><code>Error in clean_names(dt) : could not find function &quot;clean_names&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Nice! Now the column names are all lower case, the spaces have been replaced with underscores, and the parantheses and slashes are gone. There are some problematic column names (for example, mmBtu has been changed to mm_btu, but we will fix those columns later).</p>
 </div>
 </div>
 <div id="basics" class="section level1">
 <h1>Basics</h1>
+<div id="setting-keys" class="section level2">
+<h2>Setting keys</h2>
+<p>Setting keys for the datatable can help speed up processes later, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). So, let’s set the keys of <code>dt</code> as the orispl_code, unitid, op_date, and op_hour columns:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0a2V5KGR0LCBvcmlzcGxfY29kZSwgdW5pdGlkLCBvcF9kYXRlLCBvcF9ob3VyKVxuYGBgIn0= -->
@@ -1854,10 +1860,12 @@ head(dt)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
 <div id="filter-rows" class="section level2">
-<h2>filter rows</h2>
-<div id="select-rows-for-generators-in-california-ca" class="section level3">
-<h3>select rows for generators in California (CA)</h3>
+<h2>Filter rows</h2>
+<p>In this section, we will go over how to filter the datatable’s rows in a multitude of ways.</p>
+<div id="filter-for-rows-for-generators-in-california-ca" class="section level3">
+<h3>Filter for rows for generators in California (CA)</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbc3RhdGU9PVwiQ0FcIl1cbmBgYCJ9 -->
@@ -1873,8 +1881,8 @@ head(dt)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="select-rows-that-occurred-after-july-1-2019" class="section level3">
-<h3>select rows that occurred after july 1, 2019</h3>
+<div id="filter-for-rows-that-occurred-after-july-1-2019" class="section level3">
+<h3>Filter for rows that occurred after july 1, 2019</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbb3BfZGF0ZSA+IFwiMDctMDEtMjAxOVwiXVxuYGBgIn0= -->
@@ -1890,8 +1898,8 @@ head(dt)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="select-rows-for-facilities-with-the-word-energy-in-its-name" class="section level3">
-<h3>Select rows for facilities with the word “Energy” in its name</h3>
+<div id="filter-for-rows-for-facilities-with-the-word-energy-in-its-name" class="section level3">
+<h3>Filter for rows for facilities with the word “Energy” in its name</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbZmFjaWxpdHlfbmFtZSAlbGlrZSUgXCJFbmVyZ3lcIl1cbmBgYCJ9 -->
@@ -1907,8 +1915,8 @@ head(dt)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="select-rows-that-are-within-california-and-new-jersey" class="section level3">
-<h3>Select rows that are within California and New Jersey</h3>
+<div id="filter-for-rows-that-are-within-california-and-new-jersey" class="section level3">
+<h3>Filter for rows that are within California and New Jersey</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbc3RhdGUgJWNoaW4lIGMoXCJDQVwiLCBcIk5KXCIpXVxuYGBgIn0= -->
@@ -1926,9 +1934,9 @@ head(dt)</code></pre>
 </div>
 </div>
 <div id="select-columns" class="section level2">
-<h2>select columns</h2>
+<h2>Select columns</h2>
 <div id="select-columns-by-name" class="section level3">
-<h3>select columns by name:</h3>
+<h3>Select columns by name</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbLCAuKG9yaXNwbF9jb2RlLCB1bml0aWQsIG9wX2RhdGUsIG9wX2hvdXIsIG9wX3RpbWUsIGdsb2FkX213KV1cbmBgYCJ9 -->
@@ -1945,7 +1953,7 @@ head(dt)</code></pre>
 <!-- rnb-text-begin -->
 </div>
 <div id="select-columns-by-column-numberindex" class="section level3">
-<h3>select columns by column number/index</h3>
+<h3>Select columns by column number/index</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbLCBjKDM6OCldXG5gYGAifQ== -->
@@ -1963,41 +1971,28 @@ head(dt)</code></pre>
 </div>
 </div>
 </div>
-<div id="modify-data-table" class="section level1">
-<h1>modify data table</h1>
+<div id="modifying-the-datatable" class="section level1">
+<h1>Modifying the datatable</h1>
 <div id="rename-columns" class="section level2">
-<h2>rename columns</h2>
+<h2>Rename columns</h2>
 <div id="renaming-single-columns" class="section level3">
-<h3>renaming single columns</h3>
+<h3>Renaming single columns</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0bmFtZXMoZHQsIFwiaGVhdF9pbnB1dF9tbV9idHVcIiwgXCJoZWF0X2lucHV0X21tYnR1XCIpXG5gYGAifQ== -->
-<pre class="r"><code>setnames(dt, &quot;heat_input_mm_btu&quot;, &quot;heat_input_mmbtu&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0bmFtZXMoZHQsIFwiaGVhdF9pbnB1dF9tbV9idHVcIiwgXCJoZWF0X2lucHV0X21tYnR1XCIpXG5zZXRuYW1lcyhkdCwgXCJzbzJfcmF0ZV9sYnNfbW1fYnR1XCIsIFwic28yX3JhdGVfbGJzX21tYnR1XCIpXG5zZXRuYW1lcyhkdCwgXCJub3hfcmF0ZV9sYnNfbW1fYnR1XCIsIFwibm94X3JhdGVfbGJzX21tYnR1XCIpXG5zZXRuYW1lcyhkdCwgXCJjbzJfcmF0ZV90b25zX21tX2J0dVwiLCBcImNvMl9yYXRlX3RvbnNfbW1idHVcIilcbmBgYCJ9 -->
+<pre class="r"><code>setnames(dt, &quot;heat_input_mm_btu&quot;, &quot;heat_input_mmbtu&quot;)
+setnames(dt, &quot;so2_rate_lbs_mm_btu&quot;, &quot;so2_rate_lbs_mmbtu&quot;)
+setnames(dt, &quot;nox_rate_lbs_mm_btu&quot;, &quot;nox_rate_lbs_mmbtu&quot;)
+setnames(dt, &quot;co2_rate_tons_mm_btu&quot;, &quot;co2_rate_tons_mmbtu&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="renaming-multiple-or-multiple-columns" class="section level3">
-<h3>renaming multiple or multiple columns</h3>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoZHQpXG5gYGAifQ== -->
-<pre class="r"><code>colnames(dt)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcInN0YXRlXCIgICAgICAgICAgICAgICAgXCJmYWNpbGl0eV9uYW1lXCIgICAgICAgIFwib3Jpc3BsX2NvZGVcIiAgICAgICAgICBcInVuaXRpZFwiICAgICAgICAgICAgICAgXCJvcF9kYXRlXCIgICAgICAgICAgICAgIFwib3BfaG91clwiICAgICAgICAgICAgICBcIm9wX3RpbWVcIiAgICAgICAgICAgICBcbiBbOF0gXCJnbG9hZF9td1wiICAgICAgICAgICAgIFwic2xvYWRfMTAwMGxiX2hyXCIgICAgICBcInNvMl9tYXNzX2xic1wiICAgICAgICAgXCJzbzJfbWFzc19tZWFzdXJlX2ZsZ1wiIFwic28yX3JhdGVfbGJzX21tYnR1XCIgICBcInNvMl9yYXRlX21lYXN1cmVfZmxnXCIgXCJub3hfcmF0ZV9sYnNfbW1idHVcIiAgXG5bMTVdIFwibm94X3JhdGVfbWVhc3VyZV9mbGdcIiBcIm5veF9tYXNzX2xic1wiICAgICAgICAgXCJub3hfbWFzc19tZWFzdXJlX2ZsZ1wiIFwiY28yX21hc3NfdG9uc1wiICAgICAgICBcImNvMl9tYXNzX21lYXN1cmVfZmxnXCIgXCJjbzJfcmF0ZV90b25zX21tYnR1XCIgIFwiY28yX3JhdGVfbWVhc3VyZV9mbGdcIlxuWzIyXSBcImhlYXRfaW5wdXRfbW1idHVcIiAgICAgXCJmYWNfaWRcIiAgICAgICAgICAgICAgIFwidW5pdF9pZFwiICAgICAgICAgICAgIFxuIn0= -->
-<pre><code> [1] &quot;state&quot;                &quot;facility_name&quot;        &quot;orispl_code&quot;          &quot;unitid&quot;               &quot;op_date&quot;              &quot;op_hour&quot;              &quot;op_time&quot;             
- [8] &quot;gload_mw&quot;             &quot;sload_1000lb_hr&quot;      &quot;so2_mass_lbs&quot;         &quot;so2_mass_measure_flg&quot; &quot;so2_rate_lbs_mmbtu&quot;   &quot;so2_rate_measure_flg&quot; &quot;nox_rate_lbs_mmbtu&quot;  
-[15] &quot;nox_rate_measure_flg&quot; &quot;nox_mass_lbs&quot;         &quot;nox_mass_measure_flg&quot; &quot;co2_mass_tons&quot;        &quot;co2_mass_measure_flg&quot; &quot;co2_rate_tons_mmbtu&quot;  &quot;co2_rate_measure_flg&quot;
-[22] &quot;heat_input_mmbtu&quot;     &quot;fac_id&quot;               &quot;unit_id&quot;             </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
 </div>
 <div id="reorder-rows" class="section level2">
-<h2>reorder rows</h2>
+<h2>Reorder rows</h2>
 <div id="temporarily-sorting" class="section level3">
-<h3>temporarily sorting</h3>
+<h3>Temporarily sorting</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbb3JkZXIoLWdsb2FkX213KV1cbmBgYCJ9 -->
@@ -2013,8 +2008,9 @@ head(dt)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="setting-the-dt-to-an-order" class="section level3">
-<h3>setting the dt to an order</h3>
+<div id="actually-sorting-the-data-table" class="section level3">
+<h3>Actually sorting the data table</h3>
+<p>Order <code>dt</code> by the orispl_code column:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0b3JkZXIoZHQsIG9yaXNwbF9jb2RlLCBuYS5sYXN0ID0gVFJVRSlcbmhlYWQoZHQpXG5gYGAifQ== -->
@@ -2030,7 +2026,7 @@ head(dt)</code></pre>
 <!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>for multiple columns:</p>
+<p>We can also order the datable by multiple columns. For example, let’s say we want <code>dt</code> to be ordered by the following columns (in this order): state, orispl_code, unitid, op_date, and op_hour.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0b3JkZXIoZHQsIHN0YXRlLCBvcmlzcGxfY29kZSwgdW5pdGlkLCBvcF9kYXRlLCBvcF9ob3VyKVxuaGVhZChkdClcbmBgYCJ9 -->
@@ -2114,30 +2110,84 @@ head(dt)</code></pre>
        number_of_plants = uniqueN(orispl_code),
        total_generation = sum(gload_mw, na.rm = T)), by = .(state)]</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjR9LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFSc1U3RE1CQzlPQW5RU0lVS0VMQWdJVVFuMUVoMHFzUlUwUWxFQndSU2tKQmFOM1ZMUldwWHNRdHNzTEh3QjN3RkN6TUxLOS9BQkRNclE4TWx0UXZLOEM3UDczem51NWVUUmxEMUFnOEFDTmd1QVdJamRRZ0dDeHdvcE45YkFIc2xWUkVseEp4T2tQcVJZUWQxdzQ2YmhqVVBaK3pjc05NQVl6SHJBZHMxMkhxc3dVSVlRSEcvRFR1N0gxQjkvcGZIQVFBRVloTlJScHdoN21aNSsrblZLWDl1V0YvdEJybFlmaUR2TDkrcjYyOWVidmhDTEc1OFRvZE02a0p5anlGSmtwL2NSVGVNcUpSNlF5TjZYYXFvMzR1eFBuL2Q5Q3hseG1oUktxcVlQcXp4OGJERDRwYm90VVJIc3ZpYXFvSGdVbWRMZjlsUlJMbWE2VW9vR3JYNmpMTTRLMEJ0a250N1hveW1yWUNrdjhYTkRXM0ZPV0Zwek5OcHU1WHdjc3l2S252cFl0cGUwSzVZMm5MRG5lbVRUcUpidWJyVkhPUDlBVGNydWhIdHNFZ2ZGdEhwekJSL0ZBKzRNZzZpS3Yxc0thT0VJakpLdGh0TWZnRWtDNjA5aEFJQUFBPT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["number_of_observations"],"name":[2],"type":["int"],"align":["right"]},{"label":["number_of_plants"],"name":[3],"type":["int"],"align":["right"]},{"label":["total_generation"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"AK","2":"8760","3":"1","4":"236480"},{"1":"CA","2":"2133048","3":"111","4":"69592600"},{"1":"MN","2":"549720","3":"29","4":"31940676"},{"1":"NJ","2":"867168","3":"37","4":"39588487"},{"1":"NY","2":"2370528","3":"85","4":"47101681"},{"1":"TX","2":"3322200","3":"127","4":"337102090"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
 </div>
 <div id="add-columns" class="section level2">
 <h2>add columns</h2>
-<div id="add-columns-by-groups" class="section level3">
-<h3>add columns by groups</h3>
+<p>Adding a new column that’s just one same value:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbLCBuZXdfY29sdW1uIDo9IFwiaGlcIl1cbmBgYCJ9 -->
+<pre class="r"><code>dt[, new_column := &quot;hi&quot;]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>You can remove a column by setting it to NULL:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbLCBuZXdfY29sdW1uIDo9IE5VTExdXG5gYGAifQ== -->
+<pre class="r"><code>dt[, new_column := NULL]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Change a column without creating a new one:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbLCBnbG9hZF9tdyA6PSBhcy5udW1lcmljKGdsb2FkX213KV1cbmBgYCJ9 -->
+<pre class="r"><code>dt[, gload_mw := as.numeric(gload_mw)]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
+<div id="replace-values" class="section level2">
+<h2>replace values</h2>
+<p>Replace infinite and NA values with zeroes</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbaXMuaW5maW5pdGUoZ2xvYWRfbXcpLCBnbG9hZF9tdyA6PSAwXVxuZHRbaXMubmEoZ2xvYWRfbXcpLCBnbG9hZF9tdyA6PSAwXVxuYGBgIn0= -->
+<pre class="r"><code>dt[is.infinite(gload_mw), gload_mw := 0]
+dt[is.na(gload_mw), gload_mw := 0]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="add-columns-by-groups" class="section level2">
+<h2>add columns by groups</h2>
+<p>Let’s say we want to add a column that’s the max generation for each generator:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbLCBtYXhfZ2VuIDo9IG1heChnbG9hZF9tdywgbmEucm0gPSBUKSwgYnkgPSAuKG9yaXNwbF9jb2RlLCB1bml0aWQpXVxuYGBgIn0= -->
+<pre class="r"><code>dt[, max_gen := max(gload_mw, na.rm = T), by = .(orispl_code, unitid)]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkdClcbmBgYCJ9 -->
+<pre class="r"><code>head(dt)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjI1fSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxV3ZXN2JNQkNtWk10SjFEaEprd3oxNWhld0lYdnIxQWJOVUtBb0VHVEtSdEFVYlJPbFNFT2tZR2VLSDZIUDBQZm9PM1h1RUplVVNNVlNaTUF0MEhhSjRkUHhmcjY3bys0bzZmYjZiaHplaFFBQUg3UUNIL2d0dld6Nyt1S0JOamd5ZkFWQTYwSXZlcHJPTkhXc3diLzY5QWVyYW96WEh3bGk5LzBic1NScC80WWhydjZ2QVlCdVhoMTQ4N1daS3RWNzQ5OWJWTkZoTkJyby96Z2F2ZjJMbW5KSCtjL0xHNjBiYXJxc0tkQjBZdXp2ZmhRTyszS0hlMzlkQ0R2NWgzWEJyOVlPbDlkanBDWnljUi95UEFmZjl1VzFld3YyNWkvNVh2TDltM3oySFBhL041TzFlNWcxa2p0dm40c2k5dVcxaC9sUktwWkRqaElpYlVKL3JTK2J6ZVpuelRIQURFbHA3NUpUaGpGU2FEaE5OYjd1N21JYTk1NVRTb1VVc1VKM2lqQmxWTjFENDJxVnIwUks1WUpCTEdLbjZtU2NLaHBiNlVBc1lQd1V4SWh6a2FWYm9xSmx0TU1aRXlpR3lkTEtwektYUjFFVXNRbWNPOVN4RkdPWTZOMUJOcEZXZDFucUVvSmtsaEk0WlROck96ZTJWQmRoL0dHU1RGUzJqY290RFNndVZqdFFwZVU1NnRqWTZyV1Z1dWYrWGV6cVZvS1hBTHg3TXhmWWxXd0ExYnJ3N3QyY3pRbFNrUEpGcGlxWWp1NHFmT3FXNmQyV21LQVZuQkd1bDQrMWVkR2RVOVJVREh6emFSSFVCczFMYTRyVGpKdXhpUWQ0bnZFdkEvTXFEVUh4T2dOMmtyM2llSlhyWHBHeXZiR2hBbGN5NFRQSzNjd0VERTBJczhLSlBoMzVJQThYS1MwL0UwS3RsVU1sRkhKK0lSYk1hZks5Z2NkZm8zbUJSMGdKQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["facility_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["orispl_code"],"name":[3],"type":["int"],"align":["right"]},{"label":["unitid"],"name":[4],"type":["chr"],"align":["left"]},{"label":["op_date"],"name":[5],"type":["chr"],"align":["left"]},{"label":["op_hour"],"name":[6],"type":["int"],"align":["right"]},{"label":["op_time"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["gload_mw"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["sload_1000lb_hr"],"name":[9],"type":["int"],"align":["right"]},{"label":["so2_mass_lbs"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["so2_mass_measure_flg"],"name":[11],"type":["chr"],"align":["left"]},{"label":["so2_rate_lbs_mmbtu"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["so2_rate_measure_flg"],"name":[13],"type":["chr"],"align":["left"]},{"label":["nox_rate_lbs_mmbtu"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["nox_rate_measure_flg"],"name":[15],"type":["chr"],"align":["left"]},{"label":["nox_mass_lbs"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["nox_mass_measure_flg"],"name":[17],"type":["chr"],"align":["left"]},{"label":["co2_mass_tons"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["co2_mass_measure_flg"],"name":[19],"type":["chr"],"align":["left"]},{"label":["co2_rate_tons_mmbtu"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["co2_rate_measure_flg"],"name":[21],"type":["chr"],"align":["left"]},{"label":["heat_input_mmbtu"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["fac_id"],"name":[23],"type":["int"],"align":["right"]},{"label":["unit_id"],"name":[24],"type":["int"],"align":["right"]},{"label":["max_gen"],"name":[25],"type":["dbl"],"align":["right"]}],"data":[{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"0","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988","25":"58"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"1","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988","25":"58"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"2","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988","25":"58"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"3","7":"1","8":"40","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988","25":"58"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"4","7":"1","8":"39","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988","25":"58"},{"1":"AK","2":"Healy Power Plant","3":"6288","4":"2","5":"01-01-2019","6":"5","7":"1","8":"35","9":"NA","10":"NA","11":"","12":"NA","13":"","14":"NA","15":"","16":"NA","17":"","18":"NA","19":"","20":"NA","21":"","22":"NA","23":"8381","24":"90988","25":"58"}],"options":{"columns":{"min":{},"max":[10],"total":[25]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <div id="adding-multiple-columns" class="section level3">
 <h3>adding multiple columns</h3>
 <p>functional form vs the other form (LHS:=RHS)</p>
 </div>
-</div>
-<div id="replace-values" class="section level2">
-<h2>replace values</h2>
-<p>replace NAs</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHRbaXMubmEoY29sdW1uKSwgY29sdW1uIDo9ICdzb21ldGhpbmcgZWxzZSddXG5gYGAifQ== -->
-<pre class="r"><code>dt[is.na(column), column := &#39;something else&#39;]</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
 </div>
 <div id="reshape-between-long-and-wide-forms" class="section level2">
 <h2>reshape between long and wide forms</h2>
@@ -2167,7 +2217,7 @@ head(dt)</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvLWRhdGEtc2NpZW5jZSBkYXRhLnRhYmxlIHdvcmtzaG9wIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKCi0tLQoKIyMjIHNob3J0Y3V0cwoKUnVuIENodW5rIDogKkNtZCtTaGlmdCtFbnRlcioKCkluc2VydCBDaHVuayA6ICpDbWQrT3B0aW9uK0kqCgpQcmV2aWV3IEhUTUwgOiAqQ21kK1NoaWZ0K0sqCgojIEludHJvZHVjdGlvbgoKIyMgVGhlIGRhdGFzZXQKCiMgcGFja2FnZXMKCiMjIGluc3RhbGwgcGFja2FnZXMKYGBge3J9CiMgaW5zdGFsbC5wYWNrYWdlcygiZGF0YS50YWJsZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiaGVyZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiamFuaXRvciIpCmBgYAoKIyMgbG9hZCBwYWNrYWdlKHMpCmBgYHtyfQpsaWJyYXJ5KGRhdGEudGFibGUpCmxpYnJhcnkoamFuaXRvcikKYGBgCgojIFJlYWQgaW4gZGF0YQoKIyMgZmlsZSBuYW1lcwpgYGB7cn0KaG91cmx5X2RhdGEgICAgID0gJ2VwYV9hbXBkX2hvdXJseV8yMDE5X3NlbGVjdGVkLmNzdicKZmFjaWxpdHlfZGF0YSAgID0gJ2ZhY2lsaXR5XzAxLTI3LTIwMjFfMjI0MDI0NzQ1LmNzdicKYGBgCgojIyByZWFkIGluIGNzdiBmaWxlCgpSZWFkIGluIGhvdXJseSBkYXRhOgpgYGB7cn0KZHQgPSBmcmVhZChoZXJlOjpoZXJlKCJkYXRhIiwgaG91cmx5X2RhdGEpKQpgYGAKClZpZXcgZmlyc3QgZmV3IHJvd3M6CmBgYHtyfQpoZWFkKGR0KQpgYGAKVXNlIHRoZSBgYGphbml0b3JgYCBwYWNrYWdlIHRvIGNsZWFuIHVwIHRoZSBjb2x1bW4gbmFtZXM6CmBgYHtyfQpkdCA9IGNsZWFuX25hbWVzKGR0KQpoZWFkKGR0KQpgYGAKCiMgQmFzaWNzCgpgYGB7cn0Kc2V0a2V5KGR0LCBvcmlzcGxfY29kZSwgdW5pdGlkLCBvcF9kYXRlLCBvcF9ob3VyKQpgYGAKCiMjIGZpbHRlciByb3dzCgojIyMgc2VsZWN0IHJvd3MgZm9yIGdlbmVyYXRvcnMgaW4gQ2FsaWZvcm5pYSAoQ0EpCmBgYHtyfQpkdFtzdGF0ZT09IkNBIl0KYGBgCiMjIyBzZWxlY3Qgcm93cyB0aGF0IG9jY3VycmVkIGFmdGVyIGp1bHkgMSwgMjAxOQpgYGB7cn0KZHRbb3BfZGF0ZSA+ICIwNy0wMS0yMDE5Il0KYGBgCiMjIyBTZWxlY3Qgcm93cyBmb3IgZmFjaWxpdGllcyB3aXRoIHRoZSB3b3JkICJFbmVyZ3kiIGluIGl0cyBuYW1lCmBgYHtyfQpkdFtmYWNpbGl0eV9uYW1lICVsaWtlJSAiRW5lcmd5Il0KYGBgCiMjIyBTZWxlY3Qgcm93cyB0aGF0IGFyZSB3aXRoaW4gQ2FsaWZvcm5pYSBhbmQgTmV3IEplcnNleQpgYGB7cn0KZHRbc3RhdGUgJWNoaW4lIGMoIkNBIiwgIk5KIildCmBgYAoKIyMgc2VsZWN0IGNvbHVtbnMKCiMjIyBzZWxlY3QgY29sdW1ucyBieSBuYW1lOgpgYGB7cn0KaGVhZChkdFssIC4ob3Jpc3BsX2NvZGUsIHVuaXRpZCwgb3BfZGF0ZSwgb3BfaG91ciwgb3BfdGltZSwgZ2xvYWRfbXcpXSkKYGBgCiMjIyBzZWxlY3QgY29sdW1ucyBieSBjb2x1bW4gbnVtYmVyL2luZGV4CmBgYHtyfQpkdFssIGMoMzo4KV0KYGBgCiMgbW9kaWZ5IGRhdGEgdGFibGUKCiMjIHJlbmFtZSBjb2x1bW5zCgojIyMgcmVuYW1pbmcgc2luZ2xlIGNvbHVtbnMKYGBge3J9CnNldG5hbWVzKGR0LCAiaGVhdF9pbnB1dF9tbV9idHUiLCAiaGVhdF9pbnB1dF9tbWJ0dSIpCnNldG5hbWVzKGR0LCAic28yX3JhdGVfbGJzX21tX2J0dSIsICJzbzJfcmF0ZV9sYnNfbW1idHUiKQpzZXRuYW1lcyhkdCwgIm5veF9yYXRlX2xic19tbV9idHUiLCAibm94X3JhdGVfbGJzX21tYnR1IikKc2V0bmFtZXMoZHQsICJjbzJfcmF0ZV90b25zX21tX2J0dSIsICJjbzJfcmF0ZV90b25zX21tYnR1IikKYGBgCgojIyMgcmVuYW1pbmcgbXVsdGlwbGUgb3IgbXVsdGlwbGUgY29sdW1ucwpgYGB7cn0KY29sbmFtZXMoZHQpCmBgYAoKIyMgcmVvcmRlciByb3dzCgojIyMgdGVtcG9yYXJpbHkgc29ydGluZwpgYGB7cn0KZHRbb3JkZXIoLWdsb2FkX213KV0KYGBgCgojIyMgc2V0dGluZyB0aGUgZHQgdG8gYW4gb3JkZXIKYGBge3J9CnNldG9yZGVyKGR0LCBvcmlzcGxfY29kZSwgbmEubGFzdCA9IFRSVUUpCmhlYWQoZHQpCmBgYAoKZm9yIG11bHRpcGxlIGNvbHVtbnM6CmBgYHtyfQpzZXRvcmRlcihkdCwgc3RhdGUsIG9yaXNwbF9jb2RlLCB1bml0aWQsIG9wX2RhdGUsIG9wX2hvdXIpCmhlYWQoZHQpCmBgYAoKIyMgU3VtbWFyaXplL2FnZ3JlZ2F0ZQoKIyMjIFN1bW1hcml6ZSBieSBncm91cChzKQoKTGV0J3MgZmluZCB0aGUgdG90YWwgYW1vdW50IG9mIENPMiBlbWl0dGVkIGJ5IHN0YXRlIGFuZCBieSBkYXRlOgpgYGB7cn0KZHRbLCAuKHRvdGFsX2NvMl90b25zID0gc3VtKGNvMl9tYXNzX3RvbnMsIG5hLnJtID0gVCkpLCBieSA9IC4ob3BfZGF0ZSldCmBgYAoKIyMjIHN1bW1hcml6ZSBzZXZlcmFsIGNvbHVtbnMKCmBgLlNEYGAgY2FuIGJlIHVzZWQgdG8gc3VtbWFyaXplIG11bHRpcGxlIGNvbHVtbnMKYGBge3J9CmR0WywgbGFwcGx5KC5TRCwgc3VtLCBuYS5ybSA9IFQpLCAuU0Rjb2xzID0gYygiY28yX21hc3NfdG9ucyIsICJzbzJfbWFzc19sYnMiLCAibm94X21hc3NfbGJzIildCmBgYAoKIyMjIHN1bW1hcml6ZSBzZXZlcmFsIGNvbHVtbnMgYnkgZ3JvdXAocykKCldlIGNhbiBhbHNvIHVzZSBgYC5TRGBgIGJ5IGdyb3VwOgpgYGB7cn0KZHRbLCBsYXBwbHkoLlNELCBzdW0sIG5hLnJtID0gVCksIC5TRGNvbHMgPSBjKCJjbzJfbWFzc190b25zIiwgInNvMl9tYXNzX2xicyIsICJub3hfbWFzc19sYnMiKSwgYnkgPSAuKHN0YXRlKV0KYGBgCgojIyMgc3VtbWFyaXplIG11bHRpcGxlIGZ1bmN0aW9ucyBvbiBzZXZlcmFsIGNvbHVtbnMgYnkgZ3JvdXAocykKClRoZSBgYC5OYGAgc3BlY2lhbCBjaGFyYWN0ZXIgY2FuIGJlIHVzZWQgdG8gY291bnQgdGhlIG51bWJlciBvZiBvYnNlcnZhdGlvbnMuIE5vdCB0byBiZSBjb25mdXNlZCB3aXRoIHRoZSBgYHVuaXF1ZU5gYCBmdW5jdGlvbiwgd2hpY2ggY291bnRzIHRoZSBudW1iZXIgb2YgKnVuaXF1ZSogb2JzZXJ2YXRpb25zLiBMZXQncyBmaW5kIHRoZSBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zLCB0aGUgbnVtYmVyIG9mIHBvd2VyIHBsYW50cywgYW5kIHRoZSB0b3RhbCBnZW5lcmF0aW9uIGJ5IHN0YXRlOgpgYGB7cn0KZHRbLCAuKG51bWJlcl9vZl9vYnNlcnZhdGlvbnMgPSAuTiwKICAgICAgIG51bWJlcl9vZl9wbGFudHMgPSB1bmlxdWVOKG9yaXNwbF9jb2RlKSwKICAgICAgIHRvdGFsX2dlbmVyYXRpb24gPSBzdW0oZ2xvYWRfbXcsIG5hLnJtID0gVCkpLCBieSA9IC4oc3RhdGUpXQpgYGAKCgojIyBhZGQgY29sdW1ucwoKIyMjIGFkZCBjb2x1bW5zIGJ5IGdyb3VwcwoKIyMjIGFkZGluZyBtdWx0aXBsZSBjb2x1bW5zCmZ1bmN0aW9uYWwgZm9ybSB2cyB0aGUgb3RoZXIgZm9ybSAoTEhTOj1SSFMpCgojIyByZXBsYWNlIHZhbHVlcwoKcmVwbGFjZSBOQXMKYGBge3J9CmR0W2lzLm5hKGNvbHVtbiksIGNvbHVtbiA6PSAnc29tZXRoaW5nIGVsc2UnXQpgYGAKCiMjIHJlc2hhcGUgYmV0d2VlbiBsb25nIGFuZCB3aWRlIGZvcm1zCgojIyMgbWVsdCAod2lkZSB0byBsb25nKQoKIyMjIGRjYXN0IChsb25nIHRvIHdpZGUpCgojIyBzZXRrZXk/CgojIGpvaW5pbmcgZGF0YQoKIyMgbWVyZ2UKCiMjIGJpbmQKCiMgQmV5b25kLi4uCgpIb3cgbXVjaCBlbGVjdHJpY2l0eSBnZW5lcmF0aW9uLCBOT3ggZW1pc3Npb25zLCBTTzIgZW1pc3Npb25zLCBldGMgYXJlIGNvbWluZyBmcm9tIGNvYWwgdnMgbmF0dXJhbCBnYXMgcGxhbnRzPw==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRWNvLWRhdGEtc2NpZW5jZSBkYXRhLnRhYmxlIHdvcmtzaG9wIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKCi0tLQoKIyMjIHNob3J0Y3V0cwoKUnVuIENodW5rIDogKkNtZCtTaGlmdCtFbnRlcioKCkluc2VydCBDaHVuayA6ICpDbWQrT3B0aW9uK0kqCgpQcmV2aWV3IEhUTUwgOiAqQ21kK1NoaWZ0K0sqCgojIEludHJvZHVjdGlvbgoKIyMgVGhlIGRhdGFzZXQKCiMgUGFja2FnZXMKCiMjIEluc3RhbGwgcGFja2FnZXMKCkFsb25nIHdpdGggdGhlIGBgZGF0YS50YWJsZWBgIHBhY2thZ2UsIHdlIHdpbGwgYWxzbyBiZSB1c2luZyB0aGUgYGBoZXJlYGAgcGFja2FnZSBmb3IgdGhpcyBub3RlYm9vay4gVGhlIGBgaGVyZWBgIHBhY2thZ2UgYmFzaWNhbGx5IGhlbHBzIHVzIFt3cml0ZSBzb21ldGhpbmcgaGVyZV0uIApXZSBhbHNvIGJyaWVmbHkgdXNlIHRoZSBgYGphbml0b3JgYCBwYWNrYWdlIHRvIGNsZWFuIHVwIGNvbHVtbiBuYW1lcy4KYGBge3J9CiMgaW5zdGFsbC5wYWNrYWdlcygiZGF0YS50YWJsZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiaGVyZSIpCiMgaW5zdGFsbC5wYWNrYWdlcygiamFuaXRvciIpCmBgYAoKIyMgTG9hZCBwYWNrYWdlcwoKTG9hZCB0aGUgYGBkYXRhLnRhYmxlYGAgYW5kIGBgamFuaXRvcmBgIHBhY2thZ2VzLiBXZSBkb24ndCBuZWVkIHRvIGxvYWQgdGhlIGBgaGVyZWBgIHBhY2thZ2UgYmVjYXVzZSB3ZSBjYW4gZXhwbGljaXRseSBjYWxsIG9uIHRoZSBwYWNrYWdlIHdoZW4gdXNpbmcgdGhlIGhlcmUgZnVuY3Rpb24gKGBgaGVyZTo6aGVyZSgpYGApLgpgYGB7cn0KbGlicmFyeShkYXRhLnRhYmxlKQpsaWJyYXJ5KGphbml0b3IpCmBgYAoKIyBSZWFkIGluIGRhdGEKCiMjIEZpbGUgbmFtZXMKSGVyZSwgd2UgYXJlIGp1c3QgZXhwbGljaXRseSBzZXR0aW5nIG9iamVjdHMvdmFyaWFibGVzIGZvciB0aGUgZGF0YSBmaWxlcywgc28gd2UgY2FuIGVhc2lseSB1c2UgdGhlbSBsYXRlci4KYGBge3J9CmhvdXJseV9kYXRhICAgICA9ICdlcGFfYW1wZF9ob3VybHlfMjAxOV9zZWxlY3RlZC5jc3YnCmZhY2lsaXR5X2RhdGEgICA9ICdmYWNpbGl0eV8wMS0yNy0yMDIxXzIyNDAyNDc0NS5jc3YnCmBgYAoKIyMgUmVhZCBpbiBDU1YgZmlsZXMKClVzZSB0aGUgYGBmcmVhZGBgIGZ1bmN0aW9uIHRvIHJlYWQgaW4gdGhlIGhvdXJseSBkYXRhLiAKYGBge3J9CmR0ID0gZnJlYWQoaGVyZTo6aGVyZSgiZGF0YSIsIGhvdXJseV9kYXRhKSkKYGBgCgpWaWV3IGZpcnN0IGZldyByb3dzIG9mIHRoZSBob3VybHkgZGF0YToKYGBge3J9CmhlYWQoZHQpCmBgYApXZSBjYW4gc2VlIHRoYXQgdGhlIGNvbHVtbiBuYW1lcyBhcmUgbm90IGlkZWFsIChzcGFjZXMgYW5kIHBhcmFudGhlc2VzIGFyZSBub3QgZWFzeSB0byB3b3JrIHdpdGgpLiBUaHVzLCBsZXQncyB1c2UgdGhlIGBgamFuaXRvcmBgIHBhY2thZ2UgdG8gY2xlYW4gdXAgdGhlIGNvbHVtbiBuYW1lczoKYGBge3J9CmR0ID0gY2xlYW5fbmFtZXMoZHQpCmhlYWQoZHQpCmBgYApOaWNlISBOb3cgdGhlIGNvbHVtbiBuYW1lcyBhcmUgYWxsIGxvd2VyIGNhc2UsIHRoZSBzcGFjZXMgaGF2ZSBiZWVuIHJlcGxhY2VkIHdpdGggdW5kZXJzY29yZXMsIGFuZCB0aGUgcGFyYW50aGVzZXMgYW5kIHNsYXNoZXMgYXJlIGdvbmUuIFRoZXJlIGFyZSBzb21lIHByb2JsZW1hdGljIGNvbHVtbiBuYW1lcyAoZm9yIGV4YW1wbGUsIG1tQnR1IGhhcyBiZWVuIGNoYW5nZWQgdG8gbW1fYnR1LCBidXQgd2Ugd2lsbCBmaXggdGhvc2UgY29sdW1ucyBsYXRlcikuCgojIEJhc2ljcwoKIyMgU2V0dGluZyBrZXlzCgpTZXR0aW5nIGtleXMgZm9yIHRoZSBkYXRhdGFibGUgY2FuIGhlbHAgc3BlZWQgdXAgcHJvY2Vzc2VzIGxhdGVyLCBwYXJ0aWN1bGFybHkgZm9yIGNvbHVtbnMva2V5cyB0aGF0IHlvdSBmcmVxdWVudGx5IHVzZSAoZS5nLiwgaWYgeW91IGtlZXAgc3VtbWFyaXppbmcgYWNyb3NzIHRoZSBzYW1lIGdyb3VwcykuIFNvLCBsZXQncyBzZXQgdGhlIGtleXMgb2YgYGBkdGBgIGFzIHRoZSBvcmlzcGxfY29kZSwgdW5pdGlkLCBvcF9kYXRlLCBhbmQgb3BfaG91ciBjb2x1bW5zOgoKYGBge3J9CnNldGtleShkdCwgb3Jpc3BsX2NvZGUsIHVuaXRpZCwgb3BfZGF0ZSwgb3BfaG91cikKYGBgCgojIyBGaWx0ZXIgcm93cwoKSW4gdGhpcyBzZWN0aW9uLCB3ZSB3aWxsIGdvIG92ZXIgaG93IHRvIGZpbHRlciB0aGUgZGF0YXRhYmxlJ3Mgcm93cyBpbiBhIG11bHRpdHVkZSBvZiB3YXlzLgoKIyMjIEZpbHRlciBmb3Igcm93cyBmb3IgZ2VuZXJhdG9ycyBpbiBDYWxpZm9ybmlhIChDQSkKYGBge3J9CmR0W3N0YXRlPT0iQ0EiXQpgYGAKIyMjIEZpbHRlciBmb3Igcm93cyB0aGF0IG9jY3VycmVkIGFmdGVyIGp1bHkgMSwgMjAxOQpgYGB7cn0KZHRbb3BfZGF0ZSA+ICIwNy0wMS0yMDE5Il0KYGBgCiMjIyBGaWx0ZXIgZm9yIHJvd3MgZm9yIGZhY2lsaXRpZXMgd2l0aCB0aGUgd29yZCAiRW5lcmd5IiBpbiBpdHMgbmFtZQpgYGB7cn0KZHRbZmFjaWxpdHlfbmFtZSAlbGlrZSUgIkVuZXJneSJdCmBgYAojIyMgRmlsdGVyIGZvciByb3dzIHRoYXQgYXJlIHdpdGhpbiBDYWxpZm9ybmlhIGFuZCBOZXcgSmVyc2V5CmBgYHtyfQpkdFtzdGF0ZSAlY2hpbiUgYygiQ0EiLCAiTkoiKV0KYGBgCgojIyBTZWxlY3QgY29sdW1ucwoKIyMjIFNlbGVjdCBjb2x1bW5zIGJ5IG5hbWUKYGBge3J9CmhlYWQoZHRbLCAuKG9yaXNwbF9jb2RlLCB1bml0aWQsIG9wX2RhdGUsIG9wX2hvdXIsIG9wX3RpbWUsIGdsb2FkX213KV0pCmBgYAojIyMgU2VsZWN0IGNvbHVtbnMgYnkgY29sdW1uIG51bWJlci9pbmRleApgYGB7cn0KZHRbLCBjKDM6OCldCmBgYAojIE1vZGlmeWluZyB0aGUgZGF0YXRhYmxlCgojIyBSZW5hbWUgY29sdW1ucwoKIyMjIFJlbmFtaW5nIHNpbmdsZSBjb2x1bW5zCmBgYHtyfQpzZXRuYW1lcyhkdCwgImhlYXRfaW5wdXRfbW1fYnR1IiwgImhlYXRfaW5wdXRfbW1idHUiKQpzZXRuYW1lcyhkdCwgInNvMl9yYXRlX2xic19tbV9idHUiLCAic28yX3JhdGVfbGJzX21tYnR1IikKc2V0bmFtZXMoZHQsICJub3hfcmF0ZV9sYnNfbW1fYnR1IiwgIm5veF9yYXRlX2xic19tbWJ0dSIpCnNldG5hbWVzKGR0LCAiY28yX3JhdGVfdG9uc19tbV9idHUiLCAiY28yX3JhdGVfdG9uc19tbWJ0dSIpCmBgYAoKIyMgUmVvcmRlciByb3dzCgojIyMgVGVtcG9yYXJpbHkgc29ydGluZwpgYGB7cn0KZHRbb3JkZXIoLWdsb2FkX213KV0KYGBgCiMjIyBBY3R1YWxseSBzb3J0aW5nIHRoZSBkYXRhIHRhYmxlCgpPcmRlciBgYGR0YGAgYnkgdGhlIG9yaXNwbF9jb2RlIGNvbHVtbjoKYGBge3J9CnNldG9yZGVyKGR0LCBvcmlzcGxfY29kZSwgbmEubGFzdCA9IFRSVUUpCmhlYWQoZHQpCmBgYApXZSBjYW4gYWxzbyBvcmRlciB0aGUgZGF0YWJsZSBieSBtdWx0aXBsZSBjb2x1bW5zLiBGb3IgZXhhbXBsZSwgbGV0J3Mgc2F5IHdlIHdhbnQgYGBkdGBgIHRvIGJlIG9yZGVyZWQgYnkgdGhlIGZvbGxvd2luZyBjb2x1bW5zIChpbiB0aGlzIG9yZGVyKTogc3RhdGUsIG9yaXNwbF9jb2RlLCB1bml0aWQsIG9wX2RhdGUsIGFuZCBvcF9ob3VyLiAKYGBge3J9CnNldG9yZGVyKGR0LCBzdGF0ZSwgb3Jpc3BsX2NvZGUsIHVuaXRpZCwgb3BfZGF0ZSwgb3BfaG91cikKaGVhZChkdCkKYGBgCgojIyBTdW1tYXJpemUvYWdncmVnYXRlCgojIyMgU3VtbWFyaXplIGJ5IGdyb3VwKHMpCgpMZXQncyBmaW5kIHRoZSB0b3RhbCBhbW91bnQgb2YgQ08yIGVtaXR0ZWQgYnkgc3RhdGUgYW5kIGJ5IGRhdGU6CmBgYHtyfQpkdFssIC4odG90YWxfY28yX3RvbnMgPSBzdW0oY28yX21hc3NfdG9ucywgbmEucm0gPSBUKSksIGJ5ID0gLihvcF9kYXRlKV0KYGBgCgojIyMgc3VtbWFyaXplIHNldmVyYWwgY29sdW1ucwoKYGAuU0RgYCBjYW4gYmUgdXNlZCB0byBzdW1tYXJpemUgbXVsdGlwbGUgY29sdW1ucwpgYGB7cn0KZHRbLCBsYXBwbHkoLlNELCBzdW0sIG5hLnJtID0gVCksIC5TRGNvbHMgPSBjKCJjbzJfbWFzc190b25zIiwgInNvMl9tYXNzX2xicyIsICJub3hfbWFzc19sYnMiKV0KYGBgCgojIyMgc3VtbWFyaXplIHNldmVyYWwgY29sdW1ucyBieSBncm91cChzKQoKV2UgY2FuIGFsc28gdXNlIGBgLlNEYGAgYnkgZ3JvdXA6CmBgYHtyfQpkdFssIGxhcHBseSguU0QsIHN1bSwgbmEucm0gPSBUKSwgLlNEY29scyA9IGMoImNvMl9tYXNzX3RvbnMiLCAic28yX21hc3NfbGJzIiwgIm5veF9tYXNzX2xicyIpLCBieSA9IC4oc3RhdGUpXQpgYGAKCiMjIyBzdW1tYXJpemUgbXVsdGlwbGUgZnVuY3Rpb25zIG9uIHNldmVyYWwgY29sdW1ucyBieSBncm91cChzKQoKVGhlIGBgLk5gYCBzcGVjaWFsIGNoYXJhY3RlciBjYW4gYmUgdXNlZCB0byBjb3VudCB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9ucy4gTm90IHRvIGJlIGNvbmZ1c2VkIHdpdGggdGhlIGBgdW5pcXVlTmBgIGZ1bmN0aW9uLCB3aGljaCBjb3VudHMgdGhlIG51bWJlciBvZiAqdW5pcXVlKiBvYnNlcnZhdGlvbnMuIExldCdzIGZpbmQgdGhlIG51bWJlciBvZiBvYnNlcnZhdGlvbnMsIHRoZSBudW1iZXIgb2YgcG93ZXIgcGxhbnRzLCBhbmQgdGhlIHRvdGFsIGdlbmVyYXRpb24gYnkgc3RhdGU6CmBgYHtyfQpkdFssIC4obnVtYmVyX29mX29ic2VydmF0aW9ucyA9IC5OLAogICAgICAgbnVtYmVyX29mX3BsYW50cyA9IHVuaXF1ZU4ob3Jpc3BsX2NvZGUpLAogICAgICAgdG90YWxfZ2VuZXJhdGlvbiA9IHN1bShnbG9hZF9tdywgbmEucm0gPSBUKSksIGJ5ID0gLihzdGF0ZSldCmBgYAoKIyMgYWRkIGNvbHVtbnMKCkFkZGluZyBhIG5ldyBjb2x1bW4gdGhhdCdzIGp1c3Qgb25lIHNhbWUgdmFsdWU6CmBgYHtyfQpkdFssIG5ld19jb2x1bW4gOj0gImhpIl0KYGBgCgpZb3UgY2FuIHJlbW92ZSBhIGNvbHVtbiBieSBzZXR0aW5nIGl0IHRvIE5VTEw6CmBgYHtyfQpkdFssIG5ld19jb2x1bW4gOj0gTlVMTF0KYGBgCgpDaGFuZ2UgYSBjb2x1bW4gd2l0aG91dCBjcmVhdGluZyBhIG5ldyBvbmU6CmBgYHtyfQpkdFssIGdsb2FkX213IDo9IGFzLm51bWVyaWMoZ2xvYWRfbXcpXQpgYGAKCiMjIHJlcGxhY2UgdmFsdWVzCgpSZXBsYWNlIGluZmluaXRlIGFuZCBOQSB2YWx1ZXMgd2l0aCB6ZXJvZXMKYGBge3J9CmR0W2lzLmluZmluaXRlKGdsb2FkX213KSwgZ2xvYWRfbXcgOj0gMF0KZHRbaXMubmEoZ2xvYWRfbXcpLCBnbG9hZF9tdyA6PSAwXQpgYGAKCiMjIGFkZCBjb2x1bW5zIGJ5IGdyb3VwcwoKTGV0J3Mgc2F5IHdlIHdhbnQgdG8gYWRkIGEgY29sdW1uIHRoYXQncyB0aGUgbWF4IGdlbmVyYXRpb24gZm9yIGVhY2ggZ2VuZXJhdG9yOgpgYGB7cn0KZHRbLCBtYXhfZ2VuIDo9IG1heChnbG9hZF9tdywgbmEucm0gPSBUKSwgYnkgPSAuKG9yaXNwbF9jb2RlLCB1bml0aWQpXQpgYGAKCmBgYHtyfQpoZWFkKGR0KQpgYGAKCiMjIyBhZGRpbmcgbXVsdGlwbGUgY29sdW1ucwpmdW5jdGlvbmFsIGZvcm0gdnMgdGhlIG90aGVyIGZvcm0gKExIUzo9UkhTKQoKCiMjIHJlc2hhcGUgYmV0d2VlbiBsb25nIGFuZCB3aWRlIGZvcm1zCgojIyMgbWVsdCAod2lkZSB0byBsb25nKQoKIyMjIGRjYXN0IChsb25nIHRvIHdpZGUpCgojIyBzZXRrZXk/CgojIGpvaW5pbmcgZGF0YQoKIyMgbWVyZ2UKCiMjIGJpbmQKCiMgQmV5b25kLi4uCgpIb3cgbXVjaCBlbGVjdHJpY2l0eSBnZW5lcmF0aW9uLCBOT3ggZW1pc3Npb25zLCBTTzIgZW1pc3Npb25zLCBldGMgYXJlIGNvbWluZyBmcm9tIGNvYWwgdnMgbmF0dXJhbCBnYXMgcGxhbnRzPw==</div>
 
 
 

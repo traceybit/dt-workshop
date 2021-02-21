@@ -16,16 +16,21 @@ Preview HTML : *Cmd+Shift+K*
 
 ## The dataset
 
-# packages
+# Packages
 
-## install packages
+## Install packages
+
+Along with the ``data.table`` package, we will also be using the ``here`` package for this notebook. The ``here`` package basically helps us [write something here]. 
+We also briefly use the ``janitor`` package to clean up column names.
 ```{r}
 # install.packages("data.table")
 # install.packages("here")
 # install.packages("janitor")
 ```
 
-## load package(s)
+## Load packages
+
+Load the ``data.table`` and ``janitor`` packages. We don't need to load the ``here`` package because we can explicitly call on the package when using the here function (``here::here()``).
 ```{r}
 library(data.table)
 library(janitor)
@@ -33,69 +38,77 @@ library(janitor)
 
 # Read in data
 
-## file names
+## File names
+Here, we are just explicitly setting objects/variables for the data files, so we can easily use them later.
 ```{r}
 hourly_data     = 'epa_ampd_hourly_2019_selected.csv'
 facility_data   = 'facility_01-27-2021_224024745.csv'
 ```
 
-## read in csv file
+## Read in CSV files
 
-Read in hourly data:
+Use the ``fread`` function to read in the hourly data. 
 ```{r}
 dt = fread(here::here("data", hourly_data))
 ```
 
-View first few rows:
+View first few rows of the hourly data:
 ```{r}
 head(dt)
 ```
-Use the ``janitor`` package to clean up the column names:
+We can see that the column names are not ideal (spaces and parantheses are not easy to work with). Thus, let's use the ``janitor`` package to clean up the column names:
 ```{r}
 dt = clean_names(dt)
 head(dt)
 ```
+Nice! Now the column names are all lower case, the spaces have been replaced with underscores, and the parantheses and slashes are gone. There are some problematic column names (for example, mmBtu has been changed to mm_btu, but we will fix those columns later).
 
 # Basics
+
+## Setting keys
+
+Setting keys for the datatable can help speed up processes later, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). So, let's set the keys of ``dt`` as the orispl_code, unitid, op_date, and op_hour columns:
 
 ```{r}
 setkey(dt, orispl_code, unitid, op_date, op_hour)
 ```
 
-## filter rows
+## Filter rows
 
-### select rows for generators in California (CA)
+In this section, we will go over how to filter the datatable's rows in a multitude of ways.
+
+### Filter for rows for generators in California (CA)
 ```{r}
 dt[state=="CA"]
 ```
-### select rows that occurred after july 1, 2019
+### Filter for rows that occurred after july 1, 2019
 ```{r}
 dt[op_date > "07-01-2019"]
 ```
-### Select rows for facilities with the word "Energy" in its name
+### Filter for rows for facilities with the word "Energy" in its name
 ```{r}
 dt[facility_name %like% "Energy"]
 ```
-### Select rows that are within California and New Jersey
+### Filter for rows that are within California and New Jersey
 ```{r}
 dt[state %chin% c("CA", "NJ")]
 ```
 
-## select columns
+## Select columns
 
-### select columns by name:
+### Select columns by name
 ```{r}
 head(dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)])
 ```
-### select columns by column number/index
+### Select columns by column number/index
 ```{r}
 dt[, c(3:8)]
 ```
-# modify data table
+# Modifying the datatable
 
-## rename columns
+## Rename columns
 
-### renaming single columns
+### Renaming single columns
 ```{r}
 setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
 setnames(dt, "so2_rate_lbs_mm_btu", "so2_rate_lbs_mmbtu")
@@ -103,25 +116,20 @@ setnames(dt, "nox_rate_lbs_mm_btu", "nox_rate_lbs_mmbtu")
 setnames(dt, "co2_rate_tons_mm_btu", "co2_rate_tons_mmbtu")
 ```
 
-### renaming multiple or multiple columns
-```{r}
-colnames(dt)
-```
+## Reorder rows
 
-## reorder rows
-
-### temporarily sorting
+### Temporarily sorting
 ```{r}
 dt[order(-gload_mw)]
 ```
+### Actually sorting the data table
 
-### setting the dt to an order
+Order ``dt`` by the orispl_code column:
 ```{r}
 setorder(dt, orispl_code, na.last = TRUE)
 head(dt)
 ```
-
-for multiple columns:
+We can also order the datable by multiple columns. For example, let's say we want ``dt`` to be ordered by the following columns (in this order): state, orispl_code, unitid, op_date, and op_hour. 
 ```{r}
 setorder(dt, state, orispl_code, unitid, op_date, op_hour)
 head(dt)
@@ -159,20 +167,45 @@ dt[, .(number_of_observations = .N,
        total_generation = sum(gload_mw, na.rm = T)), by = .(state)]
 ```
 
-
 ## add columns
 
-### add columns by groups
+Adding a new column that's just one same value:
+```{r}
+dt[, new_column := "hi"]
+```
+
+You can remove a column by setting it to NULL:
+```{r}
+dt[, new_column := NULL]
+```
+
+Change a column without creating a new one:
+```{r}
+dt[, gload_mw := as.numeric(gload_mw)]
+```
+
+## replace values
+
+Replace infinite and NA values with zeroes
+```{r}
+dt[is.infinite(gload_mw), gload_mw := 0]
+dt[is.na(gload_mw), gload_mw := 0]
+```
+
+## add columns by groups
+
+Let's say we want to add a column that's the max generation for each generator:
+```{r}
+dt[, max_gen := max(gload_mw, na.rm = T), by = .(orispl_code, unitid)]
+```
+
+```{r}
+head(dt)
+```
 
 ### adding multiple columns
 functional form vs the other form (LHS:=RHS)
 
-## replace values
-
-replace NAs
-```{r}
-dt[is.na(column), column := 'something else']
-```
 
 ## reshape between long and wide forms
 
