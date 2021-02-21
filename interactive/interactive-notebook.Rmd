@@ -14,7 +14,11 @@ Preview HTML : *Cmd+Shift+K*
 
 # Introduction
 
-## The dataset
+## About the data
+
+The datasets we will be using in this interactive session are taken from the Environmental Protection Agency's (EPA) Air Markets Program Data (AMPD) program. The first dataset (the ``epa_ampd_hourly_2019_selected.csv`` file) is a dataset of hourly emissions, electriticity generation, and fuel consumption for coal and natural gas across the country. Because the full dataset downloaded from the AMPD site is extremely large, we have filtered out the dataset to only have generators in the states of X, Y, and Z. 
+
+The second dataset (the ``facility_01-27-2021_224024745.csv`` file) is a list of generators and various attributes, such as their fuel type, generator type, and location.
 
 # Packages
 
@@ -98,7 +102,7 @@ dt[state %chin% c("CA", "NJ")]
 
 ### Select columns by name
 ```{r}
-head(dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)])
+dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)]
 ```
 ### Select columns by column number/index
 ```{r}
@@ -172,11 +176,13 @@ dt[, .(number_of_observations = .N,
 Adding a new column that's just one same value:
 ```{r}
 dt[, new_column := "hi"]
+dt
 ```
 
 You can remove a column by setting it to NULL:
 ```{r}
 dt[, new_column := NULL]
+dt
 ```
 
 Change a column without creating a new one:
@@ -184,12 +190,13 @@ Change a column without creating a new one:
 dt[, gload_mw := as.numeric(gload_mw)]
 ```
 
-## replace values
+## Replace values
 
 Replace infinite and NA values with zeroes
 ```{r}
 dt[is.infinite(gload_mw), gload_mw := 0]
 dt[is.na(gload_mw), gload_mw := 0]
+dt
 ```
 
 ## add columns by groups
