@@ -225,4 +225,7 @@
 # summarize again -----
   
   dt[, .(total_gload = sum(gload_mw, na.rm = T)), by = .(ORISPL_CODE, UNITID)]
+    
+## add exmples for merging?    
+
   
