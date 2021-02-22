@@ -20,6 +20,8 @@ The datasets we will be using in this interactive session are taken from the Env
 
 The second dataset (the ``facility_01-27-2021_224024745.csv`` file) is a list of generators and various attributes, such as their fuel type, generator type, and location.
 
+(explain the different columns)
+
 # Packages
 
 ## Install packages
@@ -97,6 +99,11 @@ dt[facility_name %like% "Energy"]
 ```{r}
 dt[state %chin% c("CA", "NJ")]
 ```
+All of the filters thus far only print the resulting rows but do not actually save to a data.table. Let's filter out our existing ``dt`` object to only have rows where neither the ``gload_mw`` or the ``heat_input_mm_btu`` columns are NA.
+```{r}
+dt = dt[!is.na(gload_mw) & !is.na(heat_input_mm_btu)]
+head(dt)
+```
 
 ## Select columns
 
@@ -108,6 +115,23 @@ dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)]
 ```{r}
 dt[, c(3:8)]
 ```
+
+Let's only keep the following columns:
+* state
+* orispl_code
+* unitid
+* op_date
+* op_hour
+* gload_mw
+* so2_mass_lbs
+* nox_mass_lbs
+* co2_mass_tons
+* heat_input_mm_btu
+```{r}
+dt = dt[, .(state, orispl_code, unitid, op_date, op_hour, gload_mw, so2_mass_lbs, nox_mass_lbs, co2_mass_tons, heat_input_mm_btu)]
+head(dt)
+```
+
 # Modifying the datatable
 
 ## Rename columns
@@ -115,9 +139,7 @@ dt[, c(3:8)]
 ### Renaming single columns
 ```{r}
 setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
-setnames(dt, "so2_rate_lbs_mm_btu", "so2_rate_lbs_mmbtu")
-setnames(dt, "nox_rate_lbs_mm_btu", "nox_rate_lbs_mmbtu")
-setnames(dt, "co2_rate_tons_mm_btu", "co2_rate_tons_mmbtu")
+head(dt)
 ```
 
 ## Reorder rows
@@ -173,54 +195,66 @@ dt[, .(number_of_observations = .N,
 
 ## add columns
 
-Adding a new column that's just one same value:
+Let's extract the month as the column ``op_month``:
 ```{r}
-dt[, new_column := "hi"]
-dt
+dt[, op_month := substr(op_date, 1, 2)]
+head(dt)
+```
+You can remove a column by setting it to NULL (``dt[, column_name := NULL]``).
+
+To change an existing column, you can just use the same method without changing the column name. For example, we can see that currently, the ``gload_mw`` is of the integer type.
+```{r}
+str(dt)
 ```
 
-You can remove a column by setting it to NULL:
-```{r}
-dt[, new_column := NULL]
-dt
-```
-
-Change a column without creating a new one:
+When really it should be a numeric value. So let's change the column to a numeric type:
 ```{r}
 dt[, gload_mw := as.numeric(gload_mw)]
+str(dt)
 ```
 
 ## Replace values
 
-Replace infinite and NA values with zeroes
-```{r}
-dt[is.infinite(gload_mw), gload_mw := 0]
-dt[is.na(gload_mw), gload_mw := 0]
-dt
-```
+Creating a new column does not mean that all new rows of the column have to be populated. Similarly, not all rows of an existing column need to be replaced. You can filter rows when creating a new column or modifying an existing one. 
 
-## add columns by groups
+## Add columns by groups
 
 Let's say we want to add a column that's the max generation for each generator:
 ```{r}
 dt[, max_gen := max(gload_mw, na.rm = T), by = .(orispl_code, unitid)]
-```
-
-```{r}
 head(dt)
 ```
 
-### adding multiple columns
-functional form vs the other form (LHS:=RHS)
+### Add multiple columns
 
+One way to add multiple columns is to use the LHS := RHS method
+```{r}
+dt[, c("heat_rate_mmbtu_mwh", "efficiency") := .(gload_mw/heat_input_mmbtu, (heat_input_mmbtu/gload_mw)*3.412)]
+head(dt)
+```
+Another way to add multiple columns is to use the functional form.
+```{r}
+dt[, ':=' (co2_rate_tons_mwh = co2_mass_tons/gload_mw, nox_rate_lbs_mwh = nox_mass_lbs/gload_mw, so2_rate_lbs_mwh = so2_mass_lbs/gload_mw)]
+head(dt)
+```
+## Reshape between long and wide forms
 
-## reshape between long and wide forms
+### Melt (wide to long)
 
-### melt (wide to long)
+```{r}
+dt_long = melt(dt, 
+               id.vars = c("orispl_code", "unitid", "op_date", "op_hour"), 
+               measure.vars = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"))
+head(dt_long)
+```
 
 ### dcast (long to wide)
 
-## setkey?
+```{r}
+dt_wide = dcast(dt_long, orispl_code + unitid + op_date + op_hour ~ variable)
+head(dt_wide)
+```
+
 
 # joining data
 
