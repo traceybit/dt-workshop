@@ -19,6 +19,7 @@ Preview HTML : *Cmd+Shift+K*
 The datasets we will be using in this interactive session are taken from the Environmental Protection Agency's (EPA) Air Markets Program Data (AMPD) program: https://ampd.epa.gov/ampd/. 
 
 The first dataset (the ``epa_ampd_hourly_2019_selected.csv`` file) is a dataset of hourly emissions, electriticity generation, and fuel consumption for coal and natural gas across the country. Because the full dataset downloaded from the AMPD site is extremely large, we have filtered out the dataset to only have generators in the states of Alaska, California, Minnesota, New Jersey, New York, and Texas. The following columns are included in the dataset:
+
 * state
 * facility name
 * ORIS code: the numeric identifier assigned to the facility (power plant) for EPA reporting purposes
