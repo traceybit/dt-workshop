@@ -69,7 +69,7 @@ knitr::include_graphics("img/traceybit.jpeg")
 
 .center[**Tracey Mangin**]
 * Researcher at emLab (UCSB)
-* Use data science to investigate questions related to environmental challenges
+* Research interests: natural resource management, environmental justice, Bravo
 
 ]
 
@@ -153,16 +153,19 @@ knitr::include_graphics("img/mindblown.png")
 
 # Resources
 
-We used the following resources to build this preso:
+we used the following resources to build this preso:
 
 - [Data cleaning & wrangling: (2) data.table, Grant McDermott](http://rmarkdown.rstudio.com>)
-      * Detailed information and examples
+      * detailed information and examples
 
 - [Introduction to data.table](https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html#what-is-datatable-1a)
-      * A great introduction
+      * a great introduction
 
 - [A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/#summarise-data)
-      * A resource for examining data.table and dplyr "equivalents"
+      * a great resource for examining data.table and dplyr "equivalents"
+
+- [data.table intro and cheat sheet](https://rdatatable.gitlab.io/data.table/)
+      * quick overview and cheat sheet! who doesn't love a cheat sheet?
 
 ---
 
