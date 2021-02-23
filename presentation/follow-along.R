@@ -11,6 +11,30 @@
   hourly_data = 'epa_ampd_hourly_2019_selected.csv'
   flight_data = 'flights14.csv'
 
+## speed test! start your engines!
+  
+  ## create functions that do the same thing
+  state_dplyr <- function() {
+    hourly_tbl <- read_csv(here::here("data", hourly_data))
+    hourly_tbl %>%
+      group_by(STATE, FACILITY_NAME) %>%
+      summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+                mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %>%
+      ungroup()
+  }
+  
+  state_dt <- function() {
+    hourly_dt <- fread(here::here("data", hourly_data))
+    hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+                  mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
+              by = .(STATE, FACILITY_NAME)]
+  }
+  
+  ## benchmark
+  microbenchmark::microbenchmark(state_dplyr(), state_dt(), times = 1)
+  
+  
+
 ## ways to create a data object (tibble or data.table)
 ## --------------------------------------------------------------
   

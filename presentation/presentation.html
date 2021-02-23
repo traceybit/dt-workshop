@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Introduction to data.table
 ### Meas Meng and Tracey Mangin
-### Last compiled on 21 February, 2021
+### Last compiled on 23 February, 2021
 
 ---
 
@@ -52,7 +52,7 @@ name: background
 
 .center[**Tracey Mangin**]
 * Researcher at emLab (UCSB)
-* Use data science to investigate questions related to environmental challenges
+* Research interests: natural resource management, environmental justice, Bravo
 
 ]
 
@@ -128,16 +128,19 @@ name: background
 
 # Resources
 
-We used the following resources to build this preso:
+we used the following resources to build this preso:
 
 - [Data cleaning &amp; wrangling: (2) data.table, Grant McDermott](http://rmarkdown.rstudio.com&gt;)
-      * Detailed information and examples
+      * detailed information and examples
 
 - [Introduction to data.table](https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html#what-is-datatable-1a)
-      * A great introduction
+      * a great introduction
 
 - [A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/#summarise-data)
-      * A resource for examining data.table and dplyr "equivalents"
+      * a great resource for examining data.table and dplyr "equivalents"
+
+- [data.table intro and cheat sheet](https://rdatatable.gitlab.io/data.table/)
+      * quick overview and cheat sheet! who doesn't love a cheat sheet?
 
 ---
 
@@ -240,9 +243,35 @@ name: background
 * memory efficient
 
 * fast speed
+---
 
---
-    * If you're used to using `dplyr` or base r while working with large data sets in R, `data.table` will feel *fast*.
+# What is data.table?
+
+`data.table` provides an enhanced, high-performance version of base R’s `data.frame` with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+
+## why use data.table?
+
+* memory efficient
+
+* fast speed
+
+```r
+state_dplyr &lt;- function() {
+  hourly_tbl &lt;- read_csv(here::here("data", hourly_data))
+  hourly_tbl %&gt;%
+    group_by(STATE, FACILITY_NAME) %&gt;%
+    summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+              mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %&gt;%
+    ungroup()
+  }
+state_dt &lt;- function() {
+  hourly_dt &lt;- fread(here::here("data", hourly_data))
+  hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+                mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
+            by = .(STATE, FACILITY_NAME)]
+  }
+```
 
 ---
 
@@ -257,37 +286,14 @@ name: background
 
 * fast speed
 
-NOTE TO MEAS: I'm having a hard time creating something that show dt being much faster
-
-
 ```r
-state_dplyr &lt;- function() {
-  hourly_tbl %&gt;%
-    group_by(STATE, FACILITY_NAME) %&gt;%
-    summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
-              mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %&gt;%
-    ungroup()
-}
-
-state_dt &lt;- function() {
-  hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
-                mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
-            by = .(STATE, FACILITY_NAME)]
-}
-
 microbenchmark::microbenchmark(state_dplyr(), state_dt(), times = 1)
 ```
 
-```
-## `summarise()` has grouped output by 'STATE'. You can override using the `.groups` argument.
-```
+.center[
+&lt;img src="img/speedtest.png" width="80%" /&gt;
+]
 
-```
-## Unit: milliseconds
-##           expr      min       lq     mean   median       uq      max neval
-##  state_dplyr() 601.9596 601.9596 601.9596 601.9596 601.9596 601.9596     1
-##     state_dt() 408.2801 408.2801 408.2801 408.2801 408.2801 408.2801     1
-```
 
 ---
 
@@ -563,7 +569,7 @@ filter in `i`...
 ```r
 # filter dest for pattern "HO"
   like_dt &lt;- flight_dt[dest %like% "HO"]
-  unique(like_dt$dest)
+  unique(like_dt[, dest])
 ```
 
 ```
@@ -587,7 +593,7 @@ filter in `i`...
 # filter air time between 0 and 180 minutes
   between_dt &lt;- flight_dt[dep_delay %between% c(0, 180)]
   
-  min(between_dt$dep_delay)
+  min(between_dt[, dep_delay])
 ```
 
 ```
@@ -595,7 +601,7 @@ filter in `i`...
 ```
 
 ```r
-  max(between_dt$dep_delay)
+  max(between_dt[, dep_delay])
 ```
 
 ```
@@ -620,7 +626,7 @@ filter in `i`...
 ```r
 # filter dest for LAX, SEA, and PHX using %chin%
   chin_dt &lt;- flight_dt[dest %chin% c("LAX", "SEA", "PHX")]
-  unique(chin_dt$dest)
+  unique(chin_dt[, dest])
 ```
 
 ```

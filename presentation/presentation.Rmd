@@ -28,10 +28,6 @@ flight_tbl <- read_csv(here::here("data", flight_data))
 
 flight_dt <- fread(here::here("data", flight_data))
 
-hourly_dt <- fread(here::here("data", hourly_data))
-
-hourly_tbl <- as_tibble(hourly_dt)
-
 ```
 
 
@@ -268,9 +264,34 @@ name: background
 * memory efficient
 
 * fast speed
+---
 
---
-    * If you're used to using `dplyr` or base r while working with large data sets in R, `data.table` will feel *fast*.
+# What is data.table?
+
+`data.table` provides an enhanced, high-performance version of base R’s `data.frame` with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+
+## why use data.table?
+
+* memory efficient
+
+* fast speed
+```{r eval = FALSE}
+state_dplyr <- function() {
+  hourly_tbl <- read_csv(here::here("data", hourly_data))
+  hourly_tbl %>%
+    group_by(STATE, FACILITY_NAME) %>%
+    summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+              mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %>%
+    ungroup()
+  }
+state_dt <- function() {
+  hourly_dt <- fread(here::here("data", hourly_data))
+  hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
+                mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
+            by = .(STATE, FACILITY_NAME)]
+  }
+```
 
 ---
 
@@ -284,27 +305,16 @@ name: background
 * memory efficient
 
 * fast speed
-
-NOTE TO MEAS: I'm having a hard time creating something that show dt being much faster
-
-```{r}
-state_dplyr <- function() {
-  hourly_tbl %>%
-    group_by(STATE, FACILITY_NAME) %>%
-    summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
-              mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %>%
-    ungroup()
-}
-
-state_dt <- function() {
-  hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
-                mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
-            by = .(STATE, FACILITY_NAME)]
-}
-
+```{r eval = FALSE}
 microbenchmark::microbenchmark(state_dplyr(), state_dt(), times = 1)
-
 ```
+
+.center[
+```{r echo = FALSE, out.width = '80%'}
+knitr::include_graphics("img/speedtest.png")
+```
+]
+
 
 ---
 
@@ -718,14 +728,25 @@ setnames(flight_dt, "dest", "destination")
 * update/create new columns with `:=`
       * "walrus"
       * modifies in place (i.e. by reference)
-```{r eval = FALSE}
+---
+
+
+# Data manipulation
+
+## working with columns in `j`
+
+* update/create new columns with `:=`
+      * "walrus"
+      * modifies in place (i.e. by reference)
+      
+```{r eval = TRUE}
 ## create new column called month_day 
 ## dplyr
 flight_tbl %>%
   mutate(month_day = paste(month, day, sep = "-"))
 
 ## data.table -- this will modify in place
-flight_dt[, month_day := paste(month, day, sep = "-")]
+flight_dt[, month_day := paste(month, day, sep = "-")][1:3]
 
 ```
 
@@ -735,18 +756,10 @@ flight_dt[, month_day := paste(month, day, sep = "-")]
 
 ## working with columns in `j`
 
-* `j` takes a list using `list()` or `.()`
-
-* select columns
-
-* drop columns
-
-* rename columns
-
 * update/create new columns with `:=`
 
 * drop column with `:= NULL`
-```{r eval = FALSE}
+```{r eval = TRUE}
 ## drop month_day
 ## data.table -- this will modify in place
 flight_dt[, month_day := NULL]
@@ -762,7 +775,7 @@ flight_dt[, month_day := NULL]
 * by takes a list using `list()` or `.()`
 
 * group by and summarise (does *not* modify in place)
-
+--
 ```{r eval = F}
 ## calculate the mean dep_delay for carrier, origin, and dest
 ## dplyr
@@ -802,9 +815,7 @@ flight_tbl %>%
 ```
 ```{r}
 ## data.table -- this will modify in place
-flight_dt[, mean_dep_delay := mean(dep_delay), by = .(carrier, origin, dest)]
-flight_dt[1:2]
-
+flight_dt[, mean_dep_delay := mean(dep_delay), by = .(carrier, origin, dest)][1:2]
 ```
 
 ---
@@ -870,8 +881,7 @@ flight_tbl %>%
 ## data.table -- this will not modify in place
 flight_dt[, .N, by = carrier][1]
 ## compare with 
-flight_dt[, n := .N, by = carrier]
-flight_dt[1]
+flight_dt[, n := .N, by = carrier][1]
 ```
 
 
