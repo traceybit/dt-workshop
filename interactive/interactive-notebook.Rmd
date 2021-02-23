@@ -270,12 +270,17 @@ head(fac_dt)
 
 ## Merge
 
-Merge
+Merge (version 1):
 ```{r}
 combined_dt = merge(dt, fac_dt, 
       by.x = c("state", "orispl_code", "unitid"),
       by.y = c("state", "facility_id_orispl", "unit_id"))
 head(combined_dt)
+```
+Merge (version 2):
+```{r}
+combined_v2 = dt[fac_dt, on = .(state = state, orispl_code = facility_id_orispl, unitid = unit_id), nomatch = 0]
+head(combined_v2)
 ```
 
 ## Bind
