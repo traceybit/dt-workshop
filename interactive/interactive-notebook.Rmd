@@ -16,11 +16,18 @@ Preview HTML : *Cmd+Shift+K*
 
 ## About the data
 
-The datasets we will be using in this interactive session are taken from the Environmental Protection Agency's (EPA) Air Markets Program Data (AMPD) program. The first dataset (the ``epa_ampd_hourly_2019_selected.csv`` file) is a dataset of hourly emissions, electriticity generation, and fuel consumption for coal and natural gas across the country. Because the full dataset downloaded from the AMPD site is extremely large, we have filtered out the dataset to only have generators in the states of X, Y, and Z. 
+The datasets we will be using in this interactive session are taken from the Environmental Protection Agency's (EPA) Air Markets Program Data (AMPD) program: https://ampd.epa.gov/ampd/. 
+
+The first dataset (the ``epa_ampd_hourly_2019_selected.csv`` file) is a dataset of hourly emissions, electriticity generation, and fuel consumption for coal and natural gas across the country. Because the full dataset downloaded from the AMPD site is extremely large, we have filtered out the dataset to only have generators in the states of Alaska, California, Minnesota, New Jersey, New York, and Texas. The following columns are included in the dataset:
+* state
+* facility name
+* ORIS code: the numeric identifier assigned to the facility (power plant) for EPA reporting purposes
+* unit ID: identifier for generating units (generator) at the facility (power plant)
+* operating date: the date of reported generation/emissions
+* operating hour: the clock hour of the day in which a particular pollutant concentration or flow rate was recorded (range of values 00-23)
 
 The second dataset (the ``facility_01-27-2021_224024745.csv`` file) is a list of generators and various attributes, such as their fuel type, generator type, and location.
 
-(explain the different columns)
 
 # Packages
 
@@ -286,5 +293,7 @@ head(combined_v2)
 ## Bind
 
 # Beyond...
+
+Can we calculate which 10 power plants (not generators) emitted the most CO2?
 
 How much electricity generation, NOx emissions, SO2 emissions, etc are coming from coal vs natural gas plants?
