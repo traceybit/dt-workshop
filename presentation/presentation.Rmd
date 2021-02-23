@@ -1031,14 +1031,14 @@ flight_dt[, delay_diff := dep_delay - arr_delay][, diff_over_at := delay_diff / 
 
 # Data manipulation
 
-## keys NOTE TO MEAS: not sure if i'm really getting this
+## set keys
 keys are like row names. setting keys...
 
 * reorders the rows of a data.table by the key columns in increasing order
 
 * marks those columns as key columns by setting attribute called `sorted`
 
-* can make certain functions even faster
+* can make certain functions even faster (e.g., lookups in key columns) and allows for merging without specifying merging columns
 
 --
 ```{r}
@@ -1056,20 +1056,43 @@ flight_dt[.("JFK", "MIA")][2]
 
 # random cool things
 
-## it's soooo fast!!! what shoudl we add?
+* do stuff from the terminal
 
 
 ---
 
 # random not so cool things
 
-## expand.grid?
+* no equivalent to `cross()` / `expand_grid`?
+
+```{r }
+df1 <- data.table(a = c(1986, 1990, 2014))
+df2 <- data.table(b = c(1, 1, 2))
+
+expand_grid(df1, df2)
+
+```
 
 ---
 
-# final thoughts
+# random not so cool things
 
+* no equivalent to `cross()` / `expand_grid`?
 
+```{r }
+df1 <- data.table(a = c(1986, 1990, 2014))
+df2 <- data.table(b = c(1, 1, 2))
+
+# expand_grid(df1, df2)
+crossing(df1, df2)
+
+```
+
+---
+
+# live coding!
+
+## time to move to the interactive folder
 
 
 

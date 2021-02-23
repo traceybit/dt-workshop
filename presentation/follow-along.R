@@ -250,6 +250,13 @@
   
   dt[, .(total_gload = sum(gload_mw, na.rm = T)), by = .(ORISPL_CODE, UNITID)]
     
-## add exmples for merging?    
+## crossing/expand grid
+    
+    df1 <- data.table(a = c(1986, 1990, 2014))
+    df2 <- data.table(b = c(1, 1, 2))
+    
+    expand_grid(df1, df2)
+    
+    crossing(df1, df2)
 
   
