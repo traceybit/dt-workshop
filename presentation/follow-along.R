@@ -67,22 +67,22 @@
   
   # helper %like% (filter for pattern)
   like_dt <- flight_dt[dest %like% "HO"]
-  unique(like_dt$dest)
+  unique(like_dt[, dest])
   
   # helper %like% with $ at the end (look for pattern at the end)
   like_dt2 <- flight_dt[dest %like% "HO$"]
-  unique(like_dt2$dest)
+  unique(like_dt2[, dest])
   
   # helper %between% 
   # filter air time between 0 and 180 minutes
   between_dt <- flight_dt[dep_delay %between% c(0, 180)]
-  min(between_dt$dep_delay)
-  max(between_dt$dep_delay)
+  min(between_dt[, dep_delay])
+  max(between_dt[, dep_delay])
   
   # helper %chin
   # filter dest for LAX, SEA, and PHX using %chin%
   chin_dt <- flight_dt[dest %chin% c("LAX", "SEA", "PHX")]
-  unique(chin_dt$dest)
+  unique(chin_dt[, dest])
   
   # working with columns in j --------
   ## ---------------------------------
