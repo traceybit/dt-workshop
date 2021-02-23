@@ -255,12 +255,30 @@ dt_wide = dcast(dt_long, orispl_code + unitid + op_date + op_hour ~ variable)
 head(dt_wide)
 ```
 
+# Joining data
 
-# joining data
+### Read in facility data
+```{r}
+fac_dt = fread(here::here('data', facility_data))
+head(fac_dt)
+```
+Fix column names with the ``janitor`` package:
+```{r}
+fac_dt = clean_names(fac_dt)
+head(fac_dt)
+```
 
-## merge
+## Merge
 
-## bind
+Merge
+```{r}
+combined_dt = merge(dt, fac_dt, 
+      by.x = c("state", "orispl_code", "unitid"),
+      by.y = c("state", "facility_id_orispl", "unit_id"))
+head(combined_dt)
+```
+
+## Bind
 
 # Beyond...
 
