@@ -112,6 +112,8 @@ Nice! Now the column names are all lower case, the spaces have been replaced wit
 
 # ``set`` functions
 
+``data.table``'s **set** functions allow us to modify the ``data.table``s in place, without having to create new objects, therefore saving memory. In this section, we'll be going over some (most?) of the **set** functions.
+
 ## ``setkey()``
 
 Set keys to enable fast repeated lookup in specified columns using ``dt[.(value), ]``, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). Setting keys can also be used for merging without specifying merging columns using ``dt_a[dt_b]``.
@@ -122,6 +124,8 @@ setkey(dt, orispl_code, unitid, op_date, op_hour)
 
 ## ``setnames()``
 
+``setnames()`` allows us to change the names of columns by name with built-in checks and warnings (e.g., if any old names are missing or appear more than once). The basic syntax is ``setnames(dt, "old", "new")``.
+
 ### Rename a single column
 ```{r}
 setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
@@ -130,12 +134,17 @@ head(dt)
 
 ### Rename multiple columns
 ```{r}
-setnames(dt, c("so2_rate_lbs_mm_btu", "nox_rate_lbs_mm_btu", "co2_rate_tons_mm_btu"), c("so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_rate_tons_mmbtu"))
+setnames(dt, 
+         c("so2_rate_lbs_mm_btu", "nox_rate_lbs_mm_btu", "co2_rate_tons_mm_btu"), 
+         c("so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_rate_tons_mmbtu"))
 head(dt)
 ```
 ## ``setorder()``
 
+``setorder()`` allows us to set the order of ``data.table``s in place, either by one column or multiple columns. ``setorderv()`` works in the same way, but in ``setorderv()`` you would provide a character vector of column names, e.g. ``c("col1", "col2")``, whereas in ``setorder()`` the column names do not have to be a character vector.
+
 ### Temporarily sorting
+If you just want to print out a sorted version of a ``data.table`` (without setting the order in place), you can just use the ``order()`` function like ``dt[order(col)]``. For example, to print out a version of ``dt`` sorted by generation:
 ```{r}
 dt[order(-gload_mw)]
 ```
@@ -159,7 +168,12 @@ The ``setcolorder()`` function can be used to set the order of columns of a data
 state, facility_name, orispl_code, unitid, op_date, op_hour, op_time, gload_mw, heat_input_mmbtu, co2_mass_tons, so2_mass_lbs, nox_mass_lbs, sload_1000lb_hr, co2_rate_tons_mmbtu, so2_rate_lbs_mmbtu, nox_rate_lbs_mmbtu, co2_mass_measure_flg, co2_rate_measure_flg, so2_mass_measure_flg, so2_rate_measure_flg, nox_mass_measure_flg, nox_rate_measure_flg, fac_id, unit_id.
 
 ```{r}
-setcolorder(dt, c("state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time", "gload_mw", "heat_input_mmbtu", "co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs", "sload_1000lb_hr", "co2_rate_tons_mmbtu", "so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_mass_measure_flg", "co2_rate_measure_flg", "so2_mass_measure_flg", "so2_rate_measure_flg", "nox_mass_measure_flg", "nox_rate_measure_flg", "fac_id", "unit_id"))
+setcolorder(dt, 
+            c("state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time", 
+              "gload_mw", "heat_input_mmbtu", "co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs", 
+              "sload_1000lb_hr", "co2_rate_tons_mmbtu", "so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", 
+              "co2_mass_measure_flg", "co2_rate_measure_flg", "so2_mass_measure_flg", 
+              "so2_rate_measure_flg", "nox_mass_measure_flg", "nox_rate_measure_flg", "fac_id", "unit_id"))
 head(dt)
 ```
 
@@ -305,14 +319,21 @@ str(dt)
 
 ## Add multiple columns
 
-One way to add multiple columns is to use the LHS := RHS method
+One way to add multiple columns is to use the LHS := RHS method. Let's say I want to calculate the heat rate and the efficiency of generators at every hour.
+The heat rate is defined as the heat input divided by the generation, resulting in units of mmBtu per MWh.
+The efficiency is defined as the generation divided by the heat input, then multiplied by 3.412 (conversion factor between mmBTU and MWh). The efficiency is a percentage.
+
 ```{r}
-dt[, c("heat_rate_mmbtu_mwh", "efficiency") := .(gload_mw/heat_input_mmbtu, (heat_input_mmbtu/gload_mw)*3.412)]
+dt[, c("heat_rate_mmbtu_mwh", 
+       "efficiency") := .(heat_input_mmbtu/gload_mw, 
+                          (gload_mw/heat_input_mmbtu)*3.412)]
 head(dt)
 ```
 Another way to add multiple columns is to use the functional form.
 ```{r}
-dt[, ':=' (co2_rate_tons_mwh = co2_mass_tons/gload_mw, nox_rate_lbs_mwh = nox_mass_lbs/gload_mw, so2_rate_lbs_mwh = so2_mass_lbs/gload_mw)]
+dt[, ':=' (co2_rate_tons_mwh = co2_mass_tons/gload_mw, 
+           nox_rate_lbs_mwh = nox_mass_lbs/gload_mw, 
+           so2_rate_lbs_mwh = so2_mass_lbs/gload_mw)]
 head(dt)
 ```
 
@@ -376,7 +397,8 @@ head(dt)
 ```
 
 ## Adding multiple columns applying a function based on groups
-Let's say I want to create a new column that's the mean of the NOx, SO2, and SO2 columns for each generator within each month. 
+What if we want to create a new column for each of the means of CO2, SO2, and NOx for each generator within each month? We can use ``lapply`` and ``.SD`` to apply a function over multiple columns and ``by`` to group by generator-month.
+
 ```{r}
 cols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs")
 dt[, paste0(cols, "_mean") := lapply(.SD, mean), .SDcols = cols, by = .(orispl_code, unitid, op_month)] 
@@ -398,25 +420,37 @@ tail(dt)
 
 # Reshape between long and wide forms
 
+In data analysis, we often have to reshape the datasets we obtain between long and wide forms. ``data.table`` has two functions that make it easy to do that: ``melt()`` and ``dcast()``.
+
 ## Reshape from wide to long form using ``melt``
+
+``melt()`` allows us to reshape data from wide to long form. Let's say we want to create a long form of our ``dt`` ``data.table``, where we take the co2_mass_tons, so2_mass_lbs, and nox_mass_lbs columns and convert them into long form (so all their reporetd values are in one column). 
 
 ```{r}
 dt_long = melt(dt, 
                id.vars = c("orispl_code", "unitid", "op_date", "op_hour"), 
-               measure.vars = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"))
+               measure.vars = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"),
+               variable.name = "emission",
+               value.name = "amount_emitted")
 head(dt_long)
 ```
+(IRL, we would need to convert the emissions to all be in the same units, instead of tons for CO2 and lbs for SO2/NOx, but let's just roll with this.)
 
 ## Reshape from long to wide form using ``dcast``
 
+``dcast()`` allows us to convert data the opposite way -- from long to wide form. So, let's say we want to convert ``dt_long`` above back into wide form, with each emission type having its own column:
+
 ```{r}
-dt_wide = dcast(dt_long, orispl_code + unitid + op_date + op_hour ~ variable)
+dt_wide = dcast(dt_long, orispl_code + unitid + op_date + op_hour ~ emission, value.var = "amount_emitted")
 head(dt_wide)
 ```
 
 # Joining data
 
+In this section, we will be going over how to join ``data.tables`` -- both merging and binding.
+
 ## Read in facility data
+First, let's read in our facility data.
 ```{r}
 fac_dt = fread(here::here('data', facility_data))
 head(fac_dt)
@@ -428,6 +462,8 @@ head(fac_dt)
 ```
 
 ## Merge
+
+We can merge ``dt`` with ``fac_dt``. In real life, one objective of this would be to allow analyses of generation and emissions by generator type, for example. From looking at the two ``data.tables`` it's clear the common keys they share are the ORISPL code and the unit IDs (although the column names are slightly different). 
 
 ### Merge using the ``dt_a[dt_b]`` form
 
