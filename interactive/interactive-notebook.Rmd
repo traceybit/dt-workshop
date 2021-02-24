@@ -20,14 +20,47 @@ The datasets we will be using in this interactive session are taken from the Env
 
 The first dataset (the ``epa_ampd_hourly_2019_selected.csv`` file) is a dataset of hourly emissions, electriticity generation, and fuel consumption for coal and natural gas across the country. Because the full dataset downloaded from the AMPD site is extremely large, we have filtered out the dataset to only have generators in the states of Alaska, California, Minnesota, New Jersey, New York, and Texas. The following columns are included in the dataset:
 
-* state
-* facility name
-* ORIS code: the numeric identifier assigned to the facility (power plant) for EPA reporting purposes
-* unit ID: identifier for generating units (generator) at the facility (power plant)
-* operating date: the date of reported generation/emissions
-* operating hour: the clock hour of the day in which a particular pollutant concentration or flow rate was recorded (range of values 00-23)
+| Column name                 | Description                           |
+| :---                        |    :---                               |   
+| STATE                       | state where facility (power plant) is located       |
+| FACILITY_NAME               | name of facility (power plant)        |
+| ORISPL_CODE                 | the plant ID code assigned by the Department of Energy's Energy Information Administration (EIA)       |
+| UNITID                      | identifier for generating units (generator) at the facility (power plant)        |
+| OP_DATE                     | the date on which a particular pollutant concentration or flow rate was recorded        |
+| OP_HOUR                     | the clock hour of the day in which a particular pollutant concentration or flow rate was recorded (range of values 00-23)        |
+| OP_TIME                     | the fraction of the clock hour during which the unit combusted any fuel        |
+| GLOAD (MW)                  | amount of electricity generated during that hour in megawatts (MW)        |
+| SLOAD (1000lb/hr)           | steam load in units of 1,000 lbs (per hour)        |
+| SO2_MASS (lbs)              | mass of SO2 emitted in units of lbs        |
+| SO2_MASS_MEASURE_FLG        | code number indicating if reported SO2 mass was measured or substituted        |
+| SO2_RATE (lbs/mmBtu)        | rate of SO2 emitted per fuel consumed in units of lbs per mmBtu        |
+| NOX_RATE (lbs/mmBtu)        | rate of NOx emitted per fuel consumed in units of lbs per mmBtu         |
+| NOX_MASS (lbs)              | mass of NOx emitted in units of lbs        |
+| NOX_MASS_MEASURE_FLG        | code number indicating if reported NOx mass was measured or substituted        |
+| CO2_MASS (tons)             | mass of CO2 emitted in units of metric tons        |
+| CO2_MASS_MEASURE_FLG        | code number indicating if reported CO2 mass was measured or substituted        |
+| CO2_RATE (tons/mmBtu)       | rate of CO2 emitted per fuel consumed in units of lbs per mmBtu        |
+| CO2_RATE_MEASURE_FLG        | code number indicating if reported CO2 rate was measured or substituted        |
+| HEAT_INPUT (mmBtu)          | the calculated heat input rate for the hour in million Btu (mmBtu)        |
+| FAC_ID                      | EPA-specific facility ID        |
+| UNIT_ID                     | EPA-specific unit id        |
 
-The second dataset (the ``facility_01-27-2021_224024745.csv`` file) is a list of generators and various attributes, such as their fuel type, generator type, and location.
+
+The second dataset (the ``facility_01-27-2021_224024745.csv`` file) is a list of generators and various attributes, such as their fuel type, generator type, and location. The columns included in the dataset are:
+
+| Column name                 | Description                           |
+| :---                        | :---                                  |   
+| State                       | state where facility (power plant) is located       |
+| Facility Name               | name of facility (power plant)        |
+| Facility ID (ORISPL)        | the plant ID code assigned by the Department of Energy's Energy Information Administration (EIA)       |
+| Unit ID                     | identifier for generating units (generator) at the facility (power plant)        |
+| Year                        | year of facility data       |
+| Facility Latitude           | latitude of facility        |
+| Facility Longitude          | longitude of facility       |
+| Unit Type                   | type of generating unit        |
+| Fuel Type (Primary)         | primary fuel burned at generating unit        |
+| Fuel Type (Secondary)       | secondary fuel (if there is one) burned at generating unit        |
+| Operating Status            | status on whether generating unit is operating during year of data        |
 
 
 # Packages
