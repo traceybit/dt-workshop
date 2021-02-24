@@ -92,7 +92,7 @@ hourly_data     = 'epa_ampd_hourly_2019_selected.csv'
 facility_data   = 'facility_01-27-2021_224024745.csv'
 ```
 
-## Read in CSV files
+## Read in CSV files using ``fread``
 
 Use the ``fread`` function to read in the hourly data. 
 ```{r}
@@ -103,61 +103,122 @@ View first few rows of the hourly data:
 ```{r}
 head(dt)
 ```
-We can see that the column names are not ideal (spaces and parantheses are not easy to work with). Thus, let's use the ``janitor`` package to clean up the column names:
+We can see that the column names are not ideal (spaces and parantheses are not easy to work with). Thus, let's use the ``clean_names`` package in the ``janitor`` package to clean up the column names:
 ```{r}
 dt = clean_names(dt)
 head(dt)
 ```
 Nice! Now the column names are all lower case, the spaces have been replaced with underscores, and the parantheses and slashes are gone. There are some problematic column names (for example, mmBtu has been changed to mm_btu, but we will fix those columns later).
 
-# Basics
+# ``set`` functions
 
-## Setting keys
+## ``setkey()``
 
-Setting keys for the datatable can help speed up processes later, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). So, let's set the keys of ``dt`` as the orispl_code, unitid, op_date, and op_hour columns:
-
+Set keys to enable fast repeated lookup in specified columns using ``dt[.(value), ]``, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). Setting keys can also be used for merging without specifying merging columns using ``dt_a[dt_b]``.
+We're going to set the keys of ``dt`` as the **orispl_code**, **unitid**, **op_date**, and **op_hour** columns:
 ```{r}
 setkey(dt, orispl_code, unitid, op_date, op_hour)
 ```
 
-## Filter rows
+## ``setnames()``
 
-In this section, we will go over how to filter the datatable's rows in a multitude of ways.
-
-### Filter for rows for generators in California (CA)
+### Rename a single column
 ```{r}
-dt[state=="CA"]
-```
-### Filter for rows that occurred after july 1, 2019
-```{r}
-dt[op_date > "07-01-2019"]
-```
-### Filter for rows for facilities with the word "Energy" in its name
-```{r}
-dt[facility_name %like% "Energy"]
-```
-### Filter for rows that are within California and New Jersey
-```{r}
-dt[state %chin% c("CA", "NJ")]
-```
-All of the filters thus far only print the resulting rows but do not actually save to a data.table. Let's filter out our existing ``dt`` object to only have rows where neither the ``gload_mw`` or the ``heat_input_mm_btu`` columns are NA.
-```{r}
-dt = dt[!is.na(gload_mw) & !is.na(heat_input_mm_btu)]
+setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
 head(dt)
 ```
 
-## Select columns
-
-### Select columns by name
+### Rename multiple columns
 ```{r}
-dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)]
+setnames(dt, c("so2_rate_lbs_mm_btu", "nox_rate_lbs_mm_btu", "co2_rate_tons_mm_btu"), c("so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_rate_tons_mmbtu"))
+head(dt)
 ```
-### Select columns by column number/index
+## ``setorder()``
+
+### Temporarily sorting
+```{r}
+dt[order(-gload_mw)]
+```
+
+### Actually sorting the data table in place
+
+Order ``dt`` by the orispl_code column:
+```{r}
+setorder(dt, orispl_code, na.last = TRUE)
+head(dt)
+```
+
+We can also order the datable by multiple columns. For example, let's say we want ``dt`` to be ordered by the following columns (in this order): state, orispl_code, unitid, op_date, and op_hour. 
+```{r}
+setorder(dt, state, orispl_code, unitid, op_date, op_hour)
+head(dt)
+```
+## ``setcolorder()``
+
+The ``setcolorder()`` function can be used to set the order of columns of a data table. So, let's reorder the columns to be in the following order:
+state, facility_name, orispl_code, unitid, op_date, op_hour, op_time, gload_mw, heat_input_mmbtu, co2_mass_tons, so2_mass_lbs, nox_mass_lbs, sload_1000lb_hr, co2_rate_tons_mmbtu, so2_rate_lbs_mmbtu, nox_rate_lbs_mmbtu, co2_mass_measure_flg, co2_rate_measure_flg, so2_mass_measure_flg, so2_rate_measure_flg, nox_mass_measure_flg, nox_rate_measure_flg, fac_id, unit_id.
+
+```{r}
+setcolorder(dt, c("state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time", "gload_mw", "heat_input_mmbtu", "co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs", "sload_1000lb_hr", "co2_rate_tons_mmbtu", "so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_mass_measure_flg", "co2_rate_measure_flg", "so2_mass_measure_flg", "so2_rate_measure_flg", "nox_mass_measure_flg", "nox_rate_measure_flg", "fac_id", "unit_id"))
+head(dt)
+```
+
+# Filter/subset rows using i
+
+In this section, we will go over how to filter ``dt``'s rows in a few different ways.
+
+## Filter using row numbers
+One way to subset rows is by specifying row numbers. For example, let's say we want just the first three rows of ``dt``:
+```{r}
+dt[1:3,]
+```
+
+## Filter using operators
+
+Some of the operators that can be used to filter/subset rows are: <, >, >=, <=, is.na(), !is.na(), is.infinite(), !is.infinite(), %in%, %like%, %between%, %chin%, and probably others we're not thinking of right now. When filtering, ``!`` represents **not** matching, ``|`` represents **or**, and ``&`` represents **and**. 
+
+Let's filter ``dt`` for all rows where the **state** is California.
+```{r}
+dt[state=="CA"]
+```
+What about if we want to filter for rows where the state is California or New Jersey?
+```{r}
+dt[state %chin% c("CA", "NJ")]
+```
+A less efficient way would be to use the ``|`` operator:
+```{r}
+dt[state == "CA" | state == "NJ"]
+```
+
+The operators can also be used to filter dates. Let's filter for all rows that occurred after July 1, 2019:
+```{r}
+dt[op_date > "07-01-2019"]
+```
+The ``%like`` operator can be used to filter for rows that match a substring. For example, we can filter for rows where the facility name has the word "Energy" in it:
+```{r}
+dt[facility_name %like% "Energy"]
+```
+
+All of the filters thus far only print the resulting rows but do not actually save to a data.table. Let's filter out our existing ``dt`` data table to only have rows where neither the ``gload_mw`` or the ``heat_input_mm_btu`` columns are NA.
+```{r}
+dt = dt[!is.na(gload_mw) & !is.na(heat_input_mmbtu)]
+head(dt)
+```
+
+# Select and manipulate columns using j
+
+## Select columns by column number/index
 ```{r}
 dt[, c(3:8)]
 ```
 
-Let's only keep the following columns:
+## Select columns by name
+```{r}
+dt[, .(orispl_code, unitid, op_date, op_hour, op_time, gload_mw)]
+```
+
+Let's only keep the following columns (note that this will also reorder the columns):
+
 * state
 * orispl_code
 * unitid
@@ -169,80 +230,62 @@ Let's only keep the following columns:
 * co2_mass_tons
 * heat_input_mm_btu
 ```{r}
-dt = dt[, .(state, orispl_code, unitid, op_date, op_hour, gload_mw, so2_mass_lbs, nox_mass_lbs, co2_mass_tons, heat_input_mm_btu)]
+dt = dt[, .(state, orispl_code, unitid, op_date, op_hour, gload_mw, heat_input_mmbtu, co2_mass_tons, so2_mass_lbs, nox_mass_lbs)]
+head(dt)
+```
+## Add columns
+
+### Add simple columns
+```{r}
+dt[, a := 1]
 head(dt)
 ```
 
-# Modifying the datatable
-
-## Rename columns
-
-### Renaming single columns
+### Add column based on subset of rows
 ```{r}
-setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
+dt[op_date <= "06-01-2019", b := 2]
 head(dt)
 ```
 
-## Reorder rows
+### Add column based on cases (using ``fifelse`` and ``fcase``)
 
-### Temporarily sorting
-```{r}
-dt[order(-gload_mw)]
-```
-### Actually sorting the data table
+We can add columns based on whether or not (yes or no) a condition is met (and the condition can be based on other columns). To do this, we can use the ``fifelse`` function (which is a faster version of ``ifelse``). The syntax of ``fifelse`` is ``fifelse(test, yes, no, na=NA)``. The ``fifelse`` is comparable to ``dyplr``'s ``if_else`` function.
 
-Order ``dt`` by the orispl_code column:
+Let's say we want to create a new column called ``c`` that is based on whether or not the date is before or after June 1, 2019. If before, the ``c`` column value is "before june"; if not, the ``c`` value is "june onwards.
 ```{r}
-setorder(dt, orispl_code, na.last = TRUE)
-head(dt)
-```
-We can also order the datable by multiple columns. For example, let's say we want ``dt`` to be ordered by the following columns (in this order): state, orispl_code, unitid, op_date, and op_hour. 
-```{r}
-setorder(dt, state, orispl_code, unitid, op_date, op_hour)
+dt[, c := fifelse(op_date <= "06-01-2019", "before june", "june onwards")]
 head(dt)
 ```
 
-## Summarize/aggregate
-
-### Summarize by group(s)
-
-Let's find the total amount of CO2 emitted by state and by date:
 ```{r}
-dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(op_date)]
+tail(dt)
 ```
 
-### summarize several columns
-
-``.SD`` can be used to summarize multiple columns
+Another useful function to know is ``fcase``, which is like a nested version of ``fifelse``. So, let's say we have multiple conditions we want to use to create columns based on. Instead of doing something like ``fifelse(test_1, yes, fifelse(test_2, yes, fifelse(test_3, yes, no)))``, we can just use ``fcase``. ``fcase`` is comparable to dplyr’s ``case_when()``. The basic syntax of ``fcase`` is ``fcase(condition1, "value1", condition2, "value2", etc)`` 
 ```{r}
-dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs")]
+dt[, d := fcase(gload_mw < 100, "small",
+                gload_mw %between% c(100, 300), "small-ish",
+                gload_mw %between% c(300, 500), "medium",
+                gload_mw > 500, "large")]
 ```
 
-### summarize several columns by group(s)
-
-We can also use ``.SD`` by group:
 ```{r}
-dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"), by = .(state)]
+head(dt[gload_mw == 500])
 ```
 
-### summarize multiple functions on several columns by group(s)
-
-The ``.N`` special character can be used to count the number of observations. Not to be confused with the ``uniqueN`` function, which counts the number of *unique* observations. Let's find the number of observations, the number of power plants, and the total generation by state:
 ```{r}
-dt[, .(number_of_observations = .N,
-       number_of_plants = uniqueN(orispl_code),
-       total_generation = sum(gload_mw, na.rm = T)), by = .(state)]
+head(dt[gload_mw > 500])
 ```
 
-## add columns
+### Add column using other columns
 
 Let's extract the month as the column ``op_month``:
 ```{r}
 dt[, op_month := substr(op_date, 1, 2)]
 head(dt)
 ```
-You can remove a column by setting it to NULL (``dt[, column_name := NULL]``).
 
+### Convert column type
 To change an existing column, you can just use the same method without changing the column name. For example, we can see that currently, the ``gload_mw`` is of the integer type.
 ```{r}
 str(dt)
@@ -254,19 +297,7 @@ dt[, gload_mw := as.numeric(gload_mw)]
 str(dt)
 ```
 
-## Replace values
-
-Creating a new column does not mean that all new rows of the column have to be populated. Similarly, not all rows of an existing column need to be replaced. You can filter rows when creating a new column or modifying an existing one. 
-
-## Add columns by groups
-
-Let's say we want to add a column that's the max generation for each generator:
-```{r}
-dt[, max_gen := max(gload_mw, na.rm = T), by = .(orispl_code, unitid)]
-head(dt)
-```
-
-### Add multiple columns
+## Add multiple columns
 
 One way to add multiple columns is to use the LHS := RHS method
 ```{r}
@@ -278,9 +309,90 @@ Another way to add multiple columns is to use the functional form.
 dt[, ':=' (co2_rate_tons_mwh = co2_mass_tons/gload_mw, nox_rate_lbs_mwh = nox_mass_lbs/gload_mw, so2_rate_lbs_mwh = so2_mass_lbs/gload_mw)]
 head(dt)
 ```
-## Reshape between long and wide forms
 
-### Melt (wide to long)
+
+## Delete columns
+
+A column can be deleted using ``dt[, col := NULL]``. For example, let's deleted the column ``a`` we created earlier:
+```{r}
+dt[, a := NULL]
+head(dt)
+```
+
+We can also delete multiple columns at once. Let's delete the columns b, c, and d as well.
+```{r}
+dt[, c("b", "c", "d") := NULL]
+head(dt)
+```
+Similar to how we added new columns using the functional form, we can also remove columns using the functional form. Let's delete the ``co2_rate_tons_mwh``, ``nox_rate_lbs_mwh``, and ``so2_rate_lbs_mwh`` columns we created earlier.
+```{r}
+dt[, ':=' (co2_rate_tons_mwh = NULL, nox_rate_lbs_mwh = NULL, so2_rate_lbs_mwh = NULL)]
+head(dt)
+```
+
+# Group according to **by**
+
+## Summarize by group(s)
+
+Let's find the total amount of CO2 emitted by state and by date:
+```{r}
+dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(op_date)]
+```
+
+## Summarize several columns
+
+``.SD`` can be used to summarize multiple columns
+```{r}
+dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs")]
+```
+
+## Summarize several columns by group(s)
+
+We can also use ``.SD`` by group:
+```{r}
+dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"), by = .(state)]
+```
+## Summarize multiple functions on several columns by group(s)
+
+The ``.N`` special character can be used to count the number of observations. Not to be confused with the ``uniqueN`` function, which counts the number of *unique* observations. Let's find the number of observations, the number of power plants, and the total generation by state:
+```{r}
+dt[, .(number_of_observations = .N,
+       number_of_plants = uniqueN(orispl_code),
+       total_generation = sum(gload_mw, na.rm = T)), by = .(state)]
+```
+
+## Add columns by groups
+
+Let's say we want to add a column that's the max generation for each generator:
+```{r}
+dt[, max_gen := max(gload_mw, na.rm = T), by = .(orispl_code, unitid)]
+head(dt)
+```
+
+## Adding multiple columns applying a function based on groups
+Let's say I want to create a new column that's the mean of the NOx, SO2, and SO2 columns for each generator within each month. 
+```{r}
+cols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs")
+dt[, paste0(cols, "_mean") := lapply(.SD, mean), .SDcols = cols, by = .(orispl_code, unitid, op_month)] 
+head(dt)
+```
+
+## Add columns based on sequential rows
+
+Within groups, we can compute a column with sequential row IDs.
+```{r}
+dt[, no_rows := 1:.N, by = .(orispl_code, unitid)]
+head(dt)
+```
+What if we want to compute a new column that calculates the difference in CO2 emissions from the previous hour for every generator?
+```{r}
+dt[, diff_co2 := co2_mass_tons - shift(co2_mass_tons, type = "lag"), by = .(orispl_code, unitid)]
+tail(dt)
+```
+
+# Reshape between long and wide forms
+
+## Reshape from wide to long form using ``melt``
 
 ```{r}
 dt_long = melt(dt, 
@@ -289,7 +401,7 @@ dt_long = melt(dt,
 head(dt_long)
 ```
 
-### dcast (long to wide)
+## Reshape from long to wide form using ``dcast``
 
 ```{r}
 dt_wide = dcast(dt_long, orispl_code + unitid + op_date + op_hour ~ variable)
@@ -298,7 +410,7 @@ head(dt_wide)
 
 # Joining data
 
-### Read in facility data
+## Read in facility data
 ```{r}
 fac_dt = fread(here::here('data', facility_data))
 head(fac_dt)
@@ -311,20 +423,27 @@ head(fac_dt)
 
 ## Merge
 
-Merge (version 1):
+### Merge using the ``dt_a[dt_b]`` form
 ```{r}
-combined_dt = merge(dt, fac_dt, 
-      by.x = c("state", "orispl_code", "unitid"),
-      by.y = c("state", "facility_id_orispl", "unit_id"))
+combined_dt = dt[fac_dt, on = .(state = state, orispl_code = facility_id_orispl, unitid = unit_id), nomatch = 0]
 head(combined_dt)
 ```
-Merge (version 2):
+
+### Merge using the ``merge()`` function
+Merge (version 1):
 ```{r}
-combined_v2 = dt[fac_dt, on = .(state = state, orispl_code = facility_id_orispl, unitid = unit_id), nomatch = 0]
+combined_v2 = merge(dt, fac_dt, 
+      by.x = c("state", "orispl_code", "unitid"),
+      by.y = c("state", "facility_id_orispl", "unit_id"))
 head(combined_v2)
 ```
 
 ## Bind
+
+### Bind rows using ``rbind()``
+
+### Bind columns using ``cbind()``
+
 
 # Beyond...
 
