@@ -532,8 +532,35 @@ dt_cbind = cbind(dt_a, dt_b)
 head(dt_cbind)
 ```
 
-# Beyond...
+# Exercises
 
-## Which 10 power plants (not generators) emitted the most CO2?
+In this section, we're going to try and do some exercises using the datasets.
 
-## How much electricity generation, NOx emissions, SO2 emissions, etc are coming from coal vs natural gas plants?
+## Which 10 power plants (not generators) emitted the most CO2, SO2, and NOx?
+
+Aggregate to the power plant level (keeping the facility name and state as well, since I'm interested in knowing the name and location of the power plant):
+```{r}
+plant_emissions = combined_dt[, lapply(.SD, sum, na.rm = T), .SDcols = c("co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs"), 
+                              by = .(orispl_code, facility_name, state)]
+head(plant_emissions)
+```
+
+One way to get the top 10 plants is to just temporarily order and print the top ten rows:
+```{r}
+plant_emissions[order(-co2_mass_tons)][1:10,]
+```
+Another way is, if you want to actually modify the ``data.table`` to rank power plants by the amount of emissions, to create a new column that is a ranking of the emissions columns. ``data.table`` offers the ``frank()`` and ``frankv()`` functions. For example, ranking the CO2 emissions by power plant in descending order (so the highest emissions ranked first):
+```{r}
+plant_emissions[, rank_co2_mass_tons := frank(-co2_mass_tons)]
+head(plant_emissions)
+```
+A more efficient way to do this across multiple columns would be to use ``lapply()`` and ``frankv()`` (which allows you to rank multiple columns by supplying a vector of column names):
+```{r}
+plant_emissions[, paste0("rank_", cols) := lapply(.SD, frankv, order = -1L), .SDcols = cols]
+head(plant_emissions)
+```
+So now, if we want to get the top 10, top 15, top X, etc of either emission, we can simply refer to the ranking columns:
+```{r}
+plant_emissions[order(rank_so2_mass_lbs)][1:10]
+```
+A benefit of this method you can also how the top 10 SO2 emitters rank in the CO2 and NOx rankings, for example. 
