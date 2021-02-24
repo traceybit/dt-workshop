@@ -181,7 +181,6 @@ we used the following resources to build this preso:
       * keys
 5. random cool things
 6. random not cool things
-7. final thoughts
 
 ---
 
@@ -412,7 +411,7 @@ example_dt &lt;- data.table(x = 1:10, y = letters[1:10])
 
 ## create from scratch with `data.table()`
 
-## coerce an existing data frame with `as.data.frame()`
+## coerce an existing data frame with `as.data.table()`
 
 
 ```r
@@ -723,15 +722,37 @@ setnames(flight_dt, "dest", "destination")
 * update/create new columns with `:=`
       * "walrus"
       * modifies in place (i.e. by reference)
+---
+
+# Data manipulation
+
+## working with columns in `j`
+
+* update/create new columns with `:=`
+      * "walrus"
+      * modifies in place (i.e. by reference)
+      
 
 ```r
 ## create new column called month_day 
 ## dplyr
 flight_tbl %&gt;%
   mutate(month_day = paste(month, day, sep = "-"))
+```
 
+```r
 ## data.table -- this will modify in place
 flight_dt[, month_day := paste(month, day, sep = "-")]
+flight_dt[1:2]
+```
+
+```
+##    year month day dep_delay arr_delay carrier origin dest air_time distance
+## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
+## 2: 2014     1   1        -3        13      AA    JFK  LAX      363     2475
+##    hour month_day
+## 1:    9       1-1
+## 2:   11       1-1
 ```
 
 ---
@@ -740,13 +761,66 @@ flight_dt[, month_day := paste(month, day, sep = "-")]
 
 ## working with columns in `j`
 
-* `j` takes a list using `list()` or `.()`
+* update/create new columns with `:=`
+      * "walrus"
+      * modifies in place (i.e. by reference)
+      
+## LHS := RHS form
 
-* select columns
 
-* drop columns
+```r
+## calculate the mean dep_delay and mean arr_delay for carrier, origin, and dest
+## data.table -- this will modify in place
+flight_dt[, c("mean_dep_delay", "mean_arr_delay") := .(mean(dep_delay), mean(arr_delay))]
 
-* rename columns
+flight_dt[1:2]
+```
+
+```
+##    year month day dep_delay arr_delay carrier origin dest air_time distance
+## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
+## 2: 2014     1   1        -3        13      AA    JFK  LAX      363     2475
+##    hour month_day mean_dep_delay mean_arr_delay
+## 1:    9       1-1       12.46526       8.146702
+## 2:   11       1-1       12.46526       8.146702
+```
+
+---
+
+# Data manipulation
+
+## working with columns in `j`
+
+* update/create new columns with `:=`
+      * "walrus"
+      * modifies in place (i.e. by reference)
+      
+## LHS := RHS form
+
+## functional form
+
+
+```r
+## drop mean_dep_delay and mean_arr_delay
+## data.table -- this will modify in place
+flight_dt[, `:=`(mean_dep_delay = NULL,
+                 mean_arr_delay = NULL)][1:2]
+```
+
+```
+##    year month day dep_delay arr_delay carrier origin dest air_time distance
+## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
+## 2: 2014     1   1        -3        13      AA    JFK  LAX      363     2475
+##    hour month_day
+## 1:    9       1-1
+## 2:   11       1-1
+```
+
+---
+
+# Data manipulation
+
+## working with columns in `j`
 
 * update/create new columns with `:=`
 
@@ -756,6 +830,19 @@ flight_dt[, month_day := paste(month, day, sep = "-")]
 ## drop month_day
 ## data.table -- this will modify in place
 flight_dt[, month_day := NULL]
+
+flight_dt[1:3]
+```
+
+```
+##    year month day dep_delay arr_delay carrier origin dest air_time distance
+## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
+## 2: 2014     1   1        -3        13      AA    JFK  LAX      363     2475
+## 3: 2014     1   1         2         9      AA    JFK  LAX      351     2475
+##    hour
+## 1:    9
+## 2:   11
+## 3:   19
 ```
 
 ---
@@ -767,6 +854,7 @@ flight_dt[, month_day := NULL]
 * by takes a list using `list()` or `.()`
 
 * group by and summarise (does *not* modify in place)
+--
 
 
 ```r
@@ -834,69 +922,6 @@ flight_dt[1:2]
 
 # Data manipulation
 
-## grouping with `by`
-
-* by takes a list using `list()` or `.()`
-
-* group by and summarise (does *not* modify in place)
-
-* group by and create a new column using `:=` (modifies in place)
-      
-      * LHS := RHS form
-
-
-```r
-## calculate the mean dep_delay and mean arr_delay for carrier, origin, and dest
-## data.table -- this will modify in place
-flight_dt[, c("mean_dep_delay", "mean_arr_delay") := .(mean(dep_delay), mean(arr_delay)), 
-          by = .(carrier, origin, dest)]
-flight_dt[1:2]
-```
-
-```
-##    year month day dep_delay arr_delay carrier origin dest air_time distance
-## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
-## 2: 2014     1   1        -3        13      AA    JFK  LAX      363     2475
-##    hour mean_dep_delay mean_arr_delay
-## 1:    9       5.935932        2.41866
-## 2:   11       5.935932        2.41866
-```
-
----
-
-# Data manipulation
-
-## grouping with `by`
-
-* by takes a list using `list()` or `.()`
-
-* group by and summarise (does *not* modify in place)
-
-* group by and create a new column using `:=` (modifies in place)
-      
-      * LHS := RHS form
-      
-      * functional form
-
-```r
-## drop mean_dep_delay and mean_arr_delay
-## data.table -- this will modify in place
-flight_dt[, `:=`(mean_dep_delay = NULL,
-                 mean_arr_delay = NULL)][1:2]
-```
-
-```
-##    year month day dep_delay arr_delay carrier origin dest air_time distance
-## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
-## 2: 2014     1   1        -3        13      AA    JFK  LAX      363     2475
-##    hour
-## 1:    9
-## 2:   11
-```
----
-
-# Data manipulation
-
 ## helpful operators
 
 * calculate the number of rows with `.N`
@@ -922,15 +947,14 @@ flight_dt[, .N, by = carrier][1]
 
 ```r
 ## compare with 
-flight_dt[, n := .N, by = carrier]
-flight_dt[1]
+flight_dt[, n := .N, by = carrier][1]
 ```
 
 ```
 ##    year month day dep_delay arr_delay carrier origin dest air_time distance
 ## 1: 2014     1   1        14        13      AA    JFK  LAX      359     2475
-##    hour     n
-## 1:    9 26302
+##    hour mean_dep_delay     n
+## 1:    9       5.935932 26302
 ```
 
 
@@ -1111,14 +1135,14 @@ flight_dt[, delay_diff := dep_delay - arr_delay][, diff_over_at := delay_diff / 
 
 # Data manipulation
 
-## keys NOTE TO MEAS: not sure if i'm really getting this
+## set keys
 keys are like row names. setting keys...
 
 * reorders the rows of a data.table by the key columns in increasing order
 
-* marks those columns as key columns by setting attribute called `sorted`
+* makes lookups in key columns faster
 
-* can make certain functions even faster
+* allows for merging without specifying merging columns
 
 --
 
@@ -1141,26 +1165,78 @@ flight_dt[.("JFK", "MIA")][2]
 ```
 ##    year month day dep_delay arr_delay carrier origin dest air_time distance
 ## 1: 2014     1   1         7        -8      AA    JFK  MIA      166     1089
-##    hour     n
-## 1:    9 26302
+##    hour mean_dep_delay     n
+## 1:    9       9.938166 26302
 ```
 
 ---
 
 # random cool things
 
-## it's soooo fast!!! what shoudl we add?
+## do stuff from the terminal
 
 
 ---
 
 # random not so cool things
 
-## expand.grid?
+## no equivalent to `cross()` / `expand_grid`?
+
+
+```r
+df1 &lt;- data.table(a = c(1986, 1990, 2014))
+df2 &lt;- data.table(b = c(1, 1, 2))
+
+expand_grid(df1, df2)
+```
+
+```
+## # A tibble: 9 x 2
+##       a     b
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1  1986     1
+## 2  1986     1
+## 3  1986     2
+## 4  1990     1
+## 5  1990     1
+## 6  1990     2
+## 7  2014     1
+## 8  2014     1
+## 9  2014     2
+```
 
 ---
 
-# final thoughts
+# random not so cool things
+
+* no equivalent to `cross()` / `expand_grid`?
+
+
+```r
+df1 &lt;- data.table(a = c(1986, 1990, 2014))
+df2 &lt;- data.table(b = c(1, 1, 2))
+
+# expand_grid(df1, df2)
+crossing(df1, df2)
+```
+
+```
+## # A tibble: 6 x 2
+##       a     b
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1  1986     1
+## 2  1986     2
+## 3  1990     1
+## 4  1990     2
+## 5  2014     1
+## 6  2014     2
+```
+
+---
+
+# live coding!
+
+## time to move to the interactive folder
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
