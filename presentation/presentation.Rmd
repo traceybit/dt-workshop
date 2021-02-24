@@ -50,8 +50,8 @@ knitr::include_graphics("img/measrainsey.png")
 ]
 
 .center[**Meas Meng**]
-* Tell us about yourself!
-* Blah blah
+* Postdoc at emLab and CETlab (UCSB)
+* Research interests: water-energy-climate nexus, electricity modeling, stationery
 
 ]
 
