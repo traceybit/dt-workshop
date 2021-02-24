@@ -261,7 +261,12 @@ head(dt)
 tail(dt)
 ```
 
-Another useful function to know is ``fcase``, which is like a nested version of ``fifelse``. So, let's say we have multiple conditions we want to use to create columns based on. Instead of doing something like ``fifelse(test_1, yes, fifelse(test_2, yes, fifelse(test_3, yes, no)))``, we can just use ``fcase``. ``fcase`` is comparable to dplyr’s ``case_when()``. The basic syntax of ``fcase`` is ``fcase(condition1, "value1", condition2, "value2", etc)`` 
+Another useful function to know is ``fcase``, which is like a nested version of ``fifelse``. So, let's say we have multiple conditions we want to use to create columns based on. Instead of doing something like ``fifelse(test_1, yes, fifelse(test_2, yes, fifelse(test_3, yes, no)))``, we can just use ``fcase``. ``fcase`` is comparable to dplyr’s ``case_when()``. The basic syntax of ``fcase`` is ``fcase(condition1, "value1", condition2, "value2", etc)``. So let's say we want to create a column ``d`` based on the following conditions:
+
+* if the generation at the hour is less than 100 MW, ``d`` is "small"
+* if the generation at the hour is between 100-300 MW, ``d`` is "small-ish"
+* if the generation at the hour is between 300-500 MW, ``d`` is "medium"
+* if the generation at the hour is larger than 500 MW, ``d`` is "large"
 ```{r}
 dt[, d := fcase(gload_mw < 100, "small",
                 gload_mw %between% c(100, 300), "small-ish",
@@ -269,10 +274,11 @@ dt[, d := fcase(gload_mw < 100, "small",
                 gload_mw > 500, "large")]
 ```
 
+Let's see how the data looks for instances where ``gload_mw`` is exactly 500.
 ```{r}
 head(dt[gload_mw == 500])
 ```
-
+Or if the generation is greater than 500 MW:
 ```{r}
 head(dt[gload_mw > 500])
 ```
@@ -424,13 +430,16 @@ head(fac_dt)
 ## Merge
 
 ### Merge using the ``dt_a[dt_b]`` form
+
+One way to merge
 ```{r}
 combined_dt = dt[fac_dt, on = .(state = state, orispl_code = facility_id_orispl, unitid = unit_id), nomatch = 0]
 head(combined_dt)
 ```
 
 ### Merge using the ``merge()`` function
-Merge (version 1):
+
+
 ```{r}
 combined_v2 = merge(dt, fac_dt, 
       by.x = c("state", "orispl_code", "unitid"),
@@ -442,11 +451,89 @@ head(combined_v2)
 
 ### Bind rows using ``rbind()``
 
+To combine the rows of two data.tables, we can use the ``rbind()`` function. 
+
+Let's create some random chunks of the ``dt`` data.table:
+```{r}
+dt_1 = dt[1:500,] 
+dt_2 = dt[100000:100500,] 
+dt_3 = dt[200000:200500,] 
+```
+
+We can ``dt_1`` and ``dt_2`` together:
+```{r}
+dt_rbind = rbind(dt_1, dt_2)
+head(dt_rbind)
+```
+What happens if the the two data.tables have different orders of columns?
+To check, let's reorder the column order of ``dt_1``:
+```{r}
+setcolorder(dt_1, colnames(dt_1)[c(2,1,3:10)])
+head(dt_1)
+```
+Now let's try to bind again:
+```{r}
+dt_rbind = rbind(dt_1, dt_2)
+head(dt_rbind)
+```
+We can check the tail end of the binded data.table to check also:
+```{r}
+tail(dt_rbind)
+```
+
+Still works! It seems ``rbind()`` checked and rearranged the column order of ``dt_2`` to be the same as ``dt_1``. ``rbind()`` has an argument called ``use.names`` that you can set to TRUE or FALSE, so if you want to ensure that the function is using the names to match, you can set it to TRUE. If we set it to false, the ``rbind()`` function will just drop ``dt_1`` on top of ``dt_2``:
+
+```{r}
+head(rbind(dt_1, dt_2, use.names = F))
+```
+```{r}
+tail(rbind(dt_1, dt_2, use.names = F))
+```
+What happens if a column in one of the data.tables doesn't exist in another? Let's check by deleting the state column in ``dt_1``:
+```{r}
+dt_1[, state := NULL]
+head(dt_1)
+```
+If we try to bind...
+```{r}
+dt_rbind = rbind(dt_1, dt_2)
+head(dt_rbind)
+```
+Error! But the error gives us a useful fix: we can use the ``FILL`` argument to fill in missing columns.
+```{r}
+dt_rbind = rbind(dt_1, dt_2, fill = T)
+head(dt_rbind)
+```
+We can see that the state column has been moved to the farthest right, and all the rows for ``dt_1`` are NAs.
+
+To bind more than two data.tables, we can ``rbindlist()``, in which we can list multiple data.tables and use the same arguments as the regular ``rbind()`` function. So, let's bind ``dt_1``, ``dt_2``, and ``dt_3``:
+```{r}
+dt_rbind = rbindlist(list(dt_1, dt_2, dt_3), use.names = T, fill = T)
+head(dt_rbind)
+```
+```{r}
+tail(dt_rbind)
+```
+
 ### Bind columns using ``cbind()``
 
+The ``cbind()`` function allows us to join data.tables by column. To show an example, let's split up ``dt`` into two data.tables (one with the first 5 columns, another with the last 5 columns):
+```{r}
+dt_a = dt[, c(1:5)]
+head(dt_a)
+```
+```{r}
+dt_b = dt[, c(6:10)]
+head(dt_b)
+```
+Using ``cbind()`` to join ``dt_a`` and ``dt_b`` together:
+```{r}
+dt_cbind = cbind(dt_a, dt_b)
+head(dt_cbind)
+```
 
 # Beyond...
 
-Can we calculate which 10 power plants (not generators) emitted the most CO2?
+## Which 10 power plants (not generators) emitted the most CO2?
 
-How much electricity generation, NOx emissions, SO2 emissions, etc are coming from coal vs natural gas plants?
+## How much electricity generation, NOx emissions, SO2 emissions, etc are coming from coal vs natural gas plants?
