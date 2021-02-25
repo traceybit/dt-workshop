@@ -103,12 +103,12 @@ View first few rows of the hourly data:
 ```{r}
 head(dt)
 ```
-We can see that the column names are not ideal (spaces and parantheses are not easy to work with). Thus, let's use the ``clean_names`` package in the ``janitor`` package to clean up the column names:
+We can see that the column names are not ideal (spaces and parentheses are not easy to work with). Thus, let's use the ``clean_names`` package in the ``janitor`` package to clean up the column names:
 ```{r}
 dt = clean_names(dt)
 head(dt)
 ```
-Nice! Now the column names are all lower case, the spaces have been replaced with underscores, and the parantheses and slashes are gone. There are some problematic column names (for example, mmBtu has been changed to mm_btu, but we will fix those columns later).
+Nice! Now the column names are all lower case, the spaces have been replaced with underscores, and the parentheses and slashes are gone. There are some problematic column names (for example, mmBtu has been changed to mm_btu, but we will fix those columns later).
 
 # ``set`` functions
 
@@ -118,9 +118,22 @@ Nice! Now the column names are all lower case, the spaces have been replaced wit
 
 Set keys to enable fast repeated lookup in specified columns using ``dt[.(value), ]``, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). Setting keys can also be used for merging without specifying merging columns using ``dt_a[dt_b]``.
 We're going to set the keys of ``dt`` as the **orispl_code**, **unitid**, **op_date**, and **op_hour** columns:
+
+First, check to see if any keys are specified already:
+```{r}
+key(dt)
+```
+
+Now let's specify the keys.
 ```{r}
 setkey(dt, orispl_code, unitid, op_date, op_hour)
 ```
+
+Now if you check, you should see some keys specified:
+```{r}
+key(dt)
+```
+
 
 ## ``setnames()``
 
@@ -259,6 +272,11 @@ head(dt)
 ```{r}
 dt[op_date <= "06-01-2019", b := 2]
 head(dt)
+```
+
+Note that b is NA for dates that do not satisfy the filter:
+```{r}
+tail(dt)
 ```
 
 ### Add column based on cases (using ``fifelse`` and ``fcase``)
