@@ -259,4 +259,9 @@
     
     crossing(df1, df2)
 
+# extras ----------------
+    
+  ## running shell commands in fread
+    dt_extra = fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")
+    
   
