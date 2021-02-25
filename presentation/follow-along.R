@@ -47,7 +47,7 @@
 # read in flight data using data.table -------
   
   flight_dt = fread(here::here("data", flight_data))
-  head(flight_dt)
+  head(flight_dt) ## notice the difference in what is printed in head(flight_dt)
   str(flight_dt)
   
 # create a new object
@@ -71,6 +71,8 @@
   
 # coerce an existing data object by reference (no need to reassign)
   
+  ## recall: temp1 is still a data frame
+  ## set at a data.table
   setDT(temp1)
     
   ## notice that nothing prints... check the structure to see the class of the object
@@ -165,7 +167,7 @@
       ungroup()
     
     ## data.table -- this DOES NOT modify in place
-    flight_dt[, .(mean_dep_delay = mean(dep_delay)), by = .(carrier, origin, dest)]
+    flight_dt[, .(mean_dep_delay = mean(dep_delay)), by = .(carrier, origin, destination)]
 
   ## mutate: calculate the mean dep_delay for carrier, origin, and dest
     ## dplyr
@@ -175,11 +177,11 @@
       ungroup()
     
     ## data.table -- this will modify in place
-    flight_dt[, mean_dep_delay := mean(dep_delay), by = .(carrier, origin, dest)]
+    flight_dt[, mean_dep_delay := mean(dep_delay), by = .(carrier, origin, destination)]
 
   ##  LHS := RHS form 
     flight_dt[, c("mean_dep_delay", "mean_arr_delay") := .(mean(dep_delay), mean(arr_delay)), 
-              by = .(carrier, origin, dest)]
+              by = .(carrier, origin, destination)]
     
   ## Functional form
     # drop mean_dep_delay and mean_arr_delay
@@ -206,7 +208,7 @@
     
     ## uniqueN and .SD
     ## how many unique origin and dest locations by carrier?
-    flight_dt[, lapply(.SD, uniqueN), by = carrier, .SDcols = c("origin", "dest")]
+    flight_dt[, lapply(.SD, uniqueN), by = carrier, .SDcols = c("origin", "destination")]
   
   ## creating and modifying copies
     temp1_copy <- temp1
@@ -235,7 +237,7 @@
   
   ## Chaining
     ## dplyr
-    flight_dt %>%
+    flight_tbl %>%
       mutate(delay_diff = dep_delay - arr_delay,
              diff_over_at = delay_diff / air_time)
     
@@ -244,11 +246,19 @@
     
 # setkey ------
   
-  setkey(dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
+  ## read in hourly data
+  hourly_dt <- fread(here::here("data", hourly_data))
   
-# summarize again -----
+  ## set keys  
+  setkey(hourly_dt, ORISPL_CODE, UNITID, OP_DATE, OP_HOUR)
   
-  dt[, .(total_gload = sum(gload_mw, na.rm = T)), by = .(ORISPL_CODE, UNITID)]
+  ## check for keys
+  key(hourly_dt)
+
+  
+# summarize  -----
+  
+  hourly_dt[, .(total_gload = sum(`GLOAD (MW)`, na.rm = T)), by = .(ORISPL_CODE, UNITID)]
     
 ## crossing/expand grid
     
