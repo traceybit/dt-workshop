@@ -548,12 +548,10 @@ What happens if a column in one of the data.tables doesn't exist in another? Let
 dt_1[, state := NULL]
 head(dt_1)
 ```
-If we try to bind...
-```{r}
-dt_rbind = rbind(dt_1, dt_2)
-head(dt_rbind)
-```
+If we try to bind using ``dt_rbind = rbind(dt_1, dt_2)``...
+
 Error! But the error gives us a useful fix: we can use the ``FILL`` argument to fill in missing columns.
+
 ```{r}
 dt_rbind = rbind(dt_1, dt_2, fill = T)
 head(dt_rbind)
