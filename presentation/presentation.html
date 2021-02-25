@@ -1177,14 +1177,15 @@ flight_dt[.("JFK", "MIA")][2]
 
 Let's say there's a zip file that has one CSV file inside. We can bypass the steps of downloading and unzipping it by using shell commands like ``curl`` and ``funzip`` directly in ``fread()``:
 
-``fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")``
+`fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")`
 
 ---
 
-# random not-so-cool things
+# some not-so-cool things
 
-## no equivalent to `cross()` / `expand_grid`?
-  
+## no equivalent to cross or expand_grid
+
+note from meas: for some reason adding a code chunk causes the next slide to break
 
 ```r
 df1 &lt;- data.table(a = c(1986, 1990, 2014))
@@ -1213,7 +1214,7 @@ expand_grid(df1, df2)
 # random not so cool things
 
 * no equivalent to `cross()` / `expand_grid`?
-  
+
 
 ```r
 df1 &lt;- data.table(a = c(1986, 1990, 2014))
