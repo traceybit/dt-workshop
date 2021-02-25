@@ -23,6 +23,6 @@ As for packages, you will need the following R packages to follow along with the
   
 ## Data
   
-We will be using a few different datasets for our presentation and hands-on coding session. Due to the size of the data files, they were not hosted here in the repo. Instead, please download the data files using this link: 
+We will be using a few different datasets for our presentation and hands-on coding session. Due to the size of the data files, they were not hosted here in the repo. Instead, please download the data files using this link: [dt-workshop-data](https://drive.google.com/drive/folders/1QGHJ-HkCxHyuj5axptNkPYkLmyF8kygS?usp=sharing)
 
 Then, drop the three data .csv files into the ``/data`` folder here in the repo. The ``.gitignore`` already includes the data .csv files in there (assuming they are properly located in the ``/data`` folder), so the files should not be tracked to be committed.
