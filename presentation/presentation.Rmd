@@ -282,14 +282,12 @@ state_dplyr <- function() {
     group_by(STATE, FACILITY_NAME) %>%
     summarise(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
               mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)) %>%
-    ungroup()
-  }
+    ungroup() }
 state_dt <- function() {
   hourly_dt <- fread(here::here("data", hourly_data))
   hourly_dt[, .(mean_so2_rate = mean(`SO2_RATE (lbs/mmBtu)`, na.rm = T),
                 mean_nox_rate = mean(`NOX_RATE (lbs/mmBtu)`, na.rm = T)),
-            by = .(STATE, FACILITY_NAME)]
-  }
+            by = .(STATE, FACILITY_NAME)] }
 ```
 
 ---
@@ -655,8 +653,8 @@ flight_tbl %>%
   select(month, day, carrier)
   
 ## data.table (the following three do the same thing)
-# flight_dt[, list(month, day, carrier)]
 # flight_dt[, c("month", "day", "carrier")]
+# flight_dt[, list(month, day, carrier)]
 flight_dt[, .(month, day, carrier)]
   
 ```
@@ -674,10 +672,7 @@ flight_dt[, .(month, day, carrier)]
 * drop columns
 ```{r eval = FALSE}
 ## drop columns month, day, and carrier
-## dplyr (these two do the same)
-flight_tbl %>%
-  select(-month, -day, -carrier)
-
+## dplyr 
 flight_tbl %>%
   select(!c(month, day, carrier))
   
@@ -1054,21 +1049,13 @@ flight_dt[.("JFK", "MIA")][2]
 
 ---
 
-# extra cool things
+# random extras
 
-## running shell commands in ``fread()``
+## some not-so-cool things
 
-Let's say there's a zip file that has one CSV file inside. We can bypass the steps of downloading and unzipping it by using shell commands like ``curl`` and ``funzip`` directly in ``fread()``:
+### no equivalent to cross or expand_grid
 
-`fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")`
 
----
-
-# some not-so-cool things
-
-## no equivalent to cross or expand_grid
-
-note from meas: for some reason adding a code chunk causes the next slide to break
 ```{r }
 df1 <- data.table(a = c(1986, 1990, 2014))
 df2 <- data.table(b = c(1, 1, 2))
@@ -1078,10 +1065,12 @@ expand_grid(df1, df2)
 ```
 
 ---
-  
-# random not so cool things
 
-* no equivalent to `cross()` / `expand_grid`?
+# random extras
+  
+## some not-so-cool things
+
+### no equivalent to cross or expand_grid
 
 ```{r }
 df1 <- data.table(a = c(1986, 1990, 2014))
@@ -1091,6 +1080,18 @@ df2 <- data.table(b = c(1, 1, 2))
 crossing(df1, df2)
 
 ```
+
+---
+
+# random extras
+
+## some cool things
+
+### running shell commands in ``fread()``
+
+Let's say there's a zip file that has one CSV file inside. We can bypass the steps of downloading and unzipping it by using shell commands like ``curl`` and ``funzip`` directly in ``fread()``:
+
+`fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")`
 
 ---
   
