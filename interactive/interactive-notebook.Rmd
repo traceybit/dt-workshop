@@ -565,6 +565,7 @@ To bind more than two data.tables, we can ``rbindlist()``, in which we can list 
 dt_rbind = rbindlist(list(dt_1, dt_2, dt_3), use.names = T, fill = T)
 head(dt_rbind)
 ```
+
 ```{r}
 tail(dt_rbind)
 ```
