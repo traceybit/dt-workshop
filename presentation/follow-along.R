@@ -270,6 +270,14 @@
     expand_grid(dt1, dt2)
     
     crossing(dt1, dt2)
+    
+  # data.table example
+  
+    dt1[, k := 1]
+    dt2[, k := 1]
+    res = dt1[dt2, on = .(k), allow.cartesian = T]
+    res[, k := NULL]
+    res
 
 # extras ----------------
     
