@@ -262,12 +262,14 @@
     
 ## crossing/expand grid
     
-    df1 <- data.table(a = c(1986, 1990, 2014))
-    df2 <- data.table(b = c(1, 1, 2))
+  dt1 <- data.table(a = c(1986, 1990, 2014))
+  dt2 <- data.table(b = c(1, 1, 2), c = c('x', 'y', 'z'))
+  
+  head(crossing(dt1, dt2))
     
-    expand_grid(df1, df2)
+    expand_grid(dt1, dt2)
     
-    crossing(df1, df2)
+    crossing(dt1, dt2)
 
 # extras ----------------
     
