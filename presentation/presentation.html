@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 
 # Introduction to data.table
 ### Meas Meng and Tracey Mangin
-### Last compiled on 25 February, 2021
+### Last compiled on 26 February, 2021
 
 ---
 
@@ -1105,7 +1105,7 @@ head(temp2_copy)
 ```r
 ## chain operations
 ## dplyr
-    flight_dt %&gt;%
+    flight_tbl %&gt;%
       mutate(delay_diff = dep_delay - arr_delay,
              diff_over_at = delay_diff / air_time)
 
@@ -1203,28 +1203,27 @@ expand_grid(df1, df2)
   
 ## some not-so-cool things
 
-### no equivalent to cross or expand_grid
+### sf compatibility
 
+Grant's take: It still works, but not quite as slick as the native tidy approach. (Thanks, Grant!)
 
-```r
-df1 &lt;- data.table(a = c(1986, 1990, 2014))
-df2 &lt;- data.table(b = c(1, 1, 2))
+See a helpful resource that Grant developed on [Spatial Analysis in R](https://raw.githack.com/uo-ec607/lectures/master/09-spatial/09-spatial.html#Aside:_sf_and_datatable)
 
-# expand_grid(df1, df2)
-crossing(df1, df2)
-```
+---
 
-```
-## # A tibble: 6 x 2
-##       a     b
-##   &lt;dbl&gt; &lt;dbl&gt;
-## 1  1986     1
-## 2  1986     2
-## 3  1990     1
-## 4  1990     2
-## 5  2014     1
-## 6  2014     2
-```
+# random extras
+  
+## some not-so-cool things
+
+### sf compatibility
+
+But... the grouped operations still work pretty well.
+
+.center[
+&lt;img src="img/speedtest.png" width="80%" /&gt;
+]
+
+[Link to tweet](https://twitter.com/grant_mcdermott/status/1363392556181032963?s=21)
 
 ---
 
@@ -1237,6 +1236,9 @@ crossing(df1, df2)
 Let's say there's a zip file that has one CSV file inside. We can bypass the steps of downloading and unzipping it by using shell commands like ``curl`` and ``funzip`` directly in ``fread()``:
 
 `fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")`
+
+### dtplyr
+See [this dtplyr doc for more information](https://dtplyr.tidyverse.org/): "dtplyr provides a data.table backend for dplyr. The goal of dtplyr is to allow you to write dplyr code that is automatically translated to the equivalent, but usually much faster, data.table code."
 
 ---
   
