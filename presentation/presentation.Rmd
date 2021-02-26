@@ -151,7 +151,7 @@ knitr::include_graphics("img/mindblown.png")
 
 we used the following resources to build this preso:
 
-- [Data cleaning & wrangling: (2) data.table, Grant McDermott](http://rmarkdown.rstudio.com>)
+- [Data cleaning & wrangling: (2) data.table, Grant McDermott](https://raw.githack.com/uo-ec607/lectures/master/05-datatable/05-datatable.html#1)
       * detailed information and examples
 
 - [Introduction to data.table](https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html#what-is-datatable-1a)
