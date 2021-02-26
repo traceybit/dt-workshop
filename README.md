@@ -2,7 +2,7 @@
 
 This is a workshop geared at giving an introduction to, as well as some hands-on experience in using, the ``data.table`` package in R.
 
-To get this workshop's materials, please feel either **fork** this repository or **download** it as a .zip.
+To get this workshop's materials, please feel free to either **fork** this repository or **download** it as a .zip.
 
 ## Workshop structure
 
