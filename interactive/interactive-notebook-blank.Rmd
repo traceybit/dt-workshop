@@ -1,0 +1,554 @@
+---
+title: "Eco-data-science data.table workshop"
+output: html_notebook
+
+---
+
+### shortcuts
+
+Run Chunk : *Cmd+Shift+Enter*
+
+Insert Chunk : *Cmd+Option+I*
+
+Preview HTML : *Cmd+Shift+K*
+
+# Introduction
+
+## About the data
+
+The datasets we will be using in this interactive session are taken from the Environmental Protection Agency's (EPA) Air Markets Program Data (AMPD) program: https://ampd.epa.gov/ampd/. 
+
+The first dataset (the ``epa_ampd_hourly_2019_selected.csv`` file) is a dataset of hourly emissions, electricity generation, and fuel consumption for coal and natural gas across the country. Because the full dataset downloaded from the AMPD site is extremely large, we have filtered out the dataset to only have generators in the states of Alaska, California, Minnesota, New Jersey, New York, and Texas. The following columns are included in the dataset:
+
+| Column name                 | Description                           |
+| :---                        |    :---                               |   
+| STATE                       | state where facility (power plant) is located       |
+| FACILITY_NAME               | name of facility (power plant)        |
+| ORISPL_CODE                 | the plant ID code assigned by the Department of Energy's Energy Information Administration (EIA)       |
+| UNITID                      | identifier for generating units (generator) at the facility (power plant)        |
+| OP_DATE                     | the date on which a particular pollutant concentration or flow rate was recorded        |
+| OP_HOUR                     | the clock hour of the day in which a particular pollutant concentration or flow rate was recorded (range of values 00-23)        |
+| OP_TIME                     | the fraction of the clock hour during which the unit combusted any fuel        |
+| GLOAD (MW)                  | amount of electricity generated during that hour in megawatts (MW)        |
+| SLOAD (1000lb/hr)           | steam load in units of 1,000 lbs (per hour)        |
+| SO2_MASS (lbs)              | mass of SO2 emitted in units of lbs        |
+| SO2_MASS_MEASURE_FLG        | code number indicating if reported SO2 mass was measured or substituted        |
+| SO2_RATE (lbs/mmBtu)        | rate of SO2 emitted per fuel consumed in units of lbs per mmBtu        |
+| NOX_RATE (lbs/mmBtu)        | rate of NOx emitted per fuel consumed in units of lbs per mmBtu         |
+| NOX_MASS (lbs)              | mass of NOx emitted in units of lbs        |
+| NOX_MASS_MEASURE_FLG        | code number indicating if reported NOx mass was measured or substituted        |
+| CO2_MASS (tons)             | mass of CO2 emitted in units of metric tons        |
+| CO2_MASS_MEASURE_FLG        | code number indicating if reported CO2 mass was measured or substituted        |
+| CO2_RATE (tons/mmBtu)       | rate of CO2 emitted per fuel consumed in units of lbs per mmBtu        |
+| CO2_RATE_MEASURE_FLG        | code number indicating if reported CO2 rate was measured or substituted        |
+| HEAT_INPUT (mmBtu)          | the calculated heat input rate for the hour in million Btu (mmBtu)        |
+| FAC_ID                      | EPA-specific facility ID        |
+| UNIT_ID                     | EPA-specific unit id        |
+
+
+The second dataset (the ``facility_01-27-2021_224024745.csv`` file) is a list of generators and various attributes, such as their fuel type, generator type, and location. The columns included in the dataset are:
+
+| Column name                 | Description                           |
+| :---                        | :---                                  |   
+| State                       | state where facility (power plant) is located       |
+| Facility Name               | name of facility (power plant)        |
+| Facility ID (ORISPL)        | the plant ID code assigned by the Department of Energy's Energy Information Administration (EIA)       |
+| Unit ID                     | identifier for generating units (generator) at the facility (power plant)        |
+| Year                        | year of facility data       |
+| Facility Latitude           | latitude of facility        |
+| Facility Longitude          | longitude of facility       |
+| Unit Type                   | type of generating unit        |
+| Fuel Type (Primary)         | primary fuel burned at generating unit        |
+| Fuel Type (Secondary)       | secondary fuel (if there is one) burned at generating unit        |
+| Operating Status            | status on whether generating unit is operating during year of data        |
+
+
+# Packages
+
+## Install packages
+
+Along with the ``data.table`` package, we will also be using the ``here`` package for this notebook. The ``here`` package basically helps us [write something here]. 
+We also briefly use the ``janitor`` package to clean up column names.
+```{r}
+# install.packages("data.table")
+# install.packages("here")
+# install.packages("janitor")
+```
+
+## Load packages
+
+Load the ``data.table`` and ``janitor`` packages. We don't need to load the ``here`` package because we can explicitly call on the package when using the here function (``here::here()``).
+```{r}
+
+```
+
+# Read in data
+
+## File names
+Here, we are just explicitly setting objects/variables for the data files, so we can easily use them later.
+```{r}
+hourly_data     = 'epa_ampd_hourly_2019_selected.csv'
+facility_data   = 'facility_01-27-2021_224024745.csv'
+```
+
+## Read in CSV files using ``fread``
+
+Use the ``fread`` function to read in the hourly data. 
+```{r}
+
+```
+
+View first few rows of the hourly data:
+```{r}
+
+```
+We can see that the column names are not ideal (spaces and parentheses are not easy to work with). Thus, let's use the ``clean_names`` package in the ``janitor`` package to clean up the column names:
+```{r}
+
+```
+Nice! Now the column names are all lower case, the spaces have been replaced with underscores, and the parentheses and slashes are gone. There are some problematic column names (for example, mmBtu has been changed to mm_btu, but we will fix those columns later).
+
+# ``set`` functions
+
+``data.table``'s **set** functions allow us to modify the ``data.table``s in place, without having to create new objects, therefore saving memory. In this section, we'll be going over some (most?) of the **set** functions.
+
+## ``setkey()``
+
+Set keys to enable fast repeated lookup in specified columns using ``dt[.(value), ]``, particularly for columns/keys that you frequently use (e.g., if you keep summarizing across the same groups). Setting keys can also be used for merging without specifying merging columns using ``dt_a[dt_b]``.
+We're going to set the keys of ``dt`` as the **orispl_code**, **unitid**, **op_date**, and **op_hour** columns:
+
+First, check to see if any keys are specified already:
+```{r}
+
+```
+
+Now let's specify the keys.
+```{r}
+
+```
+
+Now if you check, you should see some keys specified:
+```{r}
+
+```
+
+
+## ``setnames()``
+
+``setnames()`` allows us to change the names of columns by name with built-in checks and warnings (e.g., if any old names are missing or appear more than once). The basic syntax is ``setnames(dt, "old", "new")``.
+
+### Rename a single column
+```{r}
+
+```
+
+### Rename multiple columns
+```{r}
+
+```
+## ``setorder()``
+
+``setorder()`` allows us to set the order of ``data.table``s in place, either by one column or multiple columns. ``setorderv()`` works in the same way, but in ``setorderv()`` you would provide a character vector of column names, e.g. ``c("col1", "col2")``, whereas in ``setorder()`` the column names do not have to be a character vector.
+
+### Temporarily sorting
+If you just want to print out a sorted version of a ``data.table`` (without setting the order in place), you can just use the ``order()`` function like ``dt[order(col)]``. For example, to print out a version of ``dt`` sorted by generation:
+```{r}
+
+```
+
+### Actually sorting the data table in place
+
+Order ``dt`` by the orispl_code column:
+```{r}
+
+```
+
+We can also order the datable by multiple columns. For example, let's say we want ``dt`` to be ordered by the following columns (in this order): state, orispl_code, unitid, op_date, and op_hour. 
+```{r}
+
+```
+## ``setcolorder()``
+
+The ``setcolorder()`` function can be used to set the order of columns of a data table. So, let's reorder the columns to be in the following order:
+state, facility_name, orispl_code, unitid, op_date, op_hour, op_time, gload_mw, heat_input_mmbtu, co2_mass_tons, so2_mass_lbs, nox_mass_lbs, sload_1000lb_hr, co2_rate_tons_mmbtu, so2_rate_lbs_mmbtu, nox_rate_lbs_mmbtu, co2_mass_measure_flg, co2_rate_measure_flg, so2_mass_measure_flg, so2_rate_measure_flg, nox_mass_measure_flg, nox_rate_measure_flg, fac_id, unit_id.
+
+```{r}
+
+```
+
+# Filter/subset rows using i
+
+In this section, we will go over how to filter ``dt``'s rows in a few different ways.
+
+## Filter using row numbers
+One way to subset rows is by specifying row numbers. For example, let's say we want just the first three rows of ``dt``:
+```{r}
+
+```
+
+## Filter using operators
+
+Some of the operators that can be used to filter/subset rows are: <, >, >=, <=, is.na(), !is.na(), is.infinite(), !is.infinite(), %in%, %like%, %between%, %chin%, and probably others we're not thinking of right now. When filtering, ``!`` represents **not** matching, ``|`` represents **or**, and ``&`` represents **and**. 
+
+Let's filter ``dt`` for all rows where the **state** is California.
+```{r}
+
+```
+What about if we want to filter for rows where the state is California or New Jersey?
+```{r}
+
+```
+A less efficient way would be to use the ``|`` operator:
+```{r}
+
+```
+
+The operators can also be used to filter dates. Let's filter for all rows that occurred after July 1, 2019:
+```{r}
+
+```
+The ``%like`` operator can be used to filter for rows that match a substring. For example, we can filter for rows where the facility name has the word "Energy" in it:
+```{r}
+
+```
+
+All of the filters thus far only print the resulting rows but do not actually save to a data.table. Let's filter out our existing ``dt`` data table to only have rows where neither the ``gload_mw`` or the ``heat_input_mm_btu`` columns are NA.
+```{r}
+
+```
+
+# Select and manipulate columns using j
+
+## Select columns by column number/index
+```{r}
+
+```
+
+## Select columns by name
+```{r}
+
+```
+
+Let's only keep the following columns (note that this will also reorder the columns):
+
+* state
+* orispl_code
+* unitid
+* op_date
+* op_hour
+* gload_mw
+* so2_mass_lbs
+* nox_mass_lbs
+* co2_mass_tons
+* heat_input_mm_btu
+```{r}
+
+```
+## Add columns
+
+### Add simple columns
+```{r}
+
+```
+
+### Add column based on subset of rows
+```{r}
+
+```
+
+Note that b is NA for dates that do not satisfy the filter:
+```{r}
+
+```
+
+### Add column based on cases (using ``fifelse`` and ``fcase``)
+
+We can add columns based on whether or not (yes or no) a condition is met (and the condition can be based on other columns). To do this, we can use the ``fifelse`` function (which is a faster version of ``ifelse``). The syntax of ``fifelse`` is ``fifelse(test, yes, no, na=NA)``. The ``fifelse`` is comparable to ``dyplr``'s ``if_else`` function.
+
+Let's say we want to create a new column called ``c`` that is based on whether or not the date is before or after June 1, 2019. If before, the ``c`` column value is "before june"; if not, the ``c`` value is "june onwards.
+```{r}
+
+```
+
+```{r}
+
+```
+
+Another useful function to know is ``fcase``, which is like a nested version of ``fifelse``. So, let's say we have multiple conditions we want to use to create columns based on. Instead of doing something like ``fifelse(test_1, yes, fifelse(test_2, yes, fifelse(test_3, yes, no)))``, we can just use ``fcase``. ``fcase`` is comparable to dplyr’s ``case_when()``. The basic syntax of ``fcase`` is ``fcase(condition1, "value1", condition2, "value2", etc)``. So let's say we want to create a column ``d`` based on the following conditions:
+
+* if the generation at the hour is less than 100 MW, ``d`` is "small"
+* if the generation at the hour is between 100-300 MW, ``d`` is "small-ish"
+* if the generation at the hour is between 300-500 MW, ``d`` is "medium"
+* if the generation at the hour is larger than 500 MW, ``d`` is "large"
+```{r}
+
+```
+
+Let's see how the data looks for instances where ``gload_mw`` is exactly 500.
+```{r}
+
+```
+Or if the generation is greater than 500 MW:
+```{r}
+
+```
+
+### Add column using other columns
+
+Let's extract the month as the column ``op_month``:
+```{r}
+
+```
+
+### Convert column type
+To change an existing column, you can just use the same method without changing the column name. For example, we can see that currently, the ``gload_mw`` is of the integer type.
+```{r}
+
+```
+
+When really it should be a numeric value. So let's change the column to a numeric type:
+```{r}
+
+```
+
+## Add multiple columns
+
+One way to add multiple columns is to use the LHS := RHS method. Let's say I want to calculate the heat rate and the efficiency of generators at every hour.
+The heat rate is defined as the heat input divided by the generation, resulting in units of mmBtu per MWh.
+The efficiency is defined as the generation divided by the heat input, then multiplied by 3.412 (conversion factor between mmBTU and MWh). The efficiency is a percentage.
+
+```{r}
+
+```
+Another way to add multiple columns is to use the functional form.
+```{r}
+
+```
+
+
+## Delete columns
+
+A column can be deleted using ``dt[, col := NULL]``. For example, let's deleted the column ``a`` we created earlier:
+```{r}
+
+```
+
+We can also delete multiple columns at once. Let's delete the columns b, c, and d as well.
+```{r}
+
+```
+Similar to how we added new columns using the functional form, we can also remove columns using the functional form. Let's delete the ``co2_rate_tons_mwh``, ``nox_rate_lbs_mwh``, and ``so2_rate_lbs_mwh`` columns we created earlier.
+```{r}
+
+```
+
+# Group according to **by**
+
+## Summarize by group(s)
+
+Let's find the total amount of CO2 emitted by state and by date:
+```{r}
+
+```
+
+## Summarize several columns
+
+``.SD`` can be used to summarize multiple columns
+```{r}
+
+```
+
+## Summarize several columns by group(s)
+
+We can also use ``.SD`` by group:
+```{r}
+
+```
+## Summarize multiple functions on several columns by group(s)
+
+The ``.N`` special character can be used to count the number of observations. Not to be confused with the ``uniqueN`` function, which counts the number of *unique* observations. Let's find the number of observations, the number of power plants, and the total generation by state:
+```{r}
+
+```
+
+## Add columns by groups
+
+Let's say we want to add a column that's the max generation for each generator:
+```{r}
+
+```
+
+## Adding multiple columns applying a function based on groups
+What if we want to create a new column for each of the means of CO2, SO2, and NOx for each generator within each month? We can use ``lapply`` and ``.SD`` to apply a function over multiple columns and ``by`` to group by generator-month.
+
+```{r}
+
+```
+
+## Add columns based on sequential rows
+
+Within groups, we can compute a column with sequential row IDs.
+```{r}
+
+```
+What if we want to compute a new column that calculates the difference in CO2 emissions from the previous hour for every generator?
+```{r}
+
+```
+
+# Reshape between long and wide forms
+
+In data analysis, we often have to reshape the datasets we obtain between long and wide forms. ``data.table`` has two functions that make it easy to do that: ``melt()`` and ``dcast()``.
+
+## Reshape from wide to long form using ``melt``
+
+``melt()`` allows us to reshape data from wide to long form. Let's say we want to create a long form of our ``dt`` ``data.table``, where we take the co2_mass_tons, so2_mass_lbs, and nox_mass_lbs columns and convert them into long form (so all their reporetd values are in one column). 
+
+```{r}
+
+```
+(IRL, we would need to convert the emissions to all be in the same units, instead of tons for CO2 and lbs for SO2/NOx, but let's just roll with this.)
+
+## Reshape from long to wide form using ``dcast``
+
+``dcast()`` allows us to convert data the opposite way -- from long to wide form. So, let's say we want to convert ``dt_long`` above back into wide form, with each emission type having its own column:
+
+```{r}
+
+```
+
+# Joining data
+
+In this section, we will be going over how to join ``data.tables`` -- both merging and binding.
+
+## Read in facility data
+First, let's read in our facility data.
+```{r}
+
+```
+Fix column names with the ``janitor`` package:
+```{r}
+
+```
+
+## Merge
+
+We can merge ``dt`` with ``fac_dt``. In real life, one objective of this would be to allow analyses of generation and emissions by generator type, for example. From looking at the two ``data.tables`` it's clear the common keys they share are the ORISPL code and the unit IDs (although the column names are slightly different). 
+
+### Merge using the ``dt_a[dt_b]`` form
+
+One way to merge
+```{r}
+
+```
+
+### Merge using the ``merge()`` function
+
+
+```{r}
+
+```
+
+## Bind
+
+### Bind rows using ``rbind()``
+
+To combine the rows of two data.tables, we can use the ``rbind()`` function. 
+
+Let's create some random chunks of the ``dt`` data.table:
+```{r}
+
+```
+
+We can ``dt_1`` and ``dt_2`` together:
+```{r}
+
+```
+What happens if the the two data.tables have different orders of columns?
+To check, let's reorder the column order of ``dt_1``:
+```{r}
+
+```
+Now let's try to bind again:
+```{r}
+
+```
+We can check the tail end of the binded data.table to check also:
+```{r}
+
+```
+
+Still works! It seems ``rbind()`` checked and rearranged the column order of ``dt_2`` to be the same as ``dt_1``. ``rbind()`` has an argument called ``use.names`` that you can set to TRUE or FALSE, so if you want to ensure that the function is using the names to match, you can set it to TRUE. If we set it to false, the ``rbind()`` function will just drop ``dt_1`` on top of ``dt_2``:
+
+```{r}
+
+```
+
+```{r}
+
+```
+What happens if a column in one of the data.tables doesn't exist in another? Let's check by deleting the state column in ``dt_1``:
+```{r}
+
+```
+If we try to bind using ``dt_rbind = rbind(dt_1, dt_2)``...
+
+Error! But the error gives us a useful fix: we can use the ``FILL`` argument to fill in missing columns.
+
+```{r}
+
+```
+We can see that the state column has been moved to the farthest right, and all the rows for ``dt_1`` are NAs.
+
+To bind more than two data.tables, we can ``rbindlist()``, in which we can list multiple data.tables and use the same arguments as the regular ``rbind()`` function. So, let's bind ``dt_1``, ``dt_2``, and ``dt_3``:
+```{r}
+
+```
+
+```{r}
+
+```
+
+### Bind columns using ``cbind()``
+
+The ``cbind()`` function allows us to join data.tables by column. To show an example, let's split up ``dt`` into two data.tables (one with the first 5 columns, another with the last 5 columns):
+```{r}
+
+```
+
+```{r}
+
+```
+Using ``cbind()`` to join ``dt_a`` and ``dt_b`` together:
+```{r}
+
+```
+
+# Exercises
+
+In this section, we're going to try and do some exercises using the datasets.
+
+## Which 10 power plants (not generators) emitted the most CO2, SO2, and NOx?
+
+Aggregate to the power plant level (keeping the facility name and state as well, since I'm interested in knowing the name and location of the power plant):
+```{r}
+
+```
+
+One way to get the top 10 plants is to just temporarily order and print the top ten rows:
+```{r}
+
+```
+Another way is, if you want to actually modify the ``data.table`` to rank power plants by the amount of emissions, to create a new column that is a ranking of the emissions columns. ``data.table`` offers the ``frank()`` and ``frankv()`` functions. For example, ranking the CO2 emissions by power plant in descending order (so the highest emissions ranked first):
+```{r}
+
+```
+A more efficient way to do this across multiple columns would be to use ``lapply()`` and ``frankv()`` (which allows you to rank multiple columns by supplying a vector of column names):
+```{r}
+
+```
+So now, if we want to get the top 10, top 15, top X, etc of either emission, we can simply refer to the ranking columns:
+```{r}
+
+```
+A benefit of this method you can also how the top 10 SO2 emitters rank in the CO2 and NOx rankings, for example. 
