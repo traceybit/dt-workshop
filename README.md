@@ -36,3 +36,7 @@ install.packages('microbenchmark')
 We will be using a few different datasets for our presentation and hands-on coding session. Due to the size of the data files, they were not hosted here in the repo. Instead, please download the data files using this link: [dt-workshop-data](https://drive.google.com/drive/folders/1QGHJ-HkCxHyuj5axptNkPYkLmyF8kygS?usp=sharing)
 
 Then, drop the three data .csv files into the ``/data`` folder here in the repo. The ``.gitignore`` already includes the data .csv files in there (assuming they are properly located in the ``/data`` folder), so the files should not be tracked to be committed.
+
+## Syncing your forked repo with this repo
+
+If you forked this repo and we made changes (thus making your forked repo behind this repo), you can still sync your repo to this repo. To do so, please follow the instructions provided by Github on [how to configure a remote for a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork), followed by [how to sync a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork).
