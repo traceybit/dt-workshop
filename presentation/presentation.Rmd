@@ -1070,16 +1070,29 @@ expand_grid(df1, df2)
   
 ## some not-so-cool things
 
-### no equivalent to cross or expand_grid
+### sf compatibility
 
-```{r }
-df1 <- data.table(a = c(1986, 1990, 2014))
-df2 <- data.table(b = c(1, 1, 2))
+Grant's take: It still works, but not quite as slick as the native tidy approach. (Thanks, Grant!)
 
-# expand_grid(df1, df2)
-crossing(df1, df2)
+See a helpful resource that Grant developed on [Spatial Analysis in R](https://raw.githack.com/uo-ec607/lectures/master/09-spatial/09-spatial.html#Aside:_sf_and_datatable)
 
+---
+
+# random extras
+  
+## some not-so-cool things
+
+### sf compatibility
+
+But... the grouped operations still work pretty well.
+
+.center[
+```{r echo = FALSE, out.width = '80%'}
+knitr::include_graphics("img/speedtest.png")
 ```
+]
+
+[Link to tweet](https://twitter.com/grant_mcdermott/status/1363392556181032963?s=21)
 
 ---
 
