@@ -1106,6 +1106,9 @@ Let's say there's a zip file that has one CSV file inside. We can bypass the ste
 
 `fread("curl ftp://newftp.epa.gov/DMDnLoad/emissions/hourly/monthly/2019/2019ca01.zip | funzip")`
 
+### dtplyr
+See [this dtplyr doc for more information](https://dtplyr.tidyverse.org/): "dtplyr provides a data.table backend for dplyr. The goal of dtplyr is to allow you to write dplyr code that is automatically translated to the equivalent, but usually much faster, data.table code."
+
 ---
   
 # live coding!
