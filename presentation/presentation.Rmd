@@ -1093,7 +1093,40 @@ head(crossing(dt1, dt2))
 
 ```
 
-* CJ? but does this just work on vectors? We are not sure!
+---
+
+# random extras
+  
+## random unknown
+
+### `crossing()` or `expand_grid()` equivalent?
+
+CJ() function in data.table? but does this only work on vectors? 
+
+```{r}
+CJ(a = c(1986, 1990, 2014), b = c(1, 1, 2))
+```
+
+---
+
+# random extras
+  
+## random unknown
+
+### `crossing()` or `expand_grid()` equivalent?
+
+Using `CJ(df1, df2)` seems to give an error. The only way we can think of to cross join two *data.tables* is to create a temporary makeshift column, but maybe we're wrong!
+
+```{r}
+dt1 <- data.table(a = c(1986, 1990, 2014))
+dt2 <- data.table(b = c(1, 1, 2), c = c('x', 'y', 'z'))
+dt1[, k := 1]
+dt2[, k := 1]
+
+head(dt1[dt2, on = .(k), allow.cartesian = T][, k := NULL])
+
+```
+
 
 ---
 
