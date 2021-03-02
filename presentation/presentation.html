@@ -4,7 +4,7 @@
     <title>Introduction to data.table</title>
     <meta charset="utf-8" />
     <meta name="author" content="Meas Meng and Tracey Mangin" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 
 # Introduction to data.table
 ### Meas Meng and Tracey Mangin
-### Last compiled on 26 February, 2021
+### Last compiled on 02 March, 2021
 
 ---
 
@@ -1109,7 +1109,7 @@ head(temp2_copy)
       mutate(delay_diff = dep_delay - arr_delay,
              diff_over_at = delay_diff / air_time)
 
-## data.table -- this will not modify in place
+## data.table -- this will modify in place
 flight_dt[, delay_diff := dep_delay - arr_delay][, diff_over_at := delay_diff / air_time]
 ```
 
