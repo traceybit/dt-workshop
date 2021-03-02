@@ -132,6 +132,7 @@ setkey(dt, orispl_code, unitid, op_date, op_hour)
 Now if you check, you should see some keys specified:
 ```{r}
 key(dt)
+head(dt)
 ```
 
 
@@ -203,7 +204,7 @@ In this section, we will go over how to filter ``dt``'s rows in a few different 
 ## Filter using row numbers
 One way to subset rows is by specifying row numbers. For example, let's say we want just the first three rows of ``dt``:
 ```{r}
-dt[1:3,]
+dt[1:3]
 ```
 
 ## Filter using operators
@@ -217,6 +218,7 @@ dt[state=="CA"]
 What about if we want to filter for rows where the state is California or New Jersey?
 ```{r}
 dt[state %chin% c("CA", "NJ")]
+tail(dt[state %chin% c("CA", "NJ")])
 ```
 A less efficient way would be to use the ``|`` operator:
 ```{r}
@@ -387,7 +389,7 @@ head(dt)
 
 Let's find the total amount of CO2 emitted by state and by date:
 ```{r}
-dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(op_date)]
+dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(op_date, state)]
 ```
 
 ## Summarize several columns
