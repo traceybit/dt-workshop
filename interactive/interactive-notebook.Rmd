@@ -185,8 +185,7 @@ head(dt)
 ## ``setcolorder()``
 
 The ``setcolorder()`` function can be used to set the order of columns of a data table. So, let's reorder the columns to be in the following order:
-state, facility_name, orispl_code, unitid, op_date, op_hour, op_time, gload_mw, heat_input_mmbtu, co2_mass_tons, so2_mass_lbs, nox_mass_lbs, sload_1000lb_hr, co2_rate_tons_mmbtu, so2_rate_lbs_mmbtu, nox_rate_lbs_mmbtu, co2_mass_measure_flg, co2_rate_measure_flg, so2_mass_measure_flg, so2_rate_measure_flg, nox_mass_measure_flg, nox_rate_measure_flg, fac_id, unit_id.
-
+"state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time",  "gload_mw", "heat_input_mmbtu", "co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs", "sload_1000lb_hr", "co2_rate_tons_mmbtu", "so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_mass_measure_flg", "co2_rate_measure_flg", "so2_mass_measure_flg", "so2_rate_measure_flg", "nox_mass_measure_flg", "nox_rate_measure_flg", "fac_id", "unit_id".
 ```{r}
 setcolorder(dt, 
             c("state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time", 

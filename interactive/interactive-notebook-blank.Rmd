@@ -138,11 +138,18 @@ Now if you check, you should see some keys specified:
 ``setnames()`` allows us to change the names of columns by name with built-in checks and warnings (e.g., if any old names are missing or appear more than once). The basic syntax is ``setnames(dt, "old", "new")``.
 
 ### Rename a single column
+
+Let's rename the "heat_input_mm_btu" column to "heat_input_mmbtu".
 ```{r}
 
 ```
 
 ### Rename multiple columns
+
+Now, let's rename a few more columns:
+* "so2_rate_lbs_mm_btu" -> "so2_rate_lbs_mmbtu"
+* "nox_rate_lbs_mm_btu" -> "nox_rate_lbs_mmbtu"
+* "co2_rate_tons_mm_btu" -> "co2_rate_tons_mmbtu"
 ```{r}
 
 ```
@@ -170,8 +177,7 @@ We can also order the datable by multiple columns. For example, let's say we wan
 ## ``setcolorder()``
 
 The ``setcolorder()`` function can be used to set the order of columns of a data table. So, let's reorder the columns to be in the following order:
-state, facility_name, orispl_code, unitid, op_date, op_hour, op_time, gload_mw, heat_input_mmbtu, co2_mass_tons, so2_mass_lbs, nox_mass_lbs, sload_1000lb_hr, co2_rate_tons_mmbtu, so2_rate_lbs_mmbtu, nox_rate_lbs_mmbtu, co2_mass_measure_flg, co2_rate_measure_flg, so2_mass_measure_flg, so2_rate_measure_flg, nox_mass_measure_flg, nox_rate_measure_flg, fac_id, unit_id.
-
+"state", "facility_name", "orispl_code", "unitid", "op_date", "op_hour", "op_time",  "gload_mw", "heat_input_mmbtu", "co2_mass_tons", "so2_mass_lbs", "nox_mass_lbs", "sload_1000lb_hr", "co2_rate_tons_mmbtu", "so2_rate_lbs_mmbtu", "nox_rate_lbs_mmbtu", "co2_mass_measure_flg", "co2_rate_measure_flg", "so2_mass_measure_flg", "so2_rate_measure_flg", "nox_mass_measure_flg", "nox_rate_measure_flg", "fac_id", "unit_id".
 ```{r}
 
 ```
@@ -483,7 +489,6 @@ Still works! It seems ``rbind()`` checked and rearranged the column order of ``d
 ```{r}
 
 ```
-
 ```{r}
 
 ```
@@ -515,7 +520,6 @@ The ``cbind()`` function allows us to join data.tables by column. To show an exa
 ```{r}
 
 ```
-
 ```{r}
 
 ```
@@ -524,9 +528,9 @@ Using ``cbind()`` to join ``dt_a`` and ``dt_b`` together:
 
 ```
 
-# Exercises
+# Exercise
 
-In this section, we're going to try and do some exercises using the datasets.
+In this section, we're going to perform an exercise using the datasets.
 
 ## Which 10 power plants (not generators) emitted the most CO2, SO2, and NOx?
 
