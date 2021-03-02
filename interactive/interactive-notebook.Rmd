@@ -140,12 +140,19 @@ key(dt)
 ``setnames()`` allows us to change the names of columns by name with built-in checks and warnings (e.g., if any old names are missing or appear more than once). The basic syntax is ``setnames(dt, "old", "new")``.
 
 ### Rename a single column
+
+Let's rename the "heat_input_mm_btu" column to "heat_input_mmbtu".
 ```{r}
 setnames(dt, "heat_input_mm_btu", "heat_input_mmbtu")
 head(dt)
 ```
 
 ### Rename multiple columns
+
+Now, let's rename a few more columns:
+* "so2_rate_lbs_mm_btu" -> "so2_rate_lbs_mmbtu"
+* "nox_rate_lbs_mm_btu" -> "nox_rate_lbs_mmbtu"
+* "co2_rate_tons_mm_btu" -> "co2_rate_tons_mmbtu"
 ```{r}
 setnames(dt, 
          c("so2_rate_lbs_mm_btu", "nox_rate_lbs_mm_btu", "co2_rate_tons_mm_btu"), 
@@ -585,9 +592,9 @@ dt_cbind = cbind(dt_a, dt_b)
 head(dt_cbind)
 ```
 
-# Exercises
+# Exercise
 
-In this section, we're going to try and do some exercises using the datasets.
+In this section, we're going to perform an exercise using the datasets.
 
 ## Which 10 power plants (not generators) emitted the most CO2, SO2, and NOx?
 
