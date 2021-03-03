@@ -227,7 +227,7 @@ The operators can also be used to filter dates. Let's filter for all rows that o
 ```{r}
 dt[op_date > "07-01-2019"]
 ```
-The ``%like`` operator can be used to filter for rows that match a substring. For example, we can filter for rows where the facility name has the word "Energy" in it:
+The ``%like%`` operator can be used to filter for rows that match a substring. For example, we can filter for rows where the facility name has the word "Energy" in it:
 ```{r}
 dt[facility_name %like% "Energy"]
 ```
@@ -302,12 +302,12 @@ tail(dt)
 Another useful function to know is ``fcase``, which is like a nested version of ``fifelse``. So, let's say we have multiple conditions we want to use to create columns based on. Instead of doing something like ``fifelse(test_1, yes, fifelse(test_2, yes, fifelse(test_3, yes, no)))``, we can just use ``fcase``. ``fcase`` is comparable to dplyr’s ``case_when()``. The basic syntax of ``fcase`` is ``fcase(condition1, "value1", condition2, "value2", etc)``. So let's say we want to create a column ``d`` based on the following conditions:
 
 * if the generation at the hour is less than 100 MW, ``d`` is "small"
-* if the generation at the hour is between 100-300 MW, ``d`` is "small-ish"
+* if the generation at the hour is between 100-299 MW, ``d`` is "small-ish"
 * if the generation at the hour is between 300-500 MW, ``d`` is "medium"
 * if the generation at the hour is larger than 500 MW, ``d`` is "large"
 ```{r}
 dt[, d := fcase(gload_mw < 100, "small",
-                gload_mw %between% c(100, 300), "small-ish",
+                gload_mw %between% c(100, 299), "small-ish",
                 gload_mw %between% c(300, 500), "medium",
                 gload_mw > 500, "large")]
 ```
@@ -387,7 +387,7 @@ head(dt)
 
 Let's find the total amount of CO2 emitted by state and by date:
 ```{r}
-dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(op_date)]
+dt[, .(total_co2_tons = sum(co2_mass_tons, na.rm = T)), by = .(state, op_date)]
 ```
 
 ## Summarize several columns
