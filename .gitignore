@@ -43,3 +43,4 @@ vignettes/*.pdf
 
 # csv data files
 data/*.csv
+.Rproj.user
